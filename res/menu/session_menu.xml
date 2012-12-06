@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item android:id="@+id/assign_homework"
+          android:icon="@drawable/assign_homework"
+          android:title="@string/assign_homework"
+          android:showAsAction="ifRoom|withText" />
+    
+    <item android:id="@+id/attach_lesson"
+          android:icon="@drawable/attach_lesson"
+          android:title="@string/attach_lesson"
+          android:showAsAction="ifRoom|withText" />
+    
+    <item android:id="@+id/take_attendance"
+          android:icon="@drawable/take_attendance_red"
+          android:title="@string/take_attendance"
+          android:showAsAction="ifRoom|withText" />
+</menu>

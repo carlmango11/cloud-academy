@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Cloud Academy</string>
+    
+    <string name="title_planner_tab">Planner</string>
+    <string name="title_workload_tab">Workload</string>
+    <string name="title_class_tab">Syllabus</string>
+    <string name="title_progress_tab">Progress</string>
+    
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Cloud Academy</string>
+    <string name="title_session_overview">Session Overview</string>
+    <string name="title_lesson_viewer">Lesson Viewer</string>
+    <string name="title_in_class_viewer">Lesson Viewer</string>
+    
+    <string name="upcoming_classes_list_header">Courses</string>
+    
+    <!-- ERRORS: -->
+    <string name="unsupported_filetype_error">Content file type not supported</string>
+    <string name="no_upcoming_session_found">No upcoming session found for this course. Homework was not assigned</string>
+    <string name="custom_homework_input_error">Please enter homework title</string>
+  
+    <!-- INCLASS: -->
+    <string name="attach_lesson">Add Lesson</string>
+    <string name="take_attendance">Take Attendance</string>
+    <string name="assign_homework">Assign Homework</string>
+    <string name="homework_from_where_title">From Where?</string>
+    <string name="homework_assigned_successfully">Homework Assigned To Class</string>
+    
+    <!-- Properties: REDUNDANT ATM -->
+    <string name="core_address">http://192.168.2.7/cloudacademy</string>
+    <string name="web_service_url">/webservice/</string>
+    <string name="file_provider_url">/fileprovider/getFile.php?</string>
+    <string name="authentication_failure">null</string>
+    
+</resources>

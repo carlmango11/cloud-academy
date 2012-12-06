@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+    
+     <TextView android:id="@+id/session_list_item_time"
+        android:layout_width="60dp"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/Gray"
+	    android:textAppearance="?android:attr/textAppearanceMedium"
+        
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+        
+     <TextView android:id="@+id/session_list_item_course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+	    android:textAppearance="?android:attr/textAppearanceMedium"
+        
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+    	android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/session_list_item_time" />
+        
+     <TextView android:id="@+id/session_list_item_room"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+	    android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingRight="5dp"
+        
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+        
+     <TextView android:id="@+id/session_list_item_teacher_class"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+	    android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingRight="5dp"
+        
+        android:layout_below="@id/session_list_item_room"
+        android:layout_toRightOf="@id/session_list_item_course"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+        
+</RelativeLayout>

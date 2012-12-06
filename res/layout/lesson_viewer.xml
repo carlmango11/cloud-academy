@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/login_background">
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/lesson_viewer_header_panel"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="15dp"
+	    android:background="@drawable/scheme_light_gradient_topbar"
+	    android:orientation="vertical" >
+		    
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	        android:id="@+id/lesson_title"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textStyle="bold"
+		    android:textSize="25dp"
+		    android:textColor="@color/White" />
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	        android:id="@+id/lesson_description"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="10dp"
+		    android:textSize="15dp"
+		    android:textColor="@color/White" />
+
+	</LinearLayout>
+	
+	<ScrollView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    	android:id="@+id/lesson_viewer_content_panel"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:paddingBottom="20dp"
+		    android:background="@color/White" >
+			
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:textSize="20dp"
+		        android:padding="15dp"
+			    android:textStyle="bold"
+			    android:text="Learning Material:" />
+				
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/material_list"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical" />
+			
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+			    android:textStyle="bold"
+		        android:textSize="20dp"
+		        android:paddingLeft="15dp"
+		        android:paddingRight="15dp"
+		        android:paddingBottom="15dp"
+		        android:paddingTop="25dp"
+			    android:text="Exercises:" />
+			
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/exercise_list"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical" />
+		</LinearLayout>
+	</ScrollView>
+	
+	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/lesson_viewer_no_lessons"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="50dp"
+        android:textSize="40dp"
+	    android:textStyle="bold"
+	    android:textColor="@color/scheme_text_on_background"
+	    android:text="No\nLessons\nScheduled" />
+
+</LinearLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/login_background" >
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="15dp"
+	    android:background="@drawable/scheme_dark_gradient_topbar"
+	    android:weightSum="1.0"
+	    android:orientation="horizontal" >
+	    
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="0.65"
+		    android:orientation="vertical" >
+		    
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/session_overview_course_title"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textStyle="bold"
+			    android:textSize="20dp"
+			    android:textColor="@color/White"
+			    android:text="Course" />
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/session_overview_lead_name"
+			    android:layout_width="match_parent"
+			    android:textSize="15dp"
+			    android:textColor="@color/White"
+			    android:layout_height="wrap_content"
+			    android:text="Lead" />
+			
+		</LinearLayout>
+		
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="0dp"
+		    android:layout_weight="0.35"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical" >
+		    
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/session_overview_room"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textStyle="italic"
+			    android:gravity="right"
+			    android:textColor="#d0d0d0"
+			    android:text="Room" />
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/session_overview_time"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="right"
+			    android:textStyle="italic"
+			    android:textColor="#d0d0d0"
+			    android:text="Time" />
+			
+		</LinearLayout>
+	</LinearLayout>
+	
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:background="@color/White" >
+			
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textSize="20dp"
+	        android:padding="15dp"
+		    android:textStyle="bold"
+		    android:text="Lessons To Cover:" />
+			
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/lessons_to_cover"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" />
+		
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:textStyle="bold"
+	        android:textSize="20dp"
+	        android:padding="15dp"
+		    android:text="Homework Due:" />
+		
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/homework_due"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" />
+		
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:textStyle="bold"
+	        android:textSize="20dp"
+	        android:padding="15dp"
+		    android:text="Exams:" />
+		
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/exam_list"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" />
+	</LinearLayout>
+		
+</LinearLayout>

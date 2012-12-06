@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical" >
+    
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="10dp"
+	    android:textStyle="bold"
+	    android:textColor="@color/White"
+	    android:text="Day Schedule:"
+   		android:background="@drawable/scheme_dark_gradient_topbar" />
+
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/white_back_black_border"
+	    android:orientation="vertical" >
+		<ListView
+		    android:id="@+id/day_schedule_list"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+		</ListView>
+    
+	</LinearLayout>
+</LinearLayout>

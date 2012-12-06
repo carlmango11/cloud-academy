@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:layout_gravity="center_horizontal"
+    android:background="@drawable/login_background">
+    
+    	<ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+    		android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="10dp"
+	        android:layout_marginTop="45dp"
+	        android:src="@drawable/arch" />
+    	
+    	<ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+    		android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="20dp"
+	        android:src="@drawable/title" />
+	    <EditText
+	        android:id="@+id/username_field"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:hint="Username"
+	        android:textColorHint="@color/login_hint_colour"
+	        android:textColor="@color/White"
+	        android:layout_margin="10dp"
+    		android:layout_gravity="center_horizontal"
+	        android:text="peoplesc"
+	        android:inputType="textNoSuggestions">
+	    </EditText>
+	    <EditText
+	        android:id="@+id/password_field"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/White"
+	        android:textColorHint="@color/login_hint_colour"
+	        android:ems="10"
+	        android:text="123"
+	        android:layout_margin="10dp"
+	        android:hint="Password"
+    		android:layout_gravity="center_horizontal"
+	        android:inputType="textPassword" />
+	    <Button
+	        android:id="@+id/login_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+    		android:layout_gravity="center_horizontal"
+	        android:text="Login" />
+    
+    <!-- /LinearLayout> -->
+    
+</LinearLayout>

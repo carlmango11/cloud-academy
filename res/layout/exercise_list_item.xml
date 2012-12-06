@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lesson_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+	android:background="@drawable/white_menu_item_gradient"
+    android:orientation="vertical" >
+    
+	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/exercise_list_item_name"
+	    android:layout_width="fill_parent"
+	    android:textStyle="bold"
+	    android:layout_height="wrap_content"
+	    android:padding="10dp" />
+	
+	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/exercise_list_item_description"
+	    android:text="This is a description"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingRight="10dp"
+	    android:paddingBottom="10dp"
+	    android:paddingLeft="40dp" 
+	    android:textStyle="italic"/>
+</LinearLayout>

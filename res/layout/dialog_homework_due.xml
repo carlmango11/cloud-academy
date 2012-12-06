@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/dialog_due_date_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/dialog_next_session_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+        	android:layout_margin="10dp"
+            android:text="Our Next Class" />
+
+        <RadioButton
+            android:id="@+id/dialog_specific_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        	android:layout_margin="10dp"
+            android:text="Specify Date:" />
+    </RadioGroup>
+    
+    <DatePicker
+        android:id="@+id/dialog_date_picker"
+        android:background="@drawable/white_back_black_border"
+        android:calendarViewShown="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:endYear="2100"
+        android:startYear="1900" >
+    </DatePicker>
+	   
+</LinearLayout>
