@@ -42,6 +42,7 @@ import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.LearningMaterial;
 import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.courses.Section;
+import com.carlnolan.cloudacademy.inclass.Homework;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.usermanagement.Student;
 import com.carlnolan.cloudacademy.usermanagement.Teacher;
@@ -213,6 +214,34 @@ public class WebServiceInterface {
         
         List<Exercise> content = Exercise.buildExercisesFromJSON(json);
         return content;
+	}
+
+	/**
+	 * Gets a list of exercises assigned as homework
+	 * @param courseId Course Id to fetch homework for
+	 * @param date The due date of homework to check
+	 * @param classId 
+	 * @return
+	 */
+	public List<Homework> getHomeworkDue(int courseId, String date, int classId) {
+		boolean isStudent = !AcademyProperties.getInstance().getUser().isTeacher();
+		int userId = AcademyProperties.getInstance().getUser().getId();
+		
+		// Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("course", "" + courseId));
+        nameValuePairs.add(new BasicNameValuePair("date", "" + date));
+        nameValuePairs.add(new BasicNameValuePair("class", "" + classId));
+        nameValuePairs.add(new BasicNameValuePair("user", "" + userId));
+        nameValuePairs.add(new BasicNameValuePair("is_student", isStudent ? "1" : "0"));
+
+        String json = callService(
+        		"getHomeworkDue",
+        		nameValuePairs,
+        		true);
+        
+        List<Homework> homework = Homework.buildHomeworkFromJSON(json);
+        return homework;
 	}
 
 	public List<LearningMaterial> getLearningMaterial(Integer integer) {

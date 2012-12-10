@@ -2,6 +2,7 @@ package com.carlnolan.cloudacademy.scheduling;
 
 import java.lang.reflect.Type;
 import java.sql.Time;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -174,5 +175,10 @@ public class Session implements Parcelable {
 
 	public int getClassId() {
 		return classId;
+	}
+
+	public String getStartDateSQL() {
+		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(starts.getTime());
 	}
 }

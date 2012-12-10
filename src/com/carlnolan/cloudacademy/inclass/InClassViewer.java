@@ -309,7 +309,7 @@ public class InClassViewer extends Activity
 	 * will be due for
 	 */
 	public void onDueDateSelected(int date, int month, int year) {
-		String dueDate = year + "-" + month + "-" + date;
+		String dueDate = year + "-" + (month + 1) + "-" + date;
 		
 		showProgressDialog(true);
 		new AssignHomework(

@@ -1,11 +1,15 @@
 package com.carlnolan.cloudacademy.inclass;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.carlnolan.cloudacademy.LoginActivity;
 import com.carlnolan.cloudacademy.MainActivity;
 import com.carlnolan.cloudacademy.R;
+import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDue;
+import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDue.DownloadHomeworkDueListener;
 import com.carlnolan.cloudacademy.courses.Content;
+import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.courses.LessonListFragment;
 import com.carlnolan.cloudacademy.courses.LessonListFragment.OnLessonSelectedListener;
@@ -39,7 +43,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class SessionOverviewFragment extends Fragment {
+public class SessionOverviewFragment extends Fragment
+	implements DownloadHomeworkDueListener {
+	
 	private OnLessonSelectedListener callback;
 	private Session session;
 	
@@ -47,7 +53,6 @@ public class SessionOverviewFragment extends Fragment {
 	private TextView leadName;
 	private TextView room;
 	private TextView time;
-	private ImageButton attachLesson;
 
 	private LinearLayout lessonsToCoverList;
 	private LinearLayout homeworkDueList;
@@ -172,6 +177,7 @@ public class SessionOverviewFragment extends Fragment {
 			time.setText(session.getStartsNice());
 			
 			new DownloadLessons().execute(session.getId());
+			new DownloadHomeworkDue(this).execute(session);
 		}
 	}
     
@@ -239,5 +245,9 @@ public class SessionOverviewFragment extends Fragment {
 	public interface Selectable {
 		void setSelected(boolean b);
 		boolean isLessonListItem();
+	}
+
+	public void onHomeworkDownloaded(List<Homework> result) {
+		Log.d("carl", ""+result);
 	}
 }
