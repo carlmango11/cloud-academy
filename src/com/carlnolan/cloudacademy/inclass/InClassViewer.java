@@ -13,6 +13,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,7 +47,7 @@ import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 public class InClassViewer extends Activity
-	implements SessionOverviewFragment.OnLessonSelectedListener,
+	implements SessionOverviewFragment.OnInClassItemSelectedListener,
 	AttachLessonDialog.OnLessonsAttachedListener,
 	AttachLessons.OnLessonsAttachedListener,
 	AttendanceDialog.AttendanceTakenListener,
@@ -62,10 +65,12 @@ public class InClassViewer extends Activity
     private ProgressDialog progressDialog;
     
     /**
-     * These are the fragments for the COURSES tab
+     * These are the fragments used in InClassViewer
      */
     private SessionOverviewFragment overview;
     private LessonViewerFragment lessonViewer;
+    private HomeworkViewerFragment homeworkViewer;
+    private Fragment currentContentFragment;
     
     private Session currentSession;
     /**
@@ -106,9 +111,15 @@ public class InClassViewer extends Activity
         
         overview = (SessionOverviewFragment)
         		getFragmentManager().findFragmentById(R.id.inclass_overview_fragment);
-        lessonViewer = (LessonViewerFragment)
-        		getFragmentManager().findFragmentById(R.id.inclass_lesson_fragment);
-        
+        lessonViewer = new LessonViewerFragment();
+        homeworkViewer = new HomeworkViewerFragment();
+		currentContentFragment = lessonViewer;
+
+        //Add the lessonViewer
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.add(R.id.inclass_content_frame, lessonViewer);
+		transaction.commit();
+
         //load session
         overview.setSession(currentSession);
     }
@@ -123,7 +134,6 @@ public class InClassViewer extends Activity
                 startActivity(intent);
                 return true;
             case R.id.attach_lesson:
-            	//this.showDialog(DIALOG_ATTACH_LESSON);
             	AttachLessonDialog.newInstance(currentSession.getCourseId())
             		.show(getFragmentManager(), "attachLessonDialog");
             	return true;
@@ -176,9 +186,6 @@ public class InClassViewer extends Activity
 	    
 	    switch(id) {
 	    case DIALOG_ATTACH_LESSON:
-	    	//DialogFragment attachDialog = AttachLessonDialog.newInstance();
-	    	//attachDialog.show(getFragmentManager(), "attachDialog");
-	    	
 	    	dialog = null;
 	        break;
 	    default:
@@ -207,10 +214,38 @@ public class InClassViewer extends Activity
 	 * Called by a fragment when a new lesson is selected
 	 */
 	public void onLessonSelected(Lesson lesson) {
-		if(lessonViewer != null) {
-			lessonViewer.setLesson(lesson);
-			lessonViewer.loadLesson();
-			lessonViewer.setVisible(true);
+		if(currentContentFragment != lessonViewer) {
+			//Set the currentContentFragment as this:
+			currentContentFragment = lessonViewer;
+			
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			transaction.replace(R.id.inclass_content_frame, lessonViewer);
+			transaction.commit();
+
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.executePendingTransactions();
+		}
+
+		//Set the lesson
+		lessonViewer.setLesson(lesson);
+		lessonViewer.loadLesson();
+		lessonViewer.setVisible(true);
+	}
+
+	/**
+	 * Called by the SessionOverview when homework is selected
+	 */
+	public void onHomeworkSelected(Homework homework) {
+		if(currentContentFragment != homeworkViewer) {
+			//Set the currentContentFragment as this:
+			currentContentFragment = homeworkViewer;
+			
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			transaction.replace(R.id.inclass_content_frame, homeworkViewer);
+			transaction.commit();
+
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.executePendingTransactions();
 		}
 	}
 	

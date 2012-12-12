@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-	android:padding="20dp">
+    android:layout_height="wrap_content"
+	android:padding="20dp"
+	android:orientation="vertical">
     
     <TextView
 	     android:id="@+id/title"
-		 android:layout_width="0dp"
+		 android:layout_width="wrap_content"
 	     android:layout_height="wrap_content"
 	     android:textStyle="bold"
 	     android:text="TODAY"
-	     android:textAppearance="?android:attr/textAppearanceLarge" 
-	     
-	     android:layout_alignParentLeft="true"
-	     android:layout_alignParentTop="true"
-	     android:layout_toLeftOf="@+id/time" />
+	     android:textAppearance="?android:attr/textAppearanceLarge"  />
     
-    <TextView
-	     android:id="@id/time"
-	     android:gravity="right"
-	     android:textStyle="bold"
-	     android:layout_width="100dp"
-	     android:layout_height="wrap_content"
-	     android:text="11:32"
-	     android:textAppearance="?android:attr/textAppearanceLarge"
-	     
-	     android:layout_alignParentRight="true" />
+    <DigitalClock
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DigitalClock"
+        android:textSize="30dp"
+        android:typeface="monospace" />
    
     <TextView
         android:id="@+id/date_info"
@@ -33,18 +27,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wednesday, 15th August 2012"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
         
-        android:layout_below="@id/title"
-        android:layout_alignParentLeft="true" />
-        
-    <CalendarView        
+    <CalendarView
         android:id="@+id/calendar_view"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:background="@drawable/white_back_black_border"
-        
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:background="@drawable/white_back_black_border" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -6,6 +6,7 @@
  <color name="scheme_dark_colour">#115488</color>
  <color name="scheme_light_colour">#d0eef4</color>
  <color name="scheme_text_on_background">#95989e</color>
+ <color name="lesson_headers">#e2fd00</color>
  
  
  <!-- Standard Web Colours: -->

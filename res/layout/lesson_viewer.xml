@@ -1,56 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>	
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background" >
+	
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@drawable/login_background">
-
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/lesson_viewer_header_panel"
+    android:padding="20dp" >
+    
+	<ImageView
+    	android:id="@+id/lesson_viewer_header"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:padding="15dp"
-	    android:background="@drawable/scheme_light_gradient_topbar"
-	    android:orientation="vertical" >
-		    
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	        android:id="@+id/lesson_title"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:textStyle="bold"
-		    android:textSize="25dp"
-		    android:textColor="@color/White" />
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	        android:id="@+id/lesson_description"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_marginTop="10dp"
-		    android:textSize="15dp"
-		    android:textColor="@color/White" />
-
-	</LinearLayout>
+	    android:scaleType="fitXY"
+	    android:src="@drawable/blackboard_header" />
 	
-	<ScrollView
-	    xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-		
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    	android:id="@+id/lesson_viewer_content_panel"
+	<FrameLayout 
+    	android:id="@+id/lesson_viewer_content_panel"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	    
+	     <ImageView
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/blackboard_row" />
+	     
+	     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		    android:paddingBottom="20dp"
-		    android:background="@color/White" >
-			
+		    android:paddingLeft="22dp"
+		    android:paddingRight="21dp"
+		    android:orientation="vertical">
+				    
 			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/lesson_title"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textStyle="bold"
+			    android:textSize="25dp"
+		        android:paddingLeft="15dp"
+			    android:textColor="@color/White" />
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/lesson_description"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginTop="10dp"
+			    android:textSize="15dp"
+		        android:paddingLeft="15dp"
+			    android:textColor="@color/White" />
+				
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/lesson_viewer_learning_material"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 		        android:textAppearance="?android:attr/textAppearanceMedium"
 		        android:textSize="20dp"
 		        android:padding="15dp"
 			    android:textStyle="bold"
+			    android:textColor="@color/lesson_headers"
 			    android:text="Learning Material:" />
 				
 			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,6 +71,7 @@
 			    android:orientation="vertical" />
 			
 			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/lesson_viewer_exercises"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 		        android:textAppearance="?android:attr/textAppearanceMedium"
@@ -69,6 +81,7 @@
 		        android:paddingRight="15dp"
 		        android:paddingBottom="15dp"
 		        android:paddingTop="25dp"
+			    android:textColor="@color/lesson_headers"
 			    android:text="Exercises:" />
 			
 			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -76,8 +89,16 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" />
+			
 		</LinearLayout>
-	</ScrollView>
+	</FrameLayout>
+	
+	<ImageView
+    	android:id="@+id/lesson_viewer_footer"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/blackboard_footer" />
 	
 	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:id="@+id/lesson_viewer_no_lessons"
@@ -85,10 +106,11 @@
 	    android:layout_height="match_parent"
 	    android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:padding="50dp"
+        android:layout_marginTop="130dp"
         android:textSize="40dp"
 	    android:textStyle="bold"
 	    android:textColor="@color/scheme_text_on_background"
 	    android:text="No\nLessons\nScheduled" />
 
 </LinearLayout>
+</ScrollView>

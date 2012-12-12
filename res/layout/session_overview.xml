@@ -64,56 +64,60 @@
 		</LinearLayout>
 	</LinearLayout>
 	
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:background="@color/White" >
+	<ScrollView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:background="@color/White" >
+				
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:textSize="20dp"
+		        android:padding="15dp"
+			    android:textStyle="bold"
+			    android:text="Lessons To Cover:" />
+				
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/lessons_to_cover"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical" />
 			
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textSize="20dp"
-	        android:padding="15dp"
-		    android:textStyle="bold"
-		    android:text="Lessons To Cover:" />
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+			    android:textStyle="bold"
+		        android:textSize="20dp"
+		        android:padding="15dp"
+			    android:text="Homework Due:" />
 			
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/lessons_to_cover"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" />
-		
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-		    android:textStyle="bold"
-	        android:textSize="20dp"
-	        android:padding="15dp"
-		    android:text="Homework Due:" />
-		
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/homework_due"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" />
-		
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-		    android:textStyle="bold"
-	        android:textSize="20dp"
-	        android:padding="15dp"
-		    android:text="Exams:" />
-		
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/exam_list"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" />
-	</LinearLayout>
-		
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/homework_due"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical" />
+			
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+			    android:textStyle="bold"
+		        android:textSize="20dp"
+		        android:padding="15dp"
+			    android:text="Exams:" />
+			
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:id="@+id/exam_list"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical" />
+		</LinearLayout>
+	</ScrollView>
 </LinearLayout>

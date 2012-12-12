@@ -10,11 +10,10 @@
               android:layout_weight="1"
               android:layout_width="0dp"
               android:layout_height="match_parent" />
-
-    <fragment android:name="com.carlnolan.cloudacademy.inclass.LessonViewerFragment"
-              android:id="@+id/inclass_lesson_fragment"
-              android:layout_weight="1"
-              android:layout_width="0dp"
-              android:layout_height="match_parent" />
+	<FrameLayout
+	    android:id="@+id/inclass_content_frame"
+	    android:layout_weight="1"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"/>
 
 </LinearLayout>

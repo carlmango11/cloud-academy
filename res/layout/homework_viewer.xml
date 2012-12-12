@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:background="@drawable/login_background">
+    
+	<ImageView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/notebook_header" />
+	
+	<FrameLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	    
+	    <ImageView
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/notebook_row" />
+	
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/homework_viewer_content_panel"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:padding="15dp"
+		    android:orientation="vertical" >
+			    
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textStyle="bold"
+			    android:textSize="25dp"
+			    android:text="Header Area" />
+			    
+			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:text="Content A" />
+			
+		</LinearLayout>
+	</FrameLayout>
+
+</LinearLayout>

@@ -27,6 +27,8 @@ public class Homework extends Exercise {
 	private boolean isComplete;
 	@SerializedName("accLesson")
 	private int accompanyingLessonId;
+	@SerializedName("courseName")
+	private String courseName;	
 	
 	public static List<Homework> buildHomeworkFromJSON(String json) {
 		Gson gson = new GsonBuilder()
@@ -56,5 +58,13 @@ public class Homework extends Exercise {
 			
 			return cal;
 		}
+	}
+	
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public boolean isComplete() {
+		return isComplete;
 	}
 }

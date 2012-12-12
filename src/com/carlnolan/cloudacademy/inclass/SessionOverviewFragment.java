@@ -8,6 +8,7 @@ import com.carlnolan.cloudacademy.MainActivity;
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDue;
 import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDue.DownloadHomeworkDueListener;
+import com.carlnolan.cloudacademy.configuration.AcademyProperties;
 import com.carlnolan.cloudacademy.courses.Content;
 import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.Lesson;
@@ -27,6 +28,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,7 +49,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class SessionOverviewFragment extends Fragment
 	implements DownloadHomeworkDueListener {
 	
-	private OnLessonSelectedListener callback;
+	private OnInClassItemSelectedListener callback;
 	private Session session;
 	
 	private TextView courseTitle;
@@ -59,13 +62,15 @@ public class SessionOverviewFragment extends Fragment
 	private LinearLayout examList;
 	
 	private ArrayList<LessonListItem> lessons;
+	private ArrayList<HomeworkListItem> homework;
 	private Selectable selectedItem;
 	
 	private static final int LESSON_BUTTON_BACKGROUND = R.drawable.white_menu_item_gradient;
 	private static final int LESSON_CLICKED_BUTTON_BACKGROUND = R.drawable.clicked_white_menu_item_gradient;
 	
-	public interface OnLessonSelectedListener {
+	public interface OnInClassItemSelectedListener {
 		public void onLessonSelected(Lesson lesson);
+		public void onHomeworkSelected(Homework homework);
 		public void setLessonViewerVisibile(boolean visible);
 	}
 
@@ -92,48 +97,78 @@ public class SessionOverviewFragment extends Fragment
     	}
 	}
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		if(savedInstanceState != null) {
+			int id = savedInstanceState.getInt("selectedId");
+			
+			restoreSelected(id);
+		}
+	}
+	
+	//DONT WORK NO GOOD
+	public void restoreSelected(int id) {
+		if(lessons != null) {
+			for(LessonListItem l:lessons) {
+				if(l.getId() == id) {
+					selectedItem = l;
+					l.setSelected(true);
+					return;
+				}
+			}
+		}
+		if(homework != null) {
+			for(HomeworkListItem h:homework) {
+				if(h.getId() == id) {
+					selectedItem = h;
+					h.setSelected(true);
+					return;
+				}
+			}
+		}
+	}
+
+	public void updateHomeworkList(List<Homework> result) {
+    	homeworkDueList.removeAllViews();
+    	LayoutInflater inflater = getActivity().getLayoutInflater();
+		homework = new ArrayList<HomeworkListItem>();
+		
+    	for(int i=0; i<result.size(); i++) {
+    		LinearLayout thisView = (LinearLayout)inflater.inflate(R.layout.homework_list_item, null);
+    		HomeworkListItem thisItem = new HomeworkListItem(result.get(i), thisView);
+    		homework.add(thisItem);
+    		
+    		homeworkDueList.addView(thisItem.getView());
+    	}
+	}
+	
 	public Lesson getSelectedLesson() {
 		if(selectedItem != null && selectedItem.isLessonListItem()) {
 			return ((LessonListItem) selectedItem).getLesson();
 		}
 		return null;
 	}
-	
-	/*void viewLesson(Lesson lesson) {
-		Intent intent = new Intent(getActivity(), LessonViewerFragment.class);
-		intent.putExtra("thisLesson", lesson);
-		intent.putExtra("returnToSessionViewer", true);
-        startActivity(intent);
-	}*/
-
-    /*private void addLessonClickListener(final View thisView, final Lesson thisLesson) {
-		thisView.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if(selectedView != null) {
-					Log.d("carl", "selectedView found");
-					selectedView.setBackgroundResource(LESSON_BUTTON_BACKGROUND);
-				}
-				
-				callback.onLessonSelected(thisLesson);
-				thisView.setBackgroundResource(LESSON_CLICKED_BUTTON_BACKGROUND);
-				selectedView = (TextView) thisView;
-				Log.d("carl", "found:" + selectedView);
-			}
-		});
-	}*/
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
 		try {
-			callback = (OnLessonSelectedListener) activity;
+			callback = (OnInClassItemSelectedListener) activity;
 		} catch(ClassCastException e) {
 			Log.d("carl", "Could not cast class");
 			throw new ClassCastException(activity.toString()
 					+ " upcoming! must implement SessionOverviewFragment.OnSessionChangedListener");
 		}
 	}
+	
+	@Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("selectedId", selectedItem.getId());
+    }
 
 	@Override
 	public void onStart() {
@@ -179,6 +214,10 @@ public class SessionOverviewFragment extends Fragment
 			new DownloadLessons().execute(session.getId());
 			new DownloadHomeworkDue(this).execute(session);
 		}
+	}
+
+	public void onHomeworkDownloaded(List<Homework> result) {
+		updateHomeworkList(result);
 	}
     
 	private class DownloadLessons extends AsyncTask<Integer, Void, ArrayList<Lesson>> {
@@ -240,14 +279,86 @@ public class SessionOverviewFragment extends Fragment
 		TextView getView() {
 			return view;
 		}
+		
+		public boolean isHomeworkItem() {
+			return false;
+		}
+
+		public int getId() {
+			return lesson.getId();
+		}
+	}
+	
+	private class HomeworkListItem implements Selectable {
+		private Homework homework;
+		private LinearLayout view;
+		private TextView name;
+		
+		HomeworkListItem(Homework h, LinearLayout v) {
+			homework = h;
+			view = v;
+			name = (TextView) view.findViewById(R.id.homework_list_item_name);
+			
+			name.setText(homework.toString());
+			
+			if(!AcademyProperties.getInstance().getUser().isTeacher()) {
+				int correctIcon;
+				//Set icon
+				if(homework.isComplete()) {
+					correctIcon = R.drawable.tick_icon;
+				} else {
+					correctIcon = R.drawable.x_icon;
+				}
+				name.setCompoundDrawablesWithIntrinsicBounds(correctIcon, 0, 0, 0);
+			}
+				
+			view.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					setSelected(true);
+				}
+			});
+		}
+		
+		public Homework getHomework() {
+			return homework;
+		}
+		
+		public boolean isHomeworkItem() {
+			return true;
+		}
+		
+		public void setSelected(boolean b) {
+			if(b) {
+				if(selectedItem != null) {
+					selectedItem.setSelected(false);
+				}
+				
+				callback.onHomeworkSelected(homework);
+				view.setBackgroundResource(LESSON_CLICKED_BUTTON_BACKGROUND);
+				
+				selectedItem = this;
+			} else {
+				view.setBackgroundResource(LESSON_BUTTON_BACKGROUND);
+			}
+		}
+		
+		LinearLayout getView() {
+			return view;
+		}
+
+		public boolean isLessonListItem() {
+			return false;
+		}
+
+		public int getId() {
+			return homework.getId();
+		}
 	}
 	
 	public interface Selectable {
 		void setSelected(boolean b);
 		boolean isLessonListItem();
-	}
-
-	public void onHomeworkDownloaded(List<Homework> result) {
-		Log.d("carl", ""+result);
+		boolean isHomeworkItem();
+		int getId();
 	}
 }

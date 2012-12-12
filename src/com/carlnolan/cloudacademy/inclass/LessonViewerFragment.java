@@ -33,6 +33,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -47,6 +48,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,9 +61,11 @@ public class LessonViewerFragment extends Fragment
 	private OnContentSelectedListener callback;
 	private Lesson lesson;
 	
-	private LinearLayout headingPanel;
-	private LinearLayout contentPanel;
+	private ImageView headerView;
+	private ImageView footerView;
+	private FrameLayout contentPanel;
 	private TextView noLessonsView;
+	
 	private TextView title;
 	private TextView description;
 	private LinearLayout learningMaterialList;
@@ -80,37 +85,7 @@ public class LessonViewerFragment extends Fragment
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-       /* Intent i = getIntent();
-        Bundle b = this.getIntent().getExtras();
-        lesson = (Lesson) b.getParcelable("thisLesson");
-        returnToSessionViewer = b.getBoolean("returnToSessionViewer");
-        
-        //Set up action bar:
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);*/
     }
-    
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // app icon in action bar clicked; go up
-                Intent intent;
-                
-                if(returnToSessionViewer) {
-                	intent = new Intent(this, SessionOverviewFragment.class);
-                } else {
-                	intent = new Intent(this, MainActivity.class);
-                }
-                
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 	
 	void updateLearningMaterialList(List<LearningMaterial> newMaterial) {
     	LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -190,8 +165,9 @@ public class LessonViewerFragment extends Fragment
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         
         //Bind xml controls:
-        headingPanel = (LinearLayout) getActivity().findViewById(R.id.lesson_viewer_header_panel);
-        contentPanel = (LinearLayout) getActivity().findViewById(R.id.lesson_viewer_content_panel);
+        headerView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_header);
+        contentPanel = (FrameLayout) getActivity().findViewById(R.id.lesson_viewer_content_panel);
+        footerView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_footer);
         noLessonsView = (TextView) getActivity().findViewById(R.id.lesson_viewer_no_lessons);
         
         title = (TextView) getActivity().findViewById(R.id.lesson_title);
@@ -199,6 +175,13 @@ public class LessonViewerFragment extends Fragment
 		learningMaterialList = (LinearLayout) getActivity().findViewById(R.id.material_list);
 		exerciseList = (LinearLayout) getActivity().findViewById(R.id.exercise_list);
 
+		//Set typeface of headers
+		Typeface crayonFont = Typeface.createFromAsset(getActivity().getAssets(), "CrayonCrumble.ttf");  
+		TextView header = (TextView) getActivity().findViewById(R.id.lesson_viewer_learning_material);
+		header.setTypeface(crayonFont);
+		header = (TextView) getActivity().findViewById(R.id.lesson_viewer_exercises);
+		header.setTypeface(crayonFont);
+		
 		Log.d("carl", "Started Lesson Viewer");
 	}
 
@@ -241,9 +224,19 @@ public class LessonViewerFragment extends Fragment
 	public void loadLesson() {
 		title.setText(lesson.getName());
 		description.setText(lesson.getDescription());
+		clearLists();
 		
 		new DownloadLessonMaterial().execute(lesson.getId());
 		new DownloadExercises().execute(lesson.getId(), this);
+	}
+	
+	/**
+	 * Clears out anything in the lists for incoming fresh data
+	 * Gets rid of that lag effect while content is d/ling
+	 */
+	public void clearLists() {
+    	learningMaterialList.removeAllViews();
+    	exerciseList.removeAllViews();
 	}
 
 	/**
@@ -336,8 +329,9 @@ public class LessonViewerFragment extends Fragment
 		int mainVis = b ? View.VISIBLE : View.GONE;
 		int noLessonVis = !b ? View.VISIBLE : View.GONE;
 		
-		headingPanel.setVisibility(mainVis);
+		headerView.setVisibility(mainVis);
 		contentPanel.setVisibility(mainVis);
+		footerView.setVisibility(mainVis);
 		noLessonsView.setVisibility(noLessonVis);
 	}
 }
