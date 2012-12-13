@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -47,17 +51,28 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 public class HomeworkViewerFragment extends Fragment {
-	private LinearLayout contentPanel;
-	private TextView noLessonsView;
+	private Homework currentHomework;
+	
+	private RelativeLayout contentPanel;
+	
 	private TextView title;
 	private TextView description;
+	private TextView dueDate;
+	private TextView teacherName;
+	private TextView completed;
+	private Button lesson;
+	private Button course;
+	private Button content;
+	
 	private ProgressDialog progressDialog;
 	
 	//Unsupported Toast duration
@@ -73,18 +88,69 @@ public class HomeworkViewerFragment extends Fragment {
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.homework_viewer, container, false);
 	}
+	
+	private void setFonts() {
+		Typeface crayonFont = Typeface.createFromAsset(getActivity().getAssets(), "CrayonCrumble.ttf");
+		teacherName.setTypeface(crayonFont);
+		dueDate.setTypeface(crayonFont);
+		completed.setTypeface(crayonFont);
+		
+		//Others
+		TextView temp = (TextView) getActivity().findViewById(R.id.homework_due_text);
+		temp.setTypeface(crayonFont);
+		temp = (TextView) getActivity().findViewById(R.id.homework_for_text);
+		temp.setTypeface(crayonFont);
+	}
     
 	@Override
 	public void onStart() {
 		super.onStart();
         
         //Bind xml controls:
-        contentPanel = (LinearLayout) getActivity().findViewById(R.id.homework_viewer_content_panel);
-        //noLessonsView = (TextView) getActivity().findViewById(R.id.lesson_viewer_no_lessons);
+        contentPanel = (RelativeLayout) getActivity().findViewById(R.id.homework_viewer_content_panel);
         
-        //title = (TextView) getActivity().findViewById(R.id.lesson_title);
-		//description = (TextView) getActivity().findViewById(R.id.lesson_description);
+        title = (TextView) getActivity().findViewById(R.id.homework_title);
+		description = (TextView) getActivity().findViewById(R.id.homework_description);
+		completed = (TextView) getActivity().findViewById(R.id.homework_completed_text);
+		dueDate = (TextView) getActivity().findViewById(R.id.homework_due_date_text);
+		teacherName = (TextView) getActivity().findViewById(R.id.homework_teacher_name);
+
+		lesson = (Button) getActivity().findViewById(R.id.homework_lesson_button);
+		course = (Button) getActivity().findViewById(R.id.homework_course_button);
+		content = (Button) getActivity().findViewById(R.id.homework_content_button);
+		
+		setFonts();
 		
 		Log.d("carl", "Started Lesson Viewer");
+	}
+
+	public void loadHomework(Homework homework) {
+		currentHomework = homework;
+		
+		title.setText(currentHomework.toString());
+		description.setText(currentHomework.getDescription());		
+		teacherName.setText(currentHomework.getReceivingTeacher());
+		
+		//Format date for textView
+		Format sdf = new SimpleDateFormat("EEEEEEEEE, d MMMMMMMM yyyy");
+		String dueDateText = sdf.format(currentHomework.getDueDate().getTime());
+		dueDate.setText(dueDateText);
+		
+		//Set buttons
+		lesson.setText(currentHomework.getAccompanyingLessonName());
+		course.setText(currentHomework.getCourseName());
+		
+		//Set the completedText		
+		if(currentHomework.isComplete()) {
+			completed.setText("COMPLETED");
+			completed.setTextColor(
+					getActivity().getResources().getColor(
+							R.color.Green));
+		} else {
+			completed.setText("NOT COMPLETED");
+			completed.setTextColor(
+					getActivity().getResources().getColor(
+							R.color.Red));
+		}
 	}
 }

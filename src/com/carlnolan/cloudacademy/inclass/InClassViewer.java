@@ -247,6 +247,8 @@ public class InClassViewer extends Activity
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.executePendingTransactions();
 		}
+		
+		homeworkViewer.loadHomework(homework);
 	}
 	
 	/**

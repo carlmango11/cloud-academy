@@ -23,17 +23,30 @@ import com.google.gson.annotations.SerializedName;
 public class Homework extends Exercise {
 	@SerializedName("due")
 	private Calendar dueDate;
+	
 	@SerializedName("completed")
 	private boolean isComplete;
-	@SerializedName("accLesson")
+	
+	@SerializedName("accLessonName")
+	private String accompanyingLessonName;
+	
+	@SerializedName("accLessonId")
 	private int accompanyingLessonId;
+	
+	private int courseId;
+	
 	@SerializedName("courseName")
-	private String courseName;	
+	private String courseName;
+	
+	@SerializedName("teacher")
+	private String receivingTeacher;
 	
 	public static List<Homework> buildHomeworkFromJSON(String json) {
 		Gson gson = new GsonBuilder()
     		.registerTypeAdapter(Calendar.class, new DateDeserializer())
 			.create();
+		json = json.replace("\"completed\":\"0\"", "\"completed\":\"false\"");
+		json = json.replace("\"completed\":\"1\"", "\"completed\":\"true\"");
 		Log.d("json", "" + json);
 		Homework [] homeworkArray = gson.fromJson(json, Homework[].class);
 		
@@ -64,7 +77,39 @@ public class Homework extends Exercise {
 		return courseName;
 	}
 
+	/**
+	 * @return the accompanyingLessonName
+	 */
+	public String getAccompanyingLessonName() {
+		return accompanyingLessonName;
+	}
+
+	/**
+	 * @return the accompanyingLessonId
+	 */
+	public int getAccompanyingLessonId() {
+		return accompanyingLessonId;
+	}
+
+	/**
+	 * @return the courseId
+	 */
+	public int getCourseId() {
+		return courseId;
+	}
+
+	/**
+	 * @return the receivingTeacher
+	 */
+	public String getReceivingTeacher() {
+		return receivingTeacher;
+	}
+
 	public boolean isComplete() {
 		return isComplete;
+	}
+
+	public Calendar getDueDate() {
+		return dueDate;
 	}
 }

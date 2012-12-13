@@ -74,7 +74,7 @@ public class DueDateDialog extends DialogFragment {
 				public void onClick(DialogInterface dialog, int id) {
 					dismiss();
 				}
-			}).setTitle("Select Due Date");
+			}).setTitle(R.string.homework_select_due_date);
 		
 		return builder.create();
 	}

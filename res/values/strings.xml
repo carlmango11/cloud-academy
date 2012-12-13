@@ -24,6 +24,8 @@
     <string name="take_attendance">Take Attendance</string>
     <string name="assign_homework">Assign Homework</string>
     <string name="homework_from_where_title">From Where?</string>
+    <string name="homework_select_exercises">Which Ones?</string>
+    <string name="homework_select_due_date">For When?</string>
     <string name="homework_assigned_successfully">Homework Assigned To Class</string>
     
     <!-- Properties: REDUNDANT ATM -->

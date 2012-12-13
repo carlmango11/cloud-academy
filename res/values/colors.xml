@@ -7,6 +7,7 @@
  <color name="scheme_light_colour">#d0eef4</color>
  <color name="scheme_text_on_background">#95989e</color>
  <color name="lesson_headers">#e2fd00</color>
+ <color name="homework_labels_colour">#0c60dd</color>
  
  
  <!-- Standard Web Colours: -->

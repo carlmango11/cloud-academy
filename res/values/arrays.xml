@@ -2,7 +2,7 @@
 <resources>
 	<array name="homework_from_where_options">  
 		<item>Exercises From Selected Lesson</item>  
-		<item>Exercises From This Course</item>
+		<item>View Whole Course</item>
 		<item>Custom Exercise</item>
 	</array>
 </resources>

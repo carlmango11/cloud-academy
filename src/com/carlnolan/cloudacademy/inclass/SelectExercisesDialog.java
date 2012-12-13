@@ -77,7 +77,7 @@ public class SelectExercisesDialog extends DialogFragment
 				public void onClick(DialogInterface dialog, int id) {
 					dismiss();
 				}
-			}).setTitle("Select Exercises To Assign As Homework");
+			}).setTitle(R.string.homework_select_exercises);
 		
 		return builder.create();
 	}
