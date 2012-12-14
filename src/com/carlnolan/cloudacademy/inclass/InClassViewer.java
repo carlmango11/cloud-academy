@@ -58,7 +58,8 @@ public class InClassViewer extends Activity
 	DueDateDialog.HomeworkDueDateSelectedListener,
 	AssignHomework.OnHomeworkAssignedListener,
 	CustomHomeworkDialog.CustomHomeworkListener,
-	AddNewExercise.OnExerciseCreatedListener {
+	AddNewExercise.OnExerciseCreatedListener,
+	HomeworkViewerFragment.HomeworkViewerCallback {
 	
     private ActionBar actionBar;
     private MenuItem attendanceMenuItem;
@@ -405,13 +406,29 @@ public class InClassViewer extends Activity
 		}
 	}
 
+	/**
+	 * Called when the user has filled in the CustomHomework dialog
+	 */
 	public void onCustomHomeworkSelected(String name, String description) {
+		//Create the new exercise
 		new AddNewExercise(this).execute(name, description);
 	}
 
+	/**
+	 * Called when the new (probably custom) exercise is created
+	 */
 	public void onExerciseCreated(Exercise newExercise) {
+		//Pass the newly created exercise to the method that will ask the
+		//user for a date
 		List<Exercise> ls = new ArrayList<Exercise>();
 		ls.add(newExercise);
 		onExercisesSelected(ls);
+	}
+
+	/**
+	 * Called by the homeworkViewer when homework has changed completionstate
+	 */
+	public void homeworkCompletionChanged(Homework homework) {
+		overview.updateHomeworkCompletionState(homework);
 	}
 }

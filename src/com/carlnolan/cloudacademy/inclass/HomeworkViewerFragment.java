@@ -15,11 +15,13 @@ import java.util.List;
 import com.carlnolan.cloudacademy.LoginActivity;
 import com.carlnolan.cloudacademy.MainActivity;
 import com.carlnolan.cloudacademy.R;
+import com.carlnolan.cloudacademy.configuration.AcademyProperties;
 import com.carlnolan.cloudacademy.courses.Content;
 import com.carlnolan.cloudacademy.courses.CourseListFragment.OnCourseSelectedListener;
 import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.LearningMaterial;
 import com.carlnolan.cloudacademy.courses.Lesson;
+import com.carlnolan.cloudacademy.inclass.SessionOverviewFragment.OnInClassItemSelectedListener;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.carlnolan.cloudacademy.asynctasks.DownloadExercises;
@@ -28,6 +30,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -52,15 +55,20 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
-public class HomeworkViewerFragment extends Fragment {
+public class HomeworkViewerFragment extends Fragment
+	implements Content.ContentDownloadCallback,
+	Homework.UpdateHomeworkCompletionCallback {
 	private Homework currentHomework;
+	private HomeworkViewerCallback callback;
 	
 	private RelativeLayout contentPanel;
 	
@@ -71,12 +79,17 @@ public class HomeworkViewerFragment extends Fragment {
 	private TextView completed;
 	private Button lesson;
 	private Button course;
-	private Button content;
+	private ImageButton content;
 	
 	private ProgressDialog progressDialog;
+	private ProgressBar completionProgress;
 	
 	//Unsupported Toast duration
 	private static final int UNSUPPORTED_FILETYPE_TOAST_DURATION = 4;
+	
+	public interface HomeworkViewerCallback {
+		public void homeworkCompletionChanged(Homework homework);
+	}
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +100,19 @@ public class HomeworkViewerFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.homework_viewer, container, false);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		
+		try {
+			callback = (HomeworkViewerCallback) activity;
+		} catch(ClassCastException e) {
+			Log.d("carl", "Could not cast class");
+			throw new ClassCastException(activity.toString()
+					+ " upcoming! must implement HomeworkViewerFragment.HomeworkViewerCallback");
+		}
 	}
 	
 	private void setFonts() {
@@ -106,6 +132,13 @@ public class HomeworkViewerFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
         
+        //progress dialog setup:
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Downloading Content...");
+        progressDialog.setIndeterminate(false);
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        
         //Bind xml controls:
         contentPanel = (RelativeLayout) getActivity().findViewById(R.id.homework_viewer_content_panel);
         
@@ -117,19 +150,62 @@ public class HomeworkViewerFragment extends Fragment {
 
 		lesson = (Button) getActivity().findViewById(R.id.homework_lesson_button);
 		course = (Button) getActivity().findViewById(R.id.homework_course_button);
-		content = (Button) getActivity().findViewById(R.id.homework_content_button);
+		content = (ImageButton) getActivity().findViewById(R.id.homework_content_button);
+		
+		completionProgress = (ProgressBar) getActivity().findViewById(R.id.homework_completion_progress);
 		
 		setFonts();
 		
 		Log.d("carl", "Started Lesson Viewer");
 	}
+	
+	private void setCompleted(boolean c) {
+		currentHomework.setIsCompleteAndUpdate(c, this);
+	}
+	
+	/**
+	 * Sets the completed view and requires a boolean
+	 * signifing whether the user is a teacher or not
+	 */
+	private void setCompletedView() {
+		completed.setVisibility(View.VISIBLE);
+		//Set the completedText		
+		if(currentHomework.isComplete()) {
+			completed.setText(R.string.homework_completed);
+			completed.setTextColor(
+					getActivity().getResources().getColor(
+							R.color.Green));
+		} else {
+			completed.setText(R.string.homework_not_completed);
+			completed.setTextColor(
+					getActivity().getResources().getColor(
+							R.color.Red));
+		}
+		
+		completed.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				ConfirmCompletionDialog confirmDialog
+					= new ConfirmCompletionDialog();
+				confirmDialog.show(getFragmentManager(), "confirmDialog");
+			}
+		});
+	}
 
 	public void loadHomework(Homework homework) {
 		currentHomework = homework;
 		
+		//Check if teacher or student
+		boolean isTeacher =
+				AcademyProperties.getInstance().getUser().isTeacher();
+		
 		title.setText(currentHomework.toString());
-		description.setText(currentHomework.getDescription());		
-		teacherName.setText(currentHomework.getReceivingTeacher());
+		description.setText(currentHomework.getDescription());
+		
+		if(isTeacher) {
+			teacherName.setText(R.string.homework_for_text_teacher);
+		} else {
+			teacherName.setText(currentHomework.getReceivingTeacher());
+		}
 		
 		//Format date for textView
 		Format sdf = new SimpleDateFormat("EEEEEEEEE, d MMMMMMMM yyyy");
@@ -140,17 +216,58 @@ public class HomeworkViewerFragment extends Fragment {
 		lesson.setText(currentHomework.getAccompanyingLessonName());
 		course.setText(currentHomework.getCourseName());
 		
-		//Set the completedText		
-		if(currentHomework.isComplete()) {
-			completed.setText("COMPLETED");
-			completed.setTextColor(
-					getActivity().getResources().getColor(
-							R.color.Green));
-		} else {
-			completed.setText("NOT COMPLETED");
-			completed.setTextColor(
-					getActivity().getResources().getColor(
-							R.color.Red));
+		if(!isTeacher) {
+			setCompletedView();
+		}
+		
+		Content.ContentClickListener thisListener =
+    			new Content.ContentClickListener(
+    					currentHomework,
+    					currentHomework.getAccompanyingLessonId(),
+    					progressDialog,
+    					this);
+		content.setOnClickListener(thisListener);
+	}
+
+	/**
+	 * Called when the file is downloaded
+	 */
+	public void contentDownloaded(String location) {
+		Content.openContent(getActivity(), location);
+	}
+
+	/**
+	 * Called when the database has been updated with the new completion
+	 * value
+	 */
+	public void homeworkCompletionUpdated() {
+		completionProgress.setVisibility(View.GONE);
+		setCompletedView();
+		callback.homeworkCompletionChanged(currentHomework);
+	}
+	
+	private class ConfirmCompletionDialog extends DialogFragment {
+		@Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+			
+			int alertMessageId;
+			if(currentHomework.isComplete()) {
+				alertMessageId = R.string.homework_confirm_noncompletion;
+			} else {
+				alertMessageId = R.string.homework_confirm_completion;
+			}
+			
+			alert.setMessage(alertMessageId)
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						completed.setVisibility(View.GONE);
+						completionProgress.setVisibility(View.VISIBLE);
+						setCompleted(!currentHomework.isComplete());
+					}
+				}).setNegativeButton("No", null);
+			
+			return alert.create();
 		}
 	}
 }

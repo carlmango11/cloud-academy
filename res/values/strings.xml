@@ -28,6 +28,13 @@
     <string name="homework_select_due_date">For When?</string>
     <string name="homework_assigned_successfully">Homework Assigned To Class</string>
     
+    <!-- HOMEWORK VIEWER -->
+    <string name="homework_not_completed">NOT COMPLETED</string>
+    <string name="homework_completed">COMPLETED</string>
+    <string name="homework_for_text_teacher">You</string>
+    <string name="homework_confirm_noncompletion">Mark As Incomplete?</string>
+    <string name="homework_confirm_completion">Finished?</string>
+    
     <!-- Properties: REDUNDANT ATM -->
     <string name="core_address">http://192.168.2.7/cloudacademy</string>
     <string name="web_service_url">/webservice/</string>

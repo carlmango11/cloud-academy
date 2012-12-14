@@ -259,6 +259,17 @@ public class WebServiceInterface {
         return content;
 	}
 
+	public void updateHomeworkCompletion(int id, boolean isComplete) {
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+        nameValuePairs.add(new BasicNameValuePair("id", "" + id));
+        nameValuePairs.add(new BasicNameValuePair("value", isComplete ? "1" : "0"));
+       
+        callService(
+        		"updateHomeworkCompletion",
+        		nameValuePairs,
+        		true);
+	}
+
 	public Exercise addNewExercise(String name, String desc) {
 		// Add your data
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);

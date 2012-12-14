@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:orientation="vertical"
     android:background="@drawable/login_background">
+    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
     
 	<ImageView
 	    android:layout_width="match_parent"
@@ -23,128 +28,154 @@
 		    android:src="@drawable/notebook_row" />
 	
 	    <!-- This is where the content goes -->
-		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		<RelativeLayout
+		    xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:id="@+id/homework_viewer_content_panel"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:padding="15dp">
-			    
-			<TextView 
-			    android:id="@+id/homework_title"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:textStyle="bold"
-			    android:textSize="25dp"
-			    android:text="Title" 
-			    
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentTop="true" />
-			
-			<Button 
-			    android:id="@+id/homework_content_button"
-			    android:text="View Content"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    
-			    android:layout_alignParentRight="true"
-			    android:layout_alignParentTop="true" />
-			    
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/homework_from_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_marginTop="15dp"
-			    android:text="From: "
-			    
-			    android:layout_below="@id/homework_title" />
+		    android:paddingBottom="15dp"
+		    android:paddingLeft="15dp"
+		    android:paddingRight="15dp" >
 
-			<TextView
-			    android:id="@+id/homework_completed_text"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_below="@+id/homework_description"
-			    android:gravity="center"
-			    android:layout_margin="20dp"
-			    android:text="NOT COMPLETED"
-			    android:textSize="40dp" />
-			    
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/homework_due_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="Due: "
-			    android:textSize="30dp"
-			    android:textColor="@color/homework_labels_colour"
-			    
-			    android:layout_below="@id/homework_completed_text" />
-			
-			<TextView 
-			    android:id="@+id/homework_for_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="For: "
-			    android:textColor="@color/homework_labels_colour"
-			    android:textSize="30dp"
-			    
-			    android:layout_below="@id/homework_due_text" />
+		    <TextView
+		        android:id="@+id/homework_completed_text"
+		        android:layout_width="match_parent"
+		        android:layout_height="50dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignRight="@+id/homework_description"
+		        android:layout_below="@+id/homework_description"
+		        android:layout_margin="10dp"
+		        android:gravity="center"
+		        android:text="NOT COMPLETED"
+		        android:visibility="gone"
+		        android:textSize="40dp" />
+		    
+		    <ProgressBar 
+		        android:id="@+id/homework_completion_progress"
+		        android:layout_width="wrap_content"
+		        android:layout_height="50dp"
+		        android:layout_margin="10dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignRight="@+id/homework_description"
+		        android:layout_below="@id/homework_completed_text"
+		        android:gravity="center"
+		        android:visibility="gone"
+		         />
 
-			<TextView
-			    android:id="@+id/homework_teacher_name"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@+id/homework_due_text"
-			    android:layout_toRightOf="@+id/homework_for_text"
-			    android:text="Mr. McDermott"
-			    android:textSize="30dp" />
+		    <TextView
+		        android:id="@+id/homework_teacher_name"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/homework_due_text"
+		        android:layout_toRightOf="@+id/homework_for_text"
+		        android:text="Mr. McDermott"
+		        android:textSize="30dp" />
 
-			<TextView
-			    android:id="@+id/homework_due_date_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@+id/homework_completed_text"
-			    android:layout_toRightOf="@+id/homework_due_text"
-			    android:text="Wednesday, 8th October"
-			    android:textSize="30dp" />
+		    <TextView
+		        android:id="@+id/homework_due_date_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/homework_completion_progress"
+		        android:layout_toRightOf="@+id/homework_due_text"
+		        android:layout_alignTop="@id/homework_due_text"
+		        android:text="Wednesday, 8th October"
+		        android:textSize="30dp" />
 
-			<Button
-			    android:id="@+id/homework_lesson_button"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@+id/homework_title"
-			    android:layout_toRightOf="@+id/homework_from_text"
-			    android:text="Lesson Name" />
+		    <TextView
+		        xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/homework_description"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/homework_lesson_button"
+		        android:layout_marginTop="15dp"
+		        android:layout_marginBottom="10dp"
+		        android:text="Description here"
+		        android:textSize="20dp"
+		        android:textStyle="italic" />
 
-			<TextView
-			    xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/homework_in_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@+id/homework_title"
-			    android:layout_toRightOf="@+id/homework_lesson_button"
-			    android:text=" in " />
+		    <ImageButton
+		        android:id="@+id/homework_content_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_marginBottom="15dp"
+		        android:layout_marginRight="10dp"
+		        android:layout_alignParentTop="true"
+		        android:src="@drawable/ic_action_attach" />
 
-			<Button
-			    android:id="@+id/homework_course_button"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@+id/homework_title"
-			    android:layout_toRightOf="@+id/homework_in_text"
-			    android:text="Course Name" />
+		    <TextView
+		        android:id="@+id/homework_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@id/homework_content_button"
+		        android:layout_alignParentTop="true"
+		        android:layout_toRightOf="@id/homework_content_button"
+		        android:text="Title"
+		        android:gravity="center_vertical"
+		        android:textSize="25dp"
+		        android:textStyle="bold" />
 
-			<TextView
-			    xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/homework_description"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:textSize="20dp"
-			    android:layout_marginTop="15dp"
-			    android:textStyle="italic"
-			    android:layout_below="@+id/homework_lesson_button"
-			    android:text="Description here" />
-			
+		    <TextView
+		        android:id="@+id/homework_for_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/homework_due_text"
+		        android:text="For: "
+		        android:textColor="@color/homework_labels_colour"
+		        android:textSize="30dp" />
+
+		    <TextView
+		        xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/homework_from_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@+id/homework_course_button"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/homework_content_button"
+		        android:gravity="center"
+		        android:text="From: " />
+
+		    <Button
+		        android:id="@+id/homework_lesson_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignTop="@+id/homework_from_text"
+		        android:layout_toRightOf="@+id/homework_from_text"
+		        android:text="Lesson Name" />
+
+		    <TextView
+		        xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/homework_in_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@+id/homework_lesson_button"
+		        android:layout_alignTop="@+id/homework_lesson_button"
+		        android:layout_toRightOf="@+id/homework_lesson_button"
+		        android:gravity="center"
+		        android:text=" in " />
+
+		    <Button
+		        android:id="@id/homework_course_button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/homework_content_button"
+		        android:layout_toRightOf="@+id/homework_in_text"
+		        android:text="Course Name" />
+
+		    <TextView
+		        xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/homework_due_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/homework_completion_progress"
+		        android:text="Due: "
+		        android:layout_marginTop="10dp"
+		        android:textColor="@color/homework_labels_colour"
+		        android:textSize="30dp" />
+
 		</RelativeLayout>
 	</FrameLayout>
-
 </LinearLayout>
+</ScrollView>

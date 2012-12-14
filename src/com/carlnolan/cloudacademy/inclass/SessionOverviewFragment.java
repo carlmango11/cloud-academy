@@ -302,14 +302,7 @@ public class SessionOverviewFragment extends Fragment
 			name.setText(homework.toString());
 			
 			if(!AcademyProperties.getInstance().getUser().isTeacher()) {
-				int correctIcon;
-				//Set icon
-				if(homework.isComplete()) {
-					correctIcon = R.drawable.tick_icon;
-				} else {
-					correctIcon = R.drawable.x_icon;
-				}
-				name.setCompoundDrawablesWithIntrinsicBounds(correctIcon, 0, 0, 0);
+				setCompletionState(homework.isComplete());
 			}
 				
 			view.setOnClickListener(new OnClickListener() {
@@ -317,6 +310,20 @@ public class SessionOverviewFragment extends Fragment
 					setSelected(true);
 				}
 			});
+		}
+		
+		/**
+		 * Used to change the X or tick icon if the homewokr is
+		 * set as completed/incomplete
+		 */
+		public void setCompletionState(boolean complete) {
+			int correctIcon;
+			if(complete) {
+				correctIcon = R.drawable.tick_icon;
+			} else {
+				correctIcon = R.drawable.x_icon;
+			}
+			name.setCompoundDrawablesWithIntrinsicBounds(correctIcon, 0, 0, 0);
 		}
 		
 		public Homework getHomework() {
@@ -360,5 +367,14 @@ public class SessionOverviewFragment extends Fragment
 		boolean isLessonListItem();
 		boolean isHomeworkItem();
 		int getId();
+	}
+
+	public void updateHomeworkCompletionState(Homework newHomework) {
+		for(HomeworkListItem thisItem:homework) {
+			if(thisItem.getId() == newHomework.getId()) {
+				thisItem.setCompletionState(newHomework.isComplete());
+				break;
+			}
+		}
 	}
 }

@@ -57,7 +57,8 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 public class LessonViewerFragment extends Fragment
-	implements DownloadExercises.DownloadExercisesListener {
+	implements DownloadExercises.DownloadExercisesListener,
+	Content.ContentDownloadCallback {
 	private OnContentSelectedListener callback;
 	private Lesson lesson;
 	
@@ -74,9 +75,6 @@ public class LessonViewerFragment extends Fragment
 	
 	private List<LearningMaterial> learningMaterial;
 	private List<Exercise> exercises;
-	
-	//Unsupported Toast duration
-	private static final int UNSUPPORTED_FILETYPE_TOAST_DURATION = 4;
 	
 	public interface OnContentSelectedListener {
 		public void onContentSelected(Content content);
@@ -143,14 +141,14 @@ public class LessonViewerFragment extends Fragment
 	}*/
 
     private void addContentClickListener(View thisView, final Content thisContent) {
-		thisView.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Open the content
-		    	new DownloadFile().execute(
-		    		thisContent.getURL(lesson.getId()),
-		    		thisContent.getFilename());
-			}
-		});
+    	Content.ContentClickListener thisListener =
+    			new Content.ContentClickListener(
+    					thisContent,
+    					lesson.getId(),
+    					progressDialog,
+    					this);
+    	
+    	thisView.setOnClickListener(thisListener);
 	}
     
 	@Override
@@ -184,26 +182,6 @@ public class LessonViewerFragment extends Fragment
 		
 		Log.d("carl", "Started Lesson Viewer");
 	}
-
-	void openContent(String path) {
-    	File fileToOpen = new File(path);
-    	String type = Content.getAndroidType(path);
-    
-    	//Check if we got a proper type
-    	if(type.length() > 0) {
-    		//Open file
-        	Intent i = new Intent();
-        	i.setAction(android.content.Intent.ACTION_VIEW);
-        	i.setDataAndType(Uri.fromFile(fileToOpen), type);
-        	startActivity(i);
-    	} else {
-    		//Show unsupported dialog
-    		Toast toast = Toast.makeText(getActivity(),
-    				R.string.unsupported_filetype_error,
-    				UNSUPPORTED_FILETYPE_TOAST_DURATION);
-    		toast.show();
-    	}
-    }
 
 	/*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -263,67 +241,6 @@ public class LessonViewerFragment extends Fragment
 			updateLearningMaterialList(result);
 		}
 	}
-	
-	private class DownloadFile extends AsyncTask<String, Integer, String> {
-	    @Override
-	    protected String doInBackground(String... sUrl) {
-	    	String result = "";
-	    	
-	        try {
-	            URL url = new URL(sUrl[0]);
-	            URLConnection connection = url.openConnection();
-	            connection.connect();
-	            // this will be useful so that you can show a typical 0-100% progress bar
-	            int fileLength = connection.getContentLength();
-
-	            // download the file
-	            InputStream input = new BufferedInputStream(url.openStream());
-	            
-	            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-	            String newFileLocation = dir + "/" + sUrl[1];
-	            OutputStream output = new FileOutputStream(newFileLocation);
-
-	            byte data[] = new byte[1024];
-	            long total = 0;
-	            int count;
-	            while ((count = input.read(data)) != -1) {
-	                total += count;
-	                // publishing the progress....
-	                publishProgress((int) (total * 100 / fileLength));
-	                output.write(data, 0, count);
-	            }
-
-	            output.flush();
-	            output.close();
-	            input.close();
-	            result = newFileLocation;
-	        } catch (Exception e) {
-	        }
-	        return result;
-	    }
-		
-		@Override
-	    protected void onPreExecute() {
-	        super.onPreExecute();
-	        progressDialog.show();
-	    }
-
-	    @Override
-		protected void onPostExecute(String path) {
-			super.onPostExecute(path);
-			progressDialog.dismiss();
-			
-			if(path.length() > 0) {
-				openContent(path);
-			}
-		}
-
-		@Override
-	    protected void onProgressUpdate(Integer... progress) {
-	        super.onProgressUpdate(progress);
-	        progressDialog.setProgress(progress[0]);
-	    }
-	}
 
 	public void setVisible(boolean b) {
 		int mainVis = b ? View.VISIBLE : View.GONE;
@@ -333,5 +250,12 @@ public class LessonViewerFragment extends Fragment
 		contentPanel.setVisibility(mainVis);
 		footerView.setVisibility(mainVis);
 		noLessonsView.setVisibility(noLessonVis);
+	}
+
+	/**
+	 * Called when content has been downloaded
+	 */
+	public void contentDownloaded(String location) {
+		Content.openContent(getActivity(), location);
 	}
 }

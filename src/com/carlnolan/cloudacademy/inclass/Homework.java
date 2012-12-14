@@ -9,9 +9,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.carlnolan.cloudacademy.courses.Exercise;
+import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -40,6 +42,17 @@ public class Homework extends Exercise {
 	
 	@SerializedName("teacher")
 	private String receivingTeacher;
+	
+	private int homeworkId;
+	private int completionId;
+	
+	/**
+	 * Interface used by updateHomework async task
+	 * @author Carl
+	 */
+	public interface UpdateHomeworkCompletionCallback {
+		public void homeworkCompletionUpdated();
+	}
 	
 	public static List<Homework> buildHomeworkFromJSON(String json) {
 		Gson gson = new GsonBuilder()
@@ -72,7 +85,41 @@ public class Homework extends Exercise {
 			return cal;
 		}
 	}
+
+	public void setIsCompleteAndUpdate(boolean c, UpdateHomeworkCompletionCallback callback) {
+		isComplete = c;
 	
+		new UpdateHomeworkCompletion(callback).execute();
+	}
+	
+	private class UpdateHomeworkCompletion extends AsyncTask<Void, Void, Void> {
+		private UpdateHomeworkCompletionCallback callback;
+		
+		public UpdateHomeworkCompletion(UpdateHomeworkCompletionCallback c0) {
+			callback = c0;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			WebServiceInterface.getInstance().updateHomeworkCompletion(completionId, isComplete);
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			callback.homeworkCompletionUpdated();
+		}	
+	}
+	
+	/*****************************************
+	 * All getters and setters from here down
+	 *****************************************/
+	
+	/**
+	 * Getter for Coursename
+	 * @return
+	 */
 	public String getCourseName() {
 		return courseName;
 	}
