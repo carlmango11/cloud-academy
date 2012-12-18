@@ -76,16 +76,13 @@ public class HomeworkViewerFragment extends Fragment
 	private TextView description;
 	private TextView dueDate;
 	private TextView teacherName;
-	private TextView completed;
+	private Button completed;
 	private Button lesson;
 	private Button course;
 	private ImageButton content;
 	
 	private ProgressDialog progressDialog;
 	private ProgressBar completionProgress;
-	
-	//Unsupported Toast duration
-	private static final int UNSUPPORTED_FILETYPE_TOAST_DURATION = 4;
 	
 	public interface HomeworkViewerCallback {
 		public void homeworkCompletionChanged(Homework homework);
@@ -111,10 +108,14 @@ public class HomeworkViewerFragment extends Fragment
 		} catch(ClassCastException e) {
 			Log.d("carl", "Could not cast class");
 			throw new ClassCastException(activity.toString()
-					+ " upcoming! must implement HomeworkViewerFragment.HomeworkViewerCallback");
+					+ " upcoming! must implement " +
+					"HomeworkViewerFragment.HomeworkViewerCallback");
 		}
 	}
 	
+	/**
+	 * Set the font to the crayon one for the textViews we want.
+	 */
 	private void setFonts() {
 		Typeface crayonFont = Typeface.createFromAsset(getActivity().getAssets(), "CrayonCrumble.ttf");
 		teacherName.setTypeface(crayonFont);
@@ -122,7 +123,8 @@ public class HomeworkViewerFragment extends Fragment
 		completed.setTypeface(crayonFont);
 		
 		//Others
-		TextView temp = (TextView) getActivity().findViewById(R.id.homework_due_text);
+		TextView temp = (TextView) getActivity()
+				.findViewById(R.id.homework_due_text);
 		temp.setTypeface(crayonFont);
 		temp = (TextView) getActivity().findViewById(R.id.homework_for_text);
 		temp.setTypeface(crayonFont);
@@ -144,7 +146,7 @@ public class HomeworkViewerFragment extends Fragment
         
         title = (TextView) getActivity().findViewById(R.id.homework_title);
 		description = (TextView) getActivity().findViewById(R.id.homework_description);
-		completed = (TextView) getActivity().findViewById(R.id.homework_completed_text);
+		completed = (Button) getActivity().findViewById(R.id.homework_completed_text);
 		dueDate = (TextView) getActivity().findViewById(R.id.homework_due_date_text);
 		teacherName = (TextView) getActivity().findViewById(R.id.homework_teacher_name);
 
@@ -159,6 +161,11 @@ public class HomeworkViewerFragment extends Fragment
 		Log.d("carl", "Started Lesson Viewer");
 	}
 	
+	/**
+	 * Called to change the state of this homework to
+	 * completed/not completed.
+	 * @param c
+	 */
 	private void setCompleted(boolean c) {
 		currentHomework.setIsCompleteAndUpdate(c, this);
 	}
@@ -191,6 +198,10 @@ public class HomeworkViewerFragment extends Fragment
 		});
 	}
 
+	/**
+	 * Called to make the viewer load in a piece of homework
+	 * @param homework
+	 */
 	public void loadHomework(Homework homework) {
 		currentHomework = homework;
 		
@@ -246,6 +257,12 @@ public class HomeworkViewerFragment extends Fragment
 		callback.homeworkCompletionChanged(currentHomework);
 	}
 	
+	/**
+	 * Dialog which asks user to confirm that they have finished a
+	 * piece of homework.
+	 * @author Carl
+	 *
+	 */
 	private class ConfirmCompletionDialog extends DialogFragment {
 		@Override
 	    public Dialog onCreateDialog(Bundle savedInstanceState) {

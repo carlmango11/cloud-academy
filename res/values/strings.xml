@@ -35,6 +35,9 @@
     <string name="homework_confirm_noncompletion">Mark As Incomplete?</string>
     <string name="homework_confirm_completion">Finished?</string>
     
+    <!-- HOMEWORK ASSIGN DIALOGS -->
+    <string name="dialog_select_exercises_none">None Available</string>
+    
     <!-- Properties: REDUNDANT ATM -->
     <string name="core_address">http://192.168.2.7/cloudacademy</string>
     <string name="web_service_url">/webservice/</string>

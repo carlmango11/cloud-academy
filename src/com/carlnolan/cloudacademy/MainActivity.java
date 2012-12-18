@@ -39,7 +39,6 @@ public class MainActivity extends Activity
 		CourseListFragment.OnCourseSelectedListener,
 		SectionListFragment.OnSectionSelectedListener,
 		LessonListFragment.OnLessonSelectedListener,
-		//LessonOverviewFragment.OnContentSelectedListener,
 		DayViewerFragment.OnScheduleDayChangedListener,
 		ScheduleFragment.OnSessionSelectedListener {
 
@@ -53,8 +52,6 @@ public class MainActivity extends Activity
     private CourseListFragment courseList;
     private SectionListFragment sectionList;
     private LessonListFragment lessonList;
-    
-    //private LessonOverviewFragment lessonViewer;
     
     private DayViewerFragment calendar;
     private ScheduleFragment schedule;

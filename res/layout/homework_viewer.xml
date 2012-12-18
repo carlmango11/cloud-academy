@@ -37,10 +37,10 @@
 		    android:paddingLeft="15dp"
 		    android:paddingRight="15dp" >
 
-		    <TextView
+		    <Button
 		        android:id="@+id/homework_completed_text"
 		        android:layout_width="match_parent"
-		        android:layout_height="50dp"
+		        android:layout_height="75dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_alignRight="@+id/homework_description"
 		        android:layout_below="@+id/homework_description"

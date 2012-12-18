@@ -4,6 +4,18 @@
       android:layout_height="wrap_content"
       android:orientation="vertical" >
       
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_select_exercises_none"
+        android:textStyle="bold"
+        android:textColor="@color/Gray"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/dialog_select_exercises_none"
+        android:visibility="gone" />
+      
     <ListView 
        android:id="@+id/dialog_select_exercises_list"
        android:layout_width="match_parent"

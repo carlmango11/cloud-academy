@@ -69,6 +69,28 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" />
+		    
+		    <ProgressBar 
+		        android:id="@+id/learning_material_download_progress"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:visibility="gone"
+		         />
+		    
+		    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/lesson_viewer_no_learning_material"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:background="@color/Black"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+			    android:textStyle="bold"
+		        android:textSize="20sp"
+		        android:gravity="center"
+		        android:textColor="@color/Gray"
+		        android:padding="15dp"
+		        android:visibility="gone"
+			    android:text="None" />
 			
 			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
 		        android:id="@+id/lesson_viewer_exercises"
@@ -89,6 +111,28 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" />
+		    
+		    <ProgressBar 
+		        android:id="@+id/exercises_download_progress"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:visibility="gone"
+		         />
+		    
+		    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/lesson_viewer_no_exercises"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:background="@color/Black"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+			    android:textStyle="bold"
+		        android:textSize="20sp"
+		        android:gravity="center"
+		        android:textColor="@color/Gray"
+		        android:padding="15dp"
+		        android:visibility="gone"
+			    android:text="None" />
 			
 		</LinearLayout>
 	</FrameLayout>

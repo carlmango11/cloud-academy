@@ -71,6 +71,7 @@ public class InClassViewer extends Activity
     private SessionOverviewFragment overview;
     private LessonViewerFragment lessonViewer;
     private HomeworkViewerFragment homeworkViewer;
+    private ExamViewerFragment examViewer;
     private Fragment currentContentFragment;
     
     private Session currentSession;
@@ -114,6 +115,7 @@ public class InClassViewer extends Activity
         		getFragmentManager().findFragmentById(R.id.inclass_overview_fragment);
         lessonViewer = new LessonViewerFragment();
         homeworkViewer = new HomeworkViewerFragment();
+        examViewer = new ExamViewerFragment();
 		currentContentFragment = lessonViewer;
 
         //Add the lessonViewer
@@ -250,6 +252,25 @@ public class InClassViewer extends Activity
 		}
 		
 		homeworkViewer.loadHomework(homework);
+	}
+
+	/**
+	 * Called by SessionOverview when an exam is selected
+	 */
+	public void onExamSelected(Exam exam) {
+		if(currentContentFragment != examViewer) {
+			//Set the currentContentFragment as this:
+			currentContentFragment = examViewer;
+			
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			transaction.replace(R.id.inclass_content_frame, examViewer);
+			transaction.commit();
+
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.executePendingTransactions();
+		}
+		
+		examViewer.loadExam(exam);
 	}
 	
 	/**

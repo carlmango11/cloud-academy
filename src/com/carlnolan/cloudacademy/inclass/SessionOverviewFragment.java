@@ -16,6 +16,7 @@ import com.carlnolan.cloudacademy.courses.LessonListFragment;
 import com.carlnolan.cloudacademy.courses.LessonListFragment.OnLessonSelectedListener;
 import com.carlnolan.cloudacademy.planner.DayViewerFragment.OnScheduleDayChangedListener;
 import com.carlnolan.cloudacademy.scheduling.Session;
+import com.carlnolan.cloudacademy.scheduling.Session.DownloadExamsCallback;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 import android.app.ActionBar;
@@ -47,7 +48,8 @@ import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 public class SessionOverviewFragment extends Fragment
-	implements DownloadHomeworkDueListener {
+	implements DownloadHomeworkDueListener,
+	Session.DownloadExamsCallback {
 	
 	private OnInClassItemSelectedListener callback;
 	private Session session;
@@ -63,6 +65,7 @@ public class SessionOverviewFragment extends Fragment
 	
 	private ArrayList<LessonListItem> lessons;
 	private ArrayList<HomeworkListItem> homework;
+	private ArrayList<ExamListItem> exams;
 	private Selectable selectedItem;
 	
 	private static final int LESSON_BUTTON_BACKGROUND = R.drawable.white_menu_item_gradient;
@@ -72,6 +75,7 @@ public class SessionOverviewFragment extends Fragment
 		public void onLessonSelected(Lesson lesson);
 		public void onHomeworkSelected(Homework homework);
 		public void setLessonViewerVisibile(boolean visible);
+		public void onExamSelected(Exam exam);
 	}
 
 	public void updateLessonListList(ArrayList<Lesson> result) {
@@ -141,6 +145,20 @@ public class SessionOverviewFragment extends Fragment
     		homework.add(thisItem);
     		
     		homeworkDueList.addView(thisItem.getView());
+    	}
+	}
+
+	public void updateExamList(List<Exam> result) {
+		examList.removeAllViews();
+    	LayoutInflater inflater = getActivity().getLayoutInflater();
+		exams = new ArrayList<ExamListItem>();
+		
+    	for(int i=0; i<result.size(); i++) {
+    		LinearLayout thisView = (LinearLayout)inflater.inflate(R.layout.exam_list_item, null);
+    		ExamListItem thisItem = new ExamListItem(result.get(i), thisView);
+    		exams.add(thisItem);
+    		
+    		examList.addView(thisItem.getView());
     	}
 	}
 	
@@ -213,11 +231,28 @@ public class SessionOverviewFragment extends Fragment
 			
 			new DownloadLessons().execute(session.getId());
 			new DownloadHomeworkDue(this).execute(session);
+			session.downloadExams(this);
 		}
 	}
 
 	public void onHomeworkDownloaded(List<Homework> result) {
 		updateHomeworkList(result);
+	}
+
+	public void updateHomeworkCompletionState(Homework newHomework) {
+		for(HomeworkListItem thisItem:homework) {
+			if(thisItem.getId() == newHomework.getId()) {
+				thisItem.setCompletionState(newHomework.isComplete());
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Called when exam objects are finished downloading
+	 */
+	public void examsDownloaded(List<Exam> exams) {
+		updateExamList(exams);
 	}
     
 	private class DownloadLessons extends AsyncTask<Integer, Void, ArrayList<Lesson>> {
@@ -362,19 +397,61 @@ public class SessionOverviewFragment extends Fragment
 		}
 	}
 	
+	private class ExamListItem implements Selectable {
+		private Exam exam;
+		private LinearLayout view;
+		private TextView name;
+		
+		ExamListItem(Exam e, LinearLayout v) {
+			exam = e;
+			view = v;
+			name = (TextView) view.findViewById(R.id.exam_list_item_name);
+			
+			name.setText(exam.toString());
+				
+			view.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					setSelected(true);
+				}
+			});
+		}
+		
+		public boolean isHomeworkItem() {
+			return false;
+		}
+		
+		public void setSelected(boolean b) {
+			if(b) {
+				if(selectedItem != null) {
+					selectedItem.setSelected(false);
+				}
+				
+				callback.onExamSelected(exam);
+				view.setBackgroundResource(LESSON_CLICKED_BUTTON_BACKGROUND);
+				
+				selectedItem = this;
+			} else {
+				view.setBackgroundResource(LESSON_BUTTON_BACKGROUND);
+			}
+		}
+		
+		LinearLayout getView() {
+			return view;
+		}
+
+		public boolean isLessonListItem() {
+			return false;
+		}
+
+		public int getId() {
+			return exam.getId();
+		}
+	}
+	
 	public interface Selectable {
 		void setSelected(boolean b);
 		boolean isLessonListItem();
 		boolean isHomeworkItem();
 		int getId();
-	}
-
-	public void updateHomeworkCompletionState(Homework newHomework) {
-		for(HomeworkListItem thisItem:homework) {
-			if(thisItem.getId() == newHomework.getId()) {
-				thisItem.setCompletionState(newHomework.isComplete());
-				break;
-			}
-		}
 	}
 }

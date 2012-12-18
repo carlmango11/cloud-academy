@@ -42,6 +42,7 @@ import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.LearningMaterial;
 import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.courses.Section;
+import com.carlnolan.cloudacademy.inclass.Exam;
 import com.carlnolan.cloudacademy.inclass.Homework;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.usermanagement.Student;
@@ -242,6 +243,20 @@ public class WebServiceInterface {
         
         List<Homework> homework = Homework.buildHomeworkFromJSON(json);
         return homework;
+	}
+
+	public List<Exam> getExamsForSession(int sessionId) {
+		// Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("session", "" + sessionId));
+       
+        String json = callService(
+        		"getExamsForSession",
+        		nameValuePairs,
+        		true);
+        
+        List<Exam> content = Exam.buildExamsFromJSON(json);
+        return content;
 	}
 
 	public List<LearningMaterial> getLearningMaterial(Integer integer) {

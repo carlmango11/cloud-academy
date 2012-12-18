@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -52,6 +53,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
@@ -67,6 +69,10 @@ public class LessonViewerFragment extends Fragment
 	private FrameLayout contentPanel;
 	private TextView noLessonsView;
 	
+	//None views:
+	private View noExercises;
+	private View noLearningMaterial;
+	
 	private TextView title;
 	private TextView description;
 	private LinearLayout learningMaterialList;
@@ -75,6 +81,13 @@ public class LessonViewerFragment extends Fragment
 	
 	private List<LearningMaterial> learningMaterial;
 	private List<Exercise> exercises;
+	
+	//Downloading progress bars
+	private ProgressBar learningMaterialProgress;
+	private ProgressBar exercisesProgress;
+	
+	//Alpha for "none" views
+	private static final int NONE_ALPHA = 70;
 	
 	public interface OnContentSelectedListener {
 		public void onContentSelected(Content content);
@@ -86,6 +99,7 @@ public class LessonViewerFragment extends Fragment
     }
 	
 	void updateLearningMaterialList(List<LearningMaterial> newMaterial) {
+		learningMaterialProgress.setVisibility(View.GONE);
     	LayoutInflater inflater = getActivity().getLayoutInflater();
     	learningMaterialList.removeAllViews();
     	
@@ -100,9 +114,16 @@ public class LessonViewerFragment extends Fragment
     		
     		learningMaterialList.addView(thisView);
     	}
+    	
+    	if(newMaterial.size() == 0) {
+    		noLearningMaterial.setVisibility(View.VISIBLE);
+    	} else {
+    		noLearningMaterial.setVisibility(View.GONE);
+    	}
 	}
 	
-	void updateExerciseList(List<Exercise> newExercises) { 
+	void updateExerciseList(List<Exercise> newExercises) {
+		exercisesProgress.setVisibility(View.GONE);
     	LayoutInflater inflater = getActivity().getLayoutInflater();
     	exerciseList.removeAllViews();
     	
@@ -116,6 +137,10 @@ public class LessonViewerFragment extends Fragment
     		addContentClickListener(thisView, newExercises.get(i));
     		
     		exerciseList.addView(thisView);
+    	}
+    	
+    	if(newExercises.size() == 0) {
+    		noExercises.setVisibility(View.VISIBLE);
     	}
 	}
 
@@ -151,6 +176,13 @@ public class LessonViewerFragment extends Fragment
     	thisView.setOnClickListener(thisListener);
 	}
     
+    private void setNoneAlpha() {
+    	Drawable background = noLearningMaterial.getBackground();
+    	background.setAlpha(NONE_ALPHA);
+    	background = noExercises.getBackground();
+    	background.setAlpha(NONE_ALPHA);
+    }
+    
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -173,6 +205,15 @@ public class LessonViewerFragment extends Fragment
 		learningMaterialList = (LinearLayout) getActivity().findViewById(R.id.material_list);
 		exerciseList = (LinearLayout) getActivity().findViewById(R.id.exercise_list);
 
+		//Get download progress bars
+		learningMaterialProgress = (ProgressBar) getActivity().findViewById(R.id.learning_material_download_progress);
+		exercisesProgress = (ProgressBar) getActivity().findViewById(R.id.exercises_download_progress);
+		
+		//Get "none" views
+		noLearningMaterial = (View) getActivity().findViewById(R.id.lesson_viewer_no_learning_material);
+		noExercises = (View) getActivity().findViewById(R.id.lesson_viewer_no_exercises);
+        setNoneAlpha();
+		
 		//Set typeface of headers
 		Typeface crayonFont = Typeface.createFromAsset(getActivity().getAssets(), "CrayonCrumble.ttf");  
 		TextView header = (TextView) getActivity().findViewById(R.id.lesson_viewer_learning_material);
@@ -182,18 +223,6 @@ public class LessonViewerFragment extends Fragment
 		
 		Log.d("carl", "Started Lesson Viewer");
 	}
-
-	/*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, 
-        Bundle savedInstanceState) {
-		View defaultView = inflater.inflate(R.layout.lesson_overview, container, false);
-    	
-    	LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT);
-		p1.weight = 0.5f;
-		defaultView.setLayoutParams(p1);
-		
-		return defaultView;
-    }*/
 	
 	public void setLesson(Lesson lesson0) {
 		lesson = lesson0;
@@ -204,6 +233,15 @@ public class LessonViewerFragment extends Fragment
 		description.setText(lesson.getDescription());
 		clearLists();
 		
+		//Show loading circles
+		learningMaterialProgress.setVisibility(View.VISIBLE);
+		exercisesProgress.setVisibility(View.VISIBLE);
+		
+		//Hide "none" bars
+    	noExercises.setVisibility(View.GONE);
+    	noLearningMaterial.setVisibility(View.GONE);
+    	
+    	//Download content
 		new DownloadLessonMaterial().execute(lesson.getId());
 		new DownloadExercises().execute(lesson.getId(), this);
 	}

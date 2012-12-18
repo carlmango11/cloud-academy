@@ -16,15 +16,18 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class SelectExercisesDialog extends DialogFragment
 	implements DownloadExercises.DownloadExercisesListener {
@@ -35,7 +38,9 @@ public class SelectExercisesDialog extends DialogFragment
 	private boolean [] selected;
 	
 	private ListView exerciseList;
+	private TextView none;
 	private ProgressBar prog;
+	private Button positiveButton;
 	
 	public interface FromWhereSelectedListener {
 		public void onExercisesSelected(List<Exercise> exercises);
@@ -59,7 +64,8 @@ public class SelectExercisesDialog extends DialogFragment
     	View dialogView = inflater.inflate(R.layout.dialog_select_exercises, null);
     	
     	exerciseList = (ListView) dialogView.findViewById(R.id.dialog_select_exercises_list);
-		prog = (ProgressBar) dialogView.findViewById(R.id.dialog_select_exercises_progress);
+		none = (TextView) dialogView.findViewById(R.id.dialog_select_exercises_none);
+    	prog = (ProgressBar) dialogView.findViewById(R.id.dialog_select_exercises_progress);
 		exerciseList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	
 		//Start the progress bar until we're done d/ling everything
@@ -79,7 +85,23 @@ public class SelectExercisesDialog extends DialogFragment
 				}
 			}).setTitle(R.string.homework_select_exercises);
 		
-		return builder.create();
+		final AlertDialog newDialog = builder.create();
+		
+		/* Set up a listener so that when the positive button becomes
+		 * available we grab a reference to it for later use
+		 */
+		newDialog.setOnShowListener(new OnShowListener() {
+			public void onShow(DialogInterface dialog) {
+				positiveButton = newDialog.getButton(AlertDialog.BUTTON1);
+				positiveButton.setEnabled(false);
+			}
+		});
+		
+		return newDialog;
+	}
+	
+	private void setPositiveButtonReference(Button p) {
+		positiveButton = p;
 	}
 
 	private void showProgressBar(boolean b) {
@@ -120,22 +142,31 @@ public class SelectExercisesDialog extends DialogFragment
 		exercises = result;
 		selected = new boolean[exercises.size()];
 		showProgressBar(false);
-		
-		String[] exerciseStrings = new String[exercises.size()];
-		for(int i=0;i<exercises.size();i++) {
-			exerciseStrings[i] = exercises.get(i).toString();
-		}
-		
-		exerciseList.setAdapter(new ArrayAdapter<String>(
-				getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				exerciseStrings));
 
-		exerciseList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				selected[arg2] = !selected[arg2];
+		if(result.size() == 0) {
+			//Hide the list and show the NONE sign
+			none.setVisibility(View.VISIBLE);
+			exerciseList.setVisibility(View.GONE);
+		} else {
+			//Make the positive button clickable
+			positiveButton.setEnabled(true);
+			
+			String[] exerciseStrings = new String[exercises.size()];
+			for(int i=0;i<exercises.size();i++) {
+				exerciseStrings[i] = exercises.get(i).toString();
 			}
-		});
+			
+			exerciseList.setAdapter(new ArrayAdapter<String>(
+					getActivity(),
+					android.R.layout.simple_list_item_activated_1,
+					exerciseStrings));
+
+			exerciseList.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) {
+					selected[arg2] = !selected[arg2];
+				}
+			});
+		}
 	}
 }

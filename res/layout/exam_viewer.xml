@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background">
+    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
+    
+	<ImageView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/notebook_header" />
+	
+	<FrameLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	    
+	    <ImageView
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:scaleType="fitXY"
+		    android:src="@drawable/notebook_row" />
+	
+	    <!-- This is where the content goes -->
+		<RelativeLayout
+		    xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/homework_viewer_content_panel"
+		    android:layout_width="match_parent"
+		    android:layout_height="148dp"
+		    android:paddingLeft="15dp"
+		    android:paddingRight="15dp"
+		    android:layout_marginBottom="15dp" >
+
+			<TextView
+			    android:id="@+id/exam_title"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentTop="true"
+			    android:text="Large Text"
+			    android:textStyle="bold"
+			    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+			<TextView
+			    android:id="@+id/exam_from_text"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBottom="@+id/exam_course_button"
+			    android:layout_alignParentLeft="true"
+			    android:layout_below="@id/exam_title"
+			    android:gravity="center_vertical"
+			    android:text="from:"
+			    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+			<Button
+			    android:id="@+id/exam_course_button"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/exam_title"
+			    android:layout_toRightOf="@+id/exam_from_text"
+			    android:text="Button" />
+
+			<TextView
+			    android:id="@+id/exam_description_text"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_alignLeft="@+id/exam_from_text"
+			    android:layout_below="@+id/exam_from_text"
+			    android:text="Medium Text"
+			    android:paddingTop="15dp"
+			    android:textStyle="italic"
+			    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		</RelativeLayout>
+	</FrameLayout>
+</LinearLayout>
+</ScrollView>
