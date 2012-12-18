@@ -1,13 +1,9 @@
 package com.carlnolan.cloudacademy.asynctasks;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.os.AsyncTask;
-import android.util.SparseIntArray;
-
 import com.carlnolan.cloudacademy.courses.Exercise;
-import com.carlnolan.cloudacademy.inclass.Pair;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 public class AssignHomework extends AsyncTask<Void, Void, Boolean> {

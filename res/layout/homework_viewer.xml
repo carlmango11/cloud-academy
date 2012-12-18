@@ -87,7 +87,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@+id/homework_lesson_button"
+		        android:layout_below="@+id/homework_from_text"
 		        android:layout_marginTop="15dp"
 		        android:layout_marginBottom="10dp"
 		        android:text="Description here"
@@ -132,7 +132,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_alignBottom="@+id/homework_course_button"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/homework_content_button"
+		        android:layout_below="@id/homework_title"
 		        android:gravity="center"
 		        android:text="From: " />
 
@@ -159,7 +159,7 @@
 		        android:id="@id/homework_course_button"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_below="@id/homework_content_button"
+		        android:layout_below="@id/homework_title"
 		        android:layout_toRightOf="@+id/homework_in_text"
 		        android:text="Course Name" />
 

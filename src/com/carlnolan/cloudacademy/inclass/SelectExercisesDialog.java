@@ -92,16 +92,12 @@ public class SelectExercisesDialog extends DialogFragment
 		 */
 		newDialog.setOnShowListener(new OnShowListener() {
 			public void onShow(DialogInterface dialog) {
-				positiveButton = newDialog.getButton(AlertDialog.BUTTON1);
+				positiveButton = newDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 				positiveButton.setEnabled(false);
 			}
 		});
 		
 		return newDialog;
-	}
-	
-	private void setPositiveButtonReference(Button p) {
-		positiveButton = p;
 	}
 
 	private void showProgressBar(boolean b) {

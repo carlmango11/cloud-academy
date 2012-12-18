@@ -76,6 +76,7 @@ public class HomeworkViewerFragment extends Fragment
 	private TextView description;
 	private TextView dueDate;
 	private TextView teacherName;
+	private TextView inText;
 	private Button completed;
 	private Button lesson;
 	private Button course;
@@ -149,7 +150,8 @@ public class HomeworkViewerFragment extends Fragment
 		completed = (Button) getActivity().findViewById(R.id.homework_completed_text);
 		dueDate = (TextView) getActivity().findViewById(R.id.homework_due_date_text);
 		teacherName = (TextView) getActivity().findViewById(R.id.homework_teacher_name);
-
+		inText = (TextView) getActivity().findViewById(R.id.homework_in_text);
+		
 		lesson = (Button) getActivity().findViewById(R.id.homework_lesson_button);
 		course = (Button) getActivity().findViewById(R.id.homework_course_button);
 		content = (ImageButton) getActivity().findViewById(R.id.homework_content_button);
@@ -223,21 +225,38 @@ public class HomeworkViewerFragment extends Fragment
 		String dueDateText = sdf.format(currentHomework.getDueDate().getTime());
 		dueDate.setText(dueDateText);
 		
-		//Set buttons
-		lesson.setText(currentHomework.getAccompanyingLessonName());
+		//Set up lesson button, check if theres a lesson to go with this exercsie
+		if(currentHomework.getAccompanyingLessonName() != null) {
+			lesson.setText(currentHomework.getAccompanyingLessonName());
+			
+			//Make visible (may be invisible from other h/w
+			lesson.setVisibility(View.VISIBLE);
+			inText.setVisibility(View.VISIBLE);
+		} else {
+			//Homework is custom so doesnt have a lesson attached, hide buttons
+			lesson.setVisibility(View.GONE);
+			inText.setVisibility(View.GONE);
+		}
+		
+		//Set up the course button
 		course.setText(currentHomework.getCourseName());
 		
 		if(!isTeacher) {
 			setCompletedView();
 		}
 		
-		Content.ContentClickListener thisListener =
-    			new Content.ContentClickListener(
-    					currentHomework,
-    					currentHomework.getAccompanyingLessonId(),
-    					progressDialog,
-    					this);
-		content.setOnClickListener(thisListener);
+		if(currentHomework.getFilename().length() > 0) {
+			Content.ContentClickListener thisListener =
+	    			new Content.ContentClickListener(
+	    					currentHomework,
+	    					currentHomework.getAccompanyingLessonId(),
+	    					progressDialog,
+	    					this);
+			content.setOnClickListener(thisListener);
+			content.setVisibility(View.VISIBLE);
+		} else {
+			content.setVisibility(View.GONE);
+		}
 	}
 
 	/**
