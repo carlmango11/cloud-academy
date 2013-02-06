@@ -159,16 +159,16 @@ public class WebServiceInterface {
         		true);
 	}
 
-	public ArrayList<Course> getCourses() {
+	public ArrayList<Course> getCourses(boolean isTeacher) {
 		// Add your data
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
         nameValuePairs.add(new BasicNameValuePair("user", "" + authentication.getId()));
+        nameValuePairs.add(new BasicNameValuePair("isteacher", isTeacher ? "1" : "0"));
 
         String json = callService(
         		"getCourses",
         		nameValuePairs,
         		true);
-        Log.d("carl", json);
         
         ArrayList<Course> courses = Course.buildCoursesFromJSON(json);
         return courses;

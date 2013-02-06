@@ -101,10 +101,10 @@ public class SectionListFragment extends ListFragment
 
 	public void loadSessions(Course course) {
 		thisCourse = course;
-        new DownloadSections(this).execute(course.getId());
+        new DownloadSections(this, course.getId()).execute();
 	}
 
-	public void onDownloadSectionsComplete(ArrayList<Section> sections) {
+	public void onDownloadSectionsComplete(ArrayList<Section> sections, int courseId) {
 		allSections = sections;
 		updateList(sections);
 	}

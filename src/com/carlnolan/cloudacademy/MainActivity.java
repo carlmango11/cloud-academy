@@ -3,6 +3,7 @@ package com.carlnolan.cloudacademy;
 import java.util.Date;
 
 import com.carlnolan.cloudacademy.configuration.AcademyProperties;
+import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment;
 import com.carlnolan.cloudacademy.courses.Content;
 import com.carlnolan.cloudacademy.courses.Course;
 import com.carlnolan.cloudacademy.courses.CourseListFragment;
@@ -18,14 +19,13 @@ import com.carlnolan.cloudacademy.usermanagement.User;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,13 +34,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
 		implements ActionBar.TabListener,
 		CourseListFragment.OnCourseSelectedListener,
 		SectionListFragment.OnSectionSelectedListener,
 		LessonListFragment.OnLessonSelectedListener,
 		DayViewerFragment.OnScheduleDayChangedListener,
-		ScheduleFragment.OnSessionSelectedListener {
+		ScheduleFragment.OnSessionSelectedListener,
+		User.GetCurrentUser.OnGetUserCompleteListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
     
@@ -52,6 +53,7 @@ public class MainActivity extends Activity
     private CourseListFragment courseList;
     private SectionListFragment sectionList;
     private LessonListFragment lessonList;
+    private CourseBrowserFragment browser;
     
     private DayViewerFragment calendar;
     private ScheduleFragment schedule;
@@ -63,8 +65,13 @@ public class MainActivity extends Activity
         
         //Check if authenticated user is a teacher or pupil
         int userId = WebServiceInterface.getInstance().getUserId();
-        new User.GetCurrentUser().execute(userId);
+        new User.GetCurrentUser(this, userId).execute();
+    }
 
+    /**
+     * Do anything that needed the user info to be downloaded
+     */
+	public void onUserComplete() {
         // Set up the action bar.
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -74,7 +81,7 @@ public class MainActivity extends Activity
         actionBar.addTab(actionBar.newTab().setText(R.string.title_planner_tab).setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText(R.string.title_workload_tab).setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText(R.string.title_progress_tab).setTabListener(this));
-    }
+	}
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -96,44 +103,17 @@ public class MainActivity extends Activity
         return true;
     }
 
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ignore) {
     	Context context = getBaseContext();
-
-        // When the given tab is unselected, remove it
-        if(tab.getText().equals(context.getString(R.string.title_class_tab))) {        	
-        	if(courseList != null) {
-            	fragmentTransaction.detach(courseList);
-        	}
-        	if(sectionList != null) {
-            	fragmentTransaction.detach(sectionList);
-        	}
-        	if(lessonList != null) {
-            	fragmentTransaction.detach(lessonList);
-        	}
-        } else if(tab.getText().equals(context.getString(R.string.title_planner_tab))) {
-        	if(calendar != null) {
-        		fragmentTransaction.detach(calendar);
-        	}
-        	if(schedule != null) {
-        		fragmentTransaction.detach(schedule);
-        	}
-        } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
-        	/*if(lessonViewer != null) {
-        		fragmentTransaction.detach(lessonViewer);
-        	}*/
-        } else {
-        }
-    }
-
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    	Context context = getBaseContext();
+    	FragmentManager fragmentManager = getSupportFragmentManager();
+    	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     	Log.d("carl", "SWITCH:" + tab.getText());
         // When the given tab is selected, show the tab contents in the container
         if(tab.getText().equals(context.getString(R.string.title_class_tab))) {
         	Log.d("carl", "Entered section");
         	
-        	if(courseList == null) {
+        	/*if(courseList == null) {
         		courseList = new CourseListFragment();
         		fragmentTransaction.add(R.id.main_container, courseList);
         	} else {
@@ -153,6 +133,13 @@ public class MainActivity extends Activity
         		fragmentTransaction.add(R.id.main_container, lessonList);
         	} else {
             	fragmentTransaction.attach(lessonList);
+        	}*/
+        	
+        	if(browser == null) {
+        		browser = new CourseBrowserFragment();
+        		fragmentTransaction.add(R.id.main_container, browser);
+        	} else {
+            	fragmentTransaction.attach(browser);
         	}
 
         } else if(tab.getText().equals(context.getString(R.string.title_planner_tab))) {
@@ -179,6 +166,44 @@ public class MainActivity extends Activity
         } else {
         	
         }
+        
+        fragmentTransaction.commit();
+    }
+
+    public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ignore) {
+    	Context context = getBaseContext();
+    	FragmentManager fragmentManager = getSupportFragmentManager();
+    	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        // When the given tab is unselected, remove it
+        if(tab.getText().equals(context.getString(R.string.title_class_tab))) {        	
+        	/*if(courseList != null) {
+            	fragmentTransaction.detach(courseList);
+        	}
+        	if(sectionList != null) {
+            	fragmentTransaction.detach(sectionList);
+        	}
+        	if(lessonList != null) {
+            	fragmentTransaction.detach(lessonList);
+        	}*/
+        	if(browser != null) {
+            	fragmentTransaction.detach(browser);
+        	}
+        } else if(tab.getText().equals(context.getString(R.string.title_planner_tab))) {
+        	if(calendar != null) {
+        		fragmentTransaction.detach(calendar);
+        	}
+        	if(schedule != null) {
+        		fragmentTransaction.detach(schedule);
+        	}
+        } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
+        	/*if(lessonViewer != null) {
+        		fragmentTransaction.detach(lessonViewer);
+        	}*/
+        } else {
+        }
+        
+        fragmentTransaction.commit();
     }
 
 	public void onCourseSelected(Course course) {
@@ -195,7 +220,7 @@ public class MainActivity extends Activity
 	public void onLessonSelected(Lesson lesson) {
 		actionBar.setSelectedNavigationItem(2);
 
-		FragmentManager fragmentManager = getFragmentManager();
+		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.executePendingTransactions();
 
 		//lessonViewer.setLesson(lesson);
@@ -225,6 +250,6 @@ public class MainActivity extends Activity
 		}
 	}
 
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
     }
 }

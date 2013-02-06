@@ -81,7 +81,7 @@ public class AttachLessonDialog extends DialogFragment
     	});
     	
     	//Populate listViews
-    	new DownloadSections(this).execute(courseId);
+    	new DownloadSections(this, courseId).execute();
     	
     	//Retrieve views and attach handlers
     	builder.setView(dialogView)
@@ -112,7 +112,7 @@ public class AttachLessonDialog extends DialogFragment
         }
     }
 
-	public void onDownloadSectionsComplete(ArrayList<Section> sections) {
+	public void onDownloadSectionsComplete(ArrayList<Section> sections, int courseId) {
 		this.sections = sections;
 		
 		String[] sectionStrings = new String[sections.size()];

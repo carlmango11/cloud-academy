@@ -52,18 +52,7 @@ public abstract class User {
             // download the file
             InputStream input = new BufferedInputStream(url.openStream());
             photo = BitmapFactory.decodeStream(input);
-            Log.d("photosize", ""+photo.getByteCount());
-            Log.d("photosize", ""+photo.getHeight());
-
-            /*byte data[] = new byte[1024];
-            long total = 0;
-            int count;
-            while ((count = input.read(data)) != -1) {
-                output.write(data, 0, count);
-            }
-
-            output.flush();
-            output.close();*/
+            
             input.close();
         } catch (Exception e) {
         	Log.d("carl", ""+e.getMessage());
@@ -107,17 +96,30 @@ public abstract class User {
 	}
 	
 	public static class GetCurrentUser extends AsyncTask<Integer, Void, User> {
+		private OnGetUserCompleteListener callback;
+		private int userId;
+		
+		public interface OnGetUserCompleteListener {
+			public void onUserComplete();
+		}
+		
+		public GetCurrentUser(OnGetUserCompleteListener c, int uId) {
+			callback = c;
+			userId = uId;
+		}
+		
 		@Override
 		protected User doInBackground(Integer... params) {
 			User u =
-				WebServiceInterface.getInstance().getUserFromId(params[0]);
+				WebServiceInterface.getInstance().getUserFromId(userId);
 			return u;
 		}
 		
 		@Override
 		protected void onPostExecute(User result) {
 			super.onPostExecute(result);
-			AcademyProperties.getInstance().setUser(result);			
+			AcademyProperties.getInstance().setUser(result);
+			callback.onUserComplete();
 		}
 	}
 }

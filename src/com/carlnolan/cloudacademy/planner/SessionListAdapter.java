@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class SessionListAdapter extends ArrayAdapter<Session>{
+public class SessionListAdapter extends ArrayAdapter<Session> {
     Context context; 
     int layoutResourceId;    
     Session data[] = null;

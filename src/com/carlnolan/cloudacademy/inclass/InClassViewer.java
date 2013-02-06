@@ -218,7 +218,7 @@ public class InClassViewer extends Activity
 		lessonViewer.setLesson(lesson);
 		lessonViewer.loadLesson();
 		lessonViewer.setVisible(true);
-	}
+	}	 
 
 	/**
 	 * Called by the SessionOverview when homework is selected

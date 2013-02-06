@@ -71,7 +71,7 @@ public class SelectLessonDialog extends DialogFragment
     	lessons = new ArrayList<Lesson>();
     	
     	//Populate listViews
-    	new DownloadSections(this).execute(courseId);
+    	new DownloadSections(this, courseId).execute();
     	
     	//Retrieve views and attach handlers
     	builder.setView(dialogView)
@@ -97,7 +97,7 @@ public class SelectLessonDialog extends DialogFragment
         }
     }
 
-	public void onDownloadSectionsComplete(ArrayList<Section> sections) {
+	public void onDownloadSectionsComplete(ArrayList<Section> sections, int courseId) {
 		this.sections = sections;
 		
 		String[] sectionStrings = new String[sections.size()];

@@ -114,7 +114,7 @@ public class CourseListFragment extends ListFragment {
 
 		@Override
 		protected ArrayList<Course> doInBackground(Void... params) {
-			ArrayList<Course> ls = WebServiceInterface.getInstance().getCourses();
+			ArrayList<Course> ls = WebServiceInterface.getInstance().getCourses(true);
 			return ls;
 		}
 

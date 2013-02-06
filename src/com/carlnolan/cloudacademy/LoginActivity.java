@@ -30,7 +30,8 @@ import com.carlnolan.cloudacademy.webservice.WebServiceAuthentication;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 public class LoginActivity extends Activity
-	implements TestAuthentication.TestAuthenticationResultListener {	
+	implements TestAuthentication.TestAuthenticationResultListener {
+	
 	private Button loginButton;
 	private EditText usernameField;
 	private EditText passwordField;
@@ -62,6 +63,7 @@ public class LoginActivity extends Activity
             }
         });
 		
+        //Unfinished stuff here: check for an existing authentication key
         authKeyFilename =
         		AcademyProperties.getInstance().getAuthKeyFilename();
         
@@ -109,7 +111,7 @@ public class LoginActivity extends Activity
 	    	break;
 	    case DIALOG_RESTORING:
 	    	dialog = ProgressDialog.show(LoginActivity.this, "", 
-                    "Attempting to restory session. Please wait...", true);
+                    "Attempting to restore session. Please wait...", true);
 	    	break;
 	    default:
 	        dialog = null;

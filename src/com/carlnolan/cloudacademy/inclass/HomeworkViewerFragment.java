@@ -178,7 +178,7 @@ public class HomeworkViewerFragment extends Fragment
 	 */
 	private void setCompletedView() {
 		completed.setVisibility(View.VISIBLE);
-		//Set the completedText		
+		//Set the completedText
 		if(currentHomework.isComplete()) {
 			completed.setText(R.string.homework_completed);
 			completed.setTextColor(
