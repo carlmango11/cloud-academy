@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.carlnolan.cloudacademy.configuration.AcademyProperties;
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment;
+import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment.CourseBrowserLessonSelectedListener;
 import com.carlnolan.cloudacademy.courses.Content;
 import com.carlnolan.cloudacademy.courses.Course;
 import com.carlnolan.cloudacademy.courses.CourseListFragment;
@@ -12,6 +13,7 @@ import com.carlnolan.cloudacademy.courses.Section;
 import com.carlnolan.cloudacademy.courses.SectionListFragment;
 import com.carlnolan.cloudacademy.courses.LessonListFragment;
 import com.carlnolan.cloudacademy.inclass.InClassViewer;
+import com.carlnolan.cloudacademy.inclass.LessonViewerFragment;
 import com.carlnolan.cloudacademy.planner.DayViewerFragment;
 import com.carlnolan.cloudacademy.planner.ScheduleFragment;
 import com.carlnolan.cloudacademy.scheduling.Session;
@@ -36,12 +38,10 @@ import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity
 		implements ActionBar.TabListener,
-		CourseListFragment.OnCourseSelectedListener,
-		SectionListFragment.OnSectionSelectedListener,
-		LessonListFragment.OnLessonSelectedListener,
 		DayViewerFragment.OnScheduleDayChangedListener,
 		ScheduleFragment.OnSessionSelectedListener,
-		User.GetCurrentUser.OnGetUserCompleteListener {
+		User.GetCurrentUser.OnGetUserCompleteListener,
+		CourseBrowserLessonSelectedListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
     
@@ -50,10 +50,8 @@ public class MainActivity extends FragmentActivity
     /**
      * These are the fragments for the COURSES tab
      */
-    private CourseListFragment courseList;
-    private SectionListFragment sectionList;
-    private LessonListFragment lessonList;
     private CourseBrowserFragment browser;
+    private LessonViewerFragment lessonViewer;
     
     private DayViewerFragment calendar;
     private ScheduleFragment schedule;
@@ -113,33 +111,18 @@ public class MainActivity extends FragmentActivity
         if(tab.getText().equals(context.getString(R.string.title_class_tab))) {
         	Log.d("carl", "Entered section");
         	
-        	/*if(courseList == null) {
-        		courseList = new CourseListFragment();
-        		fragmentTransaction.add(R.id.main_container, courseList);
-        	} else {
-            	fragmentTransaction.attach(courseList);
-            	//courseList.deselectAll();
-        	}
-        	
-        	if(sectionList == null) {
-        		sectionList = new SectionListFragment();
-        		fragmentTransaction.add(R.id.main_container, sectionList);
-        	} else {
-            	fragmentTransaction.attach(sectionList);
-        	}
-        	
-        	if(lessonList == null) {
-        		lessonList = new LessonListFragment();
-        		fragmentTransaction.add(R.id.main_container, lessonList);
-        	} else {
-            	fragmentTransaction.attach(lessonList);
-        	}*/
-        	
         	if(browser == null) {
-        		browser = new CourseBrowserFragment();
+        		browser = CourseBrowserFragment.newInstance(true);
         		fragmentTransaction.add(R.id.main_container, browser);
         	} else {
             	fragmentTransaction.attach(browser);
+        	}
+        	
+        	if(lessonViewer == null) {
+        		lessonViewer = LessonViewerFragment.newInstance(true);
+        		fragmentTransaction.add(R.id.main_container, lessonViewer);
+        	} else {
+            	fragmentTransaction.attach(lessonViewer);
         	}
 
         } else if(tab.getText().equals(context.getString(R.string.title_planner_tab))) {
@@ -177,17 +160,11 @@ public class MainActivity extends FragmentActivity
 
         // When the given tab is unselected, remove it
         if(tab.getText().equals(context.getString(R.string.title_class_tab))) {        	
-        	/*if(courseList != null) {
-            	fragmentTransaction.detach(courseList);
-        	}
-        	if(sectionList != null) {
-            	fragmentTransaction.detach(sectionList);
-        	}
-        	if(lessonList != null) {
-            	fragmentTransaction.detach(lessonList);
-        	}*/
         	if(browser != null) {
             	fragmentTransaction.detach(browser);
+        	}
+        	if(lessonViewer != null) {
+            	fragmentTransaction.detach(lessonViewer);
         	}
         } else if(tab.getText().equals(context.getString(R.string.title_planner_tab))) {
         	if(calendar != null) {
@@ -205,30 +182,6 @@ public class MainActivity extends FragmentActivity
         
         fragmentTransaction.commit();
     }
-
-	public void onCourseSelected(Course course) {
-		Log.d("cloudacademy", "Attempting to view course with id: " + course.getId());
-    	sectionList.loadSessions(course);
-    	lessonList.reset();
-	}
-
-	public void onSectionSelected(Section section) {
-		Log.d("cloudacademy", "Attempting to view course with id: " + section.getId());
-    	lessonList.loadLessons(section);
-	}
-
-	public void onLessonSelected(Lesson lesson) {
-		actionBar.setSelectedNavigationItem(2);
-
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.executePendingTransactions();
-
-		//lessonViewer.setLesson(lesson);
-	}
-	
-	public void onContentSelected(Content content) {
-		Log.d("carl", "hallowclick");
-	}
 	
 	public void onSessionSelected(Session session) {
 		Log.d("cloudacademy", "Session selected");
@@ -252,4 +205,14 @@ public class MainActivity extends FragmentActivity
 
     public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
     }
+
+    /**
+     * Called when the course browser selects a lesson
+     */
+	public void courseBrowserLessonSelected(Lesson lesson) {
+		//show it on the lesson viewer
+		lessonViewer.setLesson(lesson);
+		lessonViewer.loadLesson();
+		//lessonViewer.setVisible(true);
+	}
 }

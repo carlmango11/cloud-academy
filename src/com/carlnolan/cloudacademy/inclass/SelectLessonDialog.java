@@ -119,7 +119,7 @@ public class SelectLessonDialog extends DialogFragment
 	}
 	
 	private void loadSection(int index) {
-		new DownloadLessons().execute(sections.get(index).getId(), this);
+		new DownloadLessons(this, sections.get(index).getId()).execute();
 	}
 	
 	private void selectSession(int index) {

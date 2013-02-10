@@ -28,6 +28,10 @@
     <string name="homework_select_due_date">For When?</string>
     <string name="homework_assigned_successfully">Homework Assigned To Class</string>
     
+    <!-- COURSE BROWSER: -->
+    <string name="course_browser_courses_heading">Courses:</string>
+    <string name="title_full_browser_activity">Course Browser</string>
+    
     <!-- HOMEWORK VIEWER -->
     <string name="homework_not_completed">NOT COMPLETED</string>
     <string name="homework_completed">COMPLETED</string>

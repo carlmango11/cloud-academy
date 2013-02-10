@@ -139,7 +139,7 @@ public class AttachLessonDialog extends DialogFragment
 	
 	private void loadSection(int index) {
 		updateToAttachSet();
-		new DownloadLessons().execute(sections.get(index).getId(), this);
+		new DownloadLessons(this, sections.get(index).getId()).execute();
 	}
 	
 	private void updateToAttachSet() {

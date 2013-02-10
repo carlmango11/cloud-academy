@@ -9,14 +9,15 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.scheduling.Session;
 
-public class InClassViewer extends Activity
+public class InClassViewer extends FragmentActivity
 	implements SessionOverviewFragment.OnInClassItemSelectedListener,
 	AttachLessonDialog.OnLessonsAttachedListener,
 	AttachLessons.OnLessonsAttachedListener,
@@ -97,14 +98,14 @@ public class InClassViewer extends Activity
         currentSession = (Session) b.getParcelable("thisSession");
         
         overview = (SessionOverviewFragment)
-        		getFragmentManager().findFragmentById(R.id.inclass_overview_fragment);
-        lessonViewer = new LessonViewerFragment();
+        		getSupportFragmentManager().findFragmentById(R.id.inclass_overview_fragment);
+        lessonViewer = LessonViewerFragment.newInstance(false);
         homeworkViewer = new HomeworkViewerFragment();
         examViewer = new ExamViewerFragment();
 		currentContentFragment = lessonViewer;
 
         //Add the lessonViewer
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.add(R.id.inclass_content_frame, lessonViewer);
 		transaction.commit();
 
@@ -206,18 +207,17 @@ public class InClassViewer extends Activity
 			//Set the currentContentFragment as this:
 			currentContentFragment = lessonViewer;
 			
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			transaction.replace(R.id.inclass_content_frame, lessonViewer);
 			transaction.commit();
 
-			FragmentManager fragmentManager = getFragmentManager();
+			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager.executePendingTransactions();
 		}
 
 		//Set the lesson
 		lessonViewer.setLesson(lesson);
 		lessonViewer.loadLesson();
-		lessonViewer.setVisible(true);
 	}	 
 
 	/**
@@ -228,11 +228,11 @@ public class InClassViewer extends Activity
 			//Set the currentContentFragment as this:
 			currentContentFragment = homeworkViewer;
 			
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			transaction.replace(R.id.inclass_content_frame, homeworkViewer);
 			transaction.commit();
 
-			FragmentManager fragmentManager = getFragmentManager();
+			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager.executePendingTransactions();
 		}
 		
@@ -247,26 +247,15 @@ public class InClassViewer extends Activity
 			//Set the currentContentFragment as this:
 			currentContentFragment = examViewer;
 			
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			transaction.replace(R.id.inclass_content_frame, examViewer);
 			transaction.commit();
 
-			FragmentManager fragmentManager = getFragmentManager();
+			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager.executePendingTransactions();
 		}
 		
 		examViewer.loadExam(exam);
-	}
-	
-	/**
-	 * Makes the lesson viewer in-visible
-	 */
-	public void setLessonViewerVisibile(boolean b) {
-		if(b) {
-			lessonViewer.setVisible(true);
-		} else {
-			lessonViewer.setVisible(false);
-		}
 	}
 
 	/**

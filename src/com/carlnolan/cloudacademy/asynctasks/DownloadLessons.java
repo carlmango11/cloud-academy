@@ -8,19 +8,22 @@ import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.courses.Section;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
-public class DownloadLessons extends AsyncTask<Object, Void, ArrayList<Lesson>> {
+public class DownloadLessons extends AsyncTask<Void, Void, ArrayList<Lesson>> {
+	private DownloadLessonsResponder callback;
+	private int sectionId;
+	
 	public interface DownloadLessonsResponder {
 		public void onDownloadLessonsComplete(ArrayList<Lesson> lessons);
 	}
 	
-	private DownloadLessonsResponder callback;
+	public DownloadLessons(DownloadLessonsResponder c0, int id0) {
+		sectionId = id0;
+		callback = c0;
+	}
 	
 	@Override
-	protected ArrayList<Lesson> doInBackground(Object... params) {
-		int id = (Integer) params[0];
-		callback = (DownloadLessonsResponder) params[1];
-		
-		ArrayList<Lesson> ls = WebServiceInterface.getInstance().getLessons(id);
+	protected ArrayList<Lesson> doInBackground(Void... params) {
+		ArrayList<Lesson> ls = WebServiceInterface.getInstance().getLessons(sectionId);
 		return ls;
 	}
 

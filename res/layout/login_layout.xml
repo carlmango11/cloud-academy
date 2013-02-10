@@ -19,7 +19,8 @@
 	        android:layout_height="wrap_content"
     		android:layout_gravity="center_horizontal"
 	        android:layout_marginBottom="20dp"
-	        android:src="@drawable/title" />
+	        android:src="@drawable/title" />
+
 	    <EditText
 	        android:id="@+id/username_field"
 	        android:layout_width="match_parent"
@@ -30,7 +31,7 @@
 	        android:textColor="@color/White"
 	        android:layout_margin="10dp"
     		android:layout_gravity="center_horizontal"
-	        android:text="peoplesc"
+	        android:text="nolanc"
 	        android:inputType="textNoSuggestions">
 	    </EditText>
 	    <EditText

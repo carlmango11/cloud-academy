@@ -1,18 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.v4.view.PagerTitleStrip
-        android:id="@+id/pager_title_strip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="#33b5e5"
-        android:textColor="#fff"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp" />
-
-</android.support.v4.view.ViewPager>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+	android:background="@drawable/login_background"
+    android:id="@+id/course_browser_flipper" >
+    
+	<ScrollView
+		android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:padding="20dp" >
+		    
+		    <TextView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:paddingBottom="10dp"
+			    android:gravity="center"
+			    android:textStyle="bold"
+			    android:textSize="30dp"
+			    android:text="@string/course_browser_courses_heading"
+			    android:textColor="@color/White" />
+		    
+			<ImageView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:scaleType="fitXY"
+			    android:src="@drawable/bookshelf_top" />
+			
+			<FrameLayout 
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent" >
+			    
+			     <ImageView
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:scaleType="fitXY"
+				    android:src="@drawable/bookshelf_row" />
+				    
+				    <LinearLayout
+				        android:layout_marginLeft="48dp"
+				        android:layout_marginRight="45dp"
+				        android:orientation="vertical"
+					    android:layout_height="wrap_content"
+				    	android:layout_width="match_parent"
+					    android:id="@+id/course_browser_course_list" />
+					
+			</FrameLayout>
+			
+			<ImageView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:scaleType="fitXY"
+			    android:src="@drawable/bookshelf_bottom" />
+		
+		</LinearLayout>
+	</ScrollView>
+	
+	<LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	    
+	    <LinearLayout 
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+			
+	        <Button
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_margin="18dp"
+			    android:id="@+id/course_browser_back_button"
+			    android:text="Back" />
+			
+			<TextView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginTop="25dp"
+			    android:gravity="center"
+			    android:textStyle="bold"
+			    android:textSize="30dp"
+			    android:textColor="@color/White"
+			    android:id="@+id/course_browser_course_title" />
+	    </LinearLayout>
+		
+		<FrameLayout 
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:layout_marginTop="20dp" >
+			    
+			     <ImageView
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:src="@drawable/openbook" />
+				    
+				 <LinearLayout
+				        android:orientation="horizontal"
+				   		android:layout_marginTop="30dp"
+					    android:layout_height="wrap_content"
+				    	android:layout_width="match_parent" >
+				    
+				   		 <LinearLayout 
+				   		     android:layout_marginLeft="40dp"
+						    android:orientation="vertical"
+						    android:layout_width="190dp"
+						    android:layout_height="250dp" >
+						     <TextView
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:layout_marginLeft="30dp"
+							    android:gravity="center"
+							    android:textStyle="bold"
+							    android:textSize="20dp"
+							    android:text="Sections" />
+						    
+							<ListView
+							    android:layout_width="match_parent" 
+							    android:layout_height="match_parent"
+							    android:layout_marginTop="5dp"
+							    android:id="@+id/course_browser_section_list" />
+						 </LinearLayout>
+					     
+					     <LinearLayout 
+						    android:orientation="vertical"
+						    android:layout_marginLeft="20dp"
+						    android:layout_width="190dp"
+						    android:layout_height="250dp">
+						     <TextView
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:layout_marginLeft="30dp"
+							    android:gravity="center"
+							    android:textStyle="bold"
+							    android:textSize="20dp"
+							    android:text="Lessons" />
+							<ListView
+							    android:layout_width="match_parent" 
+							    android:layout_height="match_parent"
+							    android:layout_marginTop="5dp"
+							    android:id="@+id/course_browser_lesson_list" />
+						</LinearLayout>
+				 </LinearLayout>
+					
+			</FrameLayout>
+			
+		
+		
+	</LinearLayout>
+	
+</ViewFlipper>

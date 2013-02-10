@@ -12,11 +12,15 @@ import com.google.gson.GsonBuilder;
 public class Course {
 	private int id;
 	private String name;
+	private String ownerFirstname;
+	private String ownerSurname;
 	
 	public static ArrayList<Course> buildCoursesFromJSON(String json) {
 		Gson gson = new GsonBuilder()
 			.create();
 		Course [] courseArray = gson.fromJson(json, Course[].class);
+		
+		System.out.println("ret:" + json);
 		
 		return new ArrayList<Course>(Arrays.asList(courseArray));
 	}
@@ -27,5 +31,9 @@ public class Course {
 
 	public int getId() {
 		return id;
+	}
+
+	public String getOwner() {
+		return ownerFirstname + " " + ownerSurname;
 	}
 }

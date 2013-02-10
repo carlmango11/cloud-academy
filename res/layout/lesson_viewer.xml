@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_background" >
 	
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -26,6 +26,7 @@
 	     <ImageView
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
+		    android:id="@+id/lesson_viewer_row"
 		    android:scaleType="fitXY"
 		    android:src="@drawable/blackboard_row" />
 	     
@@ -144,13 +145,13 @@
 	    android:scaleType="fitXY"
 	    android:src="@drawable/blackboard_footer" />
 	
-	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	<TextView
 	    android:id="@+id/lesson_viewer_no_lessons"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="90dp"
         android:textSize="40dp"
 	    android:textStyle="bold"
 	    android:textColor="@color/scheme_text_on_background"

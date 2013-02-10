@@ -4,14 +4,15 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <fragment android:name="com.carlnolan.cloudacademy.inclass.SessionOverviewFragment"
-              android:id="@+id/inclass_overview_fragment"
-              android:layout_weight="0.5"
-              android:layout_width="0dp"
-              android:layout_height="match_parent" />
+	
 	<FrameLayout
-	    android:id="@+id/inclass_content_frame"
+        android:id="@+id/full_browser_browser_frame"
+	    android:layout_weight="0.5"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"/>
+	
+	<FrameLayout
+        android:id="@+id/full_browser_lesson_viewer_frame"
 	    android:layout_weight="0.5"
 		android:layout_width="0dp"
 		android:layout_height="match_parent"/>

@@ -1,62 +1,30 @@
 package com.carlnolan.cloudacademy.inclass;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.carlnolan.cloudacademy.LoginActivity;
-import com.carlnolan.cloudacademy.MainActivity;
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.courses.Content;
-import com.carlnolan.cloudacademy.courses.CourseListFragment.OnCourseSelectedListener;
 import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.LearningMaterial;
 import com.carlnolan.cloudacademy.courses.Lesson;
-import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.carlnolan.cloudacademy.asynctasks.DownloadExercises;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.Toast;
 
 public class LessonViewerFragment extends Fragment
 	implements DownloadExercises.DownloadExercisesListener,
@@ -64,8 +32,14 @@ public class LessonViewerFragment extends Fragment
 	private OnContentSelectedListener callback;
 	private Lesson lesson;
 	
+	/**
+	 * True if this view should have its weighting set
+	 */
+	private boolean weighted;
+	
 	private ImageView headerView;
 	private ImageView footerView;
+	private ImageView rowView;
 	private FrameLayout contentPanel;
 	private TextView noLessonsView;
 	
@@ -75,6 +49,8 @@ public class LessonViewerFragment extends Fragment
 	
 	private TextView title;
 	private TextView description;
+	private TextView learningMaterialHeader;
+	private TextView exercisesHeader;
 	private LinearLayout learningMaterialList;
 	private LinearLayout exerciseList;
 	private ProgressDialog progressDialog;
@@ -96,7 +72,20 @@ public class LessonViewerFragment extends Fragment
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments() != null) {
+            weighted = getArguments().getBoolean("WEIGHTED");
+        }
     }
+	
+	public static LessonViewerFragment newInstance(boolean weighted) {
+		LessonViewerFragment frag = new LessonViewerFragment();
+		
+		Bundle args = new Bundle();
+		args.putBoolean("WEIGHTED", weighted);
+		frag.setArguments(args);
+		
+		return frag;
+	}
 	
 	void updateLearningMaterialList(List<LearningMaterial> newMaterial) {
 		learningMaterialProgress.setVisibility(View.GONE);
@@ -147,7 +136,15 @@ public class LessonViewerFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.lesson_viewer, container, false);
+		View defaultView = inflater.inflate(R.layout.lesson_viewer, container, false);
+		
+		if(weighted) {
+			LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
+			p1.weight = 0.5f;
+			defaultView.setLayoutParams(p1);
+		}
+		
+		return defaultView;
 	}
 
 	/*@Override
@@ -198,6 +195,7 @@ public class LessonViewerFragment extends Fragment
         headerView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_header);
         contentPanel = (FrameLayout) getActivity().findViewById(R.id.lesson_viewer_content_panel);
         footerView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_footer);
+        rowView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_row);
         noLessonsView = (TextView) getActivity().findViewById(R.id.lesson_viewer_no_lessons);
         
         title = (TextView) getActivity().findViewById(R.id.lesson_title);
@@ -216,10 +214,13 @@ public class LessonViewerFragment extends Fragment
 		
 		//Set typeface of headers
 		Typeface crayonFont = Typeface.createFromAsset(getActivity().getAssets(), "CrayonCrumble.ttf");  
-		TextView header = (TextView) getActivity().findViewById(R.id.lesson_viewer_learning_material);
-		header.setTypeface(crayonFont);
-		header = (TextView) getActivity().findViewById(R.id.lesson_viewer_exercises);
-		header.setTypeface(crayonFont);
+		learningMaterialHeader = (TextView) getActivity().findViewById(R.id.lesson_viewer_learning_material);
+		learningMaterialHeader.setTypeface(crayonFont);
+		exercisesHeader = (TextView) getActivity().findViewById(R.id.lesson_viewer_exercises);
+		exercisesHeader.setTypeface(crayonFont);
+
+		//Show "no lessons selected" message
+		showMainScreen(false);
 		
 		Log.d("carl", "Started Lesson Viewer");
 	}
@@ -240,12 +241,30 @@ public class LessonViewerFragment extends Fragment
 		//Hide "none" bars
     	noExercises.setVisibility(View.GONE);
     	noLearningMaterial.setVisibility(View.GONE);
+
+		showMainScreen(true);
     	
     	//Download content
 		new DownloadLessonMaterial().execute(lesson.getId());
 		new DownloadExercises().execute(lesson.getId(), this);
 	}
 	
+	/**
+	 * If true sets all the components to visible and the No Lesson Selected to gone
+	 */
+	private void showMainScreen(boolean show) {
+		int mainComps = show ? View.VISIBLE : View.GONE;
+		int noLessonsComps = !show ? View.VISIBLE : View.GONE;
+		
+		learningMaterialHeader.setVisibility(mainComps);
+		exercisesHeader.setVisibility(mainComps);
+		headerView.setVisibility(mainComps);
+		footerView.setVisibility(mainComps);
+		contentPanel.setVisibility(mainComps);
+		
+		noLessonsView.setVisibility(noLessonsComps);
+	}
+
 	/**
 	 * Clears out anything in the lists for incoming fresh data
 	 * Gets rid of that lag effect while content is d/ling
@@ -278,16 +297,6 @@ public class LessonViewerFragment extends Fragment
 			learningMaterial = result;
 			updateLearningMaterialList(result);
 		}
-	}
-
-	public void setVisible(boolean b) {
-		int mainVis = b ? View.VISIBLE : View.GONE;
-		int noLessonVis = !b ? View.VISIBLE : View.GONE;
-		
-		headerView.setVisibility(mainVis);
-		contentPanel.setVisibility(mainVis);
-		footerView.setVisibility(mainVis);
-		noLessonsView.setVisibility(noLessonVis);
 	}
 
 	/**

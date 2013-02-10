@@ -1,68 +1,31 @@
 package com.carlnolan.cloudacademy.inclass;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.carlnolan.cloudacademy.LoginActivity;
-import com.carlnolan.cloudacademy.MainActivity;
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.configuration.AcademyProperties;
+import com.carlnolan.cloudacademy.coursebrowser.FullBrowserActivity;
 import com.carlnolan.cloudacademy.courses.Content;
-import com.carlnolan.cloudacademy.courses.CourseListFragment.OnCourseSelectedListener;
-import com.carlnolan.cloudacademy.courses.Exercise;
-import com.carlnolan.cloudacademy.courses.LearningMaterial;
-import com.carlnolan.cloudacademy.courses.Lesson;
-import com.carlnolan.cloudacademy.inclass.SessionOverviewFragment.OnInClassItemSelectedListener;
-import com.carlnolan.cloudacademy.scheduling.Session;
-import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
-import com.carlnolan.cloudacademy.asynctasks.DownloadExercises;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.Toast;
 
 public class HomeworkViewerFragment extends Fragment
 	implements Content.ContentDownloadCallback,
@@ -232,6 +195,18 @@ public class HomeworkViewerFragment extends Fragment
 			//Make visible (may be invisible from other h/w
 			lesson.setVisibility(View.VISIBLE);
 			inText.setVisibility(View.VISIBLE);
+			
+			lesson.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), FullBrowserActivity.class);
+					
+					intent.putExtra("COURSE_ID", currentHomework.getCourseId());
+					intent.putExtra("SECTION_ID", currentHomework.getAccompanyingSectionId());
+					intent.putExtra("LESSON_ID", currentHomework.getAccompanyingLessonId());
+					
+					startActivity(intent);
+				}
+			});
 		} else {
 			//Homework is custom so doesnt have a lesson attached, hide buttons
 			lesson.setVisibility(View.GONE);
@@ -240,6 +215,19 @@ public class HomeworkViewerFragment extends Fragment
 		
 		//Set up the course button
 		course.setText(currentHomework.getCourseName());
+		
+		//set up click listener for course:
+		course.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), FullBrowserActivity.class);
+				
+				intent.putExtra("COURSE_ID", currentHomework.getCourseId());
+				intent.putExtra("SECTION_ID", -1);
+				intent.putExtra("LESSON_ID", -1);
+				
+				startActivity(intent);
+			}
+		});
 		
 		if(!isTeacher) {
 			setCompletedView();
@@ -294,7 +282,7 @@ public class HomeworkViewerFragment extends Fragment
 				alertMessageId = R.string.homework_confirm_completion;
 			}
 			
-			alert.setMessage(alertMessageId)
+			alert.setTitle(alertMessageId)
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						completed.setVisibility(View.GONE);

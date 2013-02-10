@@ -3,49 +3,26 @@ package com.carlnolan.cloudacademy.inclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.carlnolan.cloudacademy.LoginActivity;
-import com.carlnolan.cloudacademy.MainActivity;
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDue;
 import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDue.DownloadHomeworkDueListener;
 import com.carlnolan.cloudacademy.configuration.AcademyProperties;
-import com.carlnolan.cloudacademy.courses.Content;
-import com.carlnolan.cloudacademy.courses.Exercise;
 import com.carlnolan.cloudacademy.courses.Lesson;
-import com.carlnolan.cloudacademy.courses.LessonListFragment;
-import com.carlnolan.cloudacademy.courses.LessonListFragment.OnLessonSelectedListener;
-import com.carlnolan.cloudacademy.planner.DayViewerFragment.OnScheduleDayChangedListener;
 import com.carlnolan.cloudacademy.scheduling.Session;
-import com.carlnolan.cloudacademy.scheduling.Session.DownloadExamsCallback;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class SessionOverviewFragment extends Fragment
 	implements DownloadHomeworkDueListener,
@@ -74,7 +51,6 @@ public class SessionOverviewFragment extends Fragment
 	public interface OnInClassItemSelectedListener {
 		public void onLessonSelected(Lesson lesson);
 		public void onHomeworkSelected(Homework homework);
-		public void setLessonViewerVisibile(boolean visible);
 		public void onExamSelected(Exam exam);
 	}
 
@@ -94,10 +70,6 @@ public class SessionOverviewFragment extends Fragment
     		if(i == 0) {
     			thisItem.setSelected(true);
     		}
-    	}
-    	
-    	if(lessons.size() == 0) {
-    		callback.setLessonViewerVisibile(false);
     	}
 	}
 	
@@ -213,7 +185,14 @@ public class SessionOverviewFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.session_overview, container, false);
+		//return inflater.inflate(R.layout.session_overview, container, false);
+		View defaultView = inflater.inflate(R.layout.session_overview, container, false);
+
+		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
+		p1.weight = 0.5f;
+		defaultView.setLayoutParams(p1);
+		
+		return defaultView;
 	}
 	
 	public void setSession(Session s) {

@@ -35,6 +35,12 @@ public class Homework extends Exercise {
 	@SerializedName("accLessonId")
 	private int accompanyingLessonId;
 	
+	@SerializedName("accSectionName")
+	private String accompanyingSectionName;
+
+	@SerializedName("accSectionId")
+	private int accompanyingSectionId;
+	
 	private int courseId;
 	
 	@SerializedName("courseName")
@@ -122,6 +128,20 @@ public class Homework extends Exercise {
 	 */
 	public String getCourseName() {
 		return courseName;
+	}
+	
+	/**
+	 * @return the accompanyingSectionName
+	 */
+	public String getAccompanyingSectionName() {
+		return accompanyingSectionName;
+	}
+
+	/**
+	 * @return the accompanyingSectionId
+	 */
+	public int getAccompanyingSectionId() {
+		return accompanyingSectionId;
 	}
 
 	/**
