@@ -5,7 +5,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import android.os.AsyncTask;
+
+import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.scheduling.Session.CalendarDeserializer;
+import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,6 +22,10 @@ public class Exam {
 	private int sessionId;
 	private Calendar date;
 	
+	public interface ExamCreatedListener {
+		public void examCreated();
+	}
+	
 	public static List<Exam> buildExamsFromJSON(String json) {
 		Gson gson = new GsonBuilder()
 			.registerTypeAdapter(Calendar.class, new CalendarDeserializer())
@@ -26,6 +34,37 @@ public class Exam {
 		Exam [] examArray = gson.fromJson(json, Exam[].class);
 		
 		return new ArrayList<Exam>(Arrays.asList(examArray));
+	}
+
+	public static void addNewExam(ExamCreatedListener callback, Session thisSession, String newName,
+			String newDesc) {
+		new AddNewExam(callback, thisSession, newName, newDesc).execute();
+	}
+	
+	private static class AddNewExam extends AsyncTask<Void, Void, Void> {
+		private ExamCreatedListener callback;
+		private String examName;
+		private String examDescription;
+		private Session session;
+		
+		public AddNewExam(ExamCreatedListener callback0, Session session0, String name0, String desc0) {
+			callback = callback0;
+			examName = name0;
+			examDescription = desc0;
+			session = session0;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			WebServiceInterface.getInstance().addNewExam(examName, examDescription, session.getId());
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void nothing) {
+			super.onPostExecute(nothing);
+			callback.examCreated();
+		}
 	}
 
 	/**

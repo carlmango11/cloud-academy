@@ -81,7 +81,8 @@
 		        android:textSize="20dp"
 		        android:padding="15dp"
 			    android:textStyle="bold"
-			    android:text="Lessons To Cover:" />
+			    android:text="@string/session_overview_lessons_string"
+				 />
 				
 			<LinearLayout 
 			    android:id="@+id/lessons_to_cover"
@@ -103,7 +104,7 @@
 			    android:textStyle="bold"
 		        android:textSize="20dp"
 		        android:padding="15dp"
-			    android:text="Homework Due:" />
+			    android:text="@string/session_overview_homework_due_string" />
 			
 			<LinearLayout 
 			    android:id="@+id/homework_due"
@@ -125,7 +126,8 @@
 			    android:textStyle="bold"
 		        android:textSize="20dp"
 		        android:padding="15dp"
-			    android:text="Exams:" />
+			    android:text="@string/session_overview_exams_string"
+			     />
 			
 			<LinearLayout 
 			    android:id="@+id/exam_list"

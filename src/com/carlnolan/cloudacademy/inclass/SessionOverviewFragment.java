@@ -238,6 +238,12 @@ public class SessionOverviewFragment extends Fragment
 			room.setText(session.getRoom());
 			time.setText(session.getStartsNice());
 			
+			downloadSessionData();
+		}
+	}
+	
+	public void downloadSessionData() {
+		if(session != null) {
 			new DownloadLessons().execute(session.getId());
 			new DownloadHomeworkDue(this).execute(session);
 			session.downloadExams(this);

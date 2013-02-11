@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <item android:id="@+id/add_exam"
+          android:icon="@drawable/add_exam"
+          android:title="@string/add_exam"
+          android:showAsAction="ifRoom|withText" />
+    
     <item android:id="@+id/assign_homework"
           android:icon="@drawable/assign_homework"
           android:title="@string/assign_homework"

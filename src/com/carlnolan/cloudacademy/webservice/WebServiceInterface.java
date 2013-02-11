@@ -288,8 +288,8 @@ public class WebServiceInterface {
 	public Exercise addNewExercise(String name, String desc) {
 		// Add your data
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-        nameValuePairs.add(new BasicNameValuePair("name", "" + name));
-        nameValuePairs.add(new BasicNameValuePair("description", "" + desc));
+        nameValuePairs.add(new BasicNameValuePair("name", name));
+        nameValuePairs.add(new BasicNameValuePair("description", desc));
        
         String json = callService(
         		"createExercise",
@@ -299,6 +299,19 @@ public class WebServiceInterface {
         List<Exercise> ls =
         		Exercise.buildExercisesFromJSON(json);
         return ls.get(0);
+	}
+
+	public void addNewExam(String name, String desc, int id) {
+		// Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+        nameValuePairs.add(new BasicNameValuePair("name", name));
+        nameValuePairs.add(new BasicNameValuePair("description", desc));
+        nameValuePairs.add(new BasicNameValuePair("session_id", "" + id));
+       
+        callService(
+        		"createExam",
+        		nameValuePairs,
+        		true);
 	}
 
 	public ArrayList<Lesson> getLessonsForSession(int integer) {

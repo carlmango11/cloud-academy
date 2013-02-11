@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="20dp"
+      android:orientation="vertical" >
+      
+	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:orientation="horizontal" >
+      
+		   <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		       android:layout_width="150dp"
+		       android:layout_height="wrap_content"
+		       android:text="@string/dialog_add_exam_name" />
+		   
+		   <EditText
+		       android:inputType="text"
+		       android:layout_width="250dp"
+		       android:layout_height="wrap_content"
+		       android:id="@+id/dialog_add_exam_name" >
+		   </EditText>
+		</LinearLayout>
+		
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:orientation="horizontal" >   
+		   <TextView 
+		       android:layout_width="150dp"
+		       android:layout_height="wrap_content"
+		       android:text="@string/dialog_add_exam_description" />
+		   
+		   <EditText
+		       android:lines="5"
+		       android:layout_width="250dp"
+		       android:layout_height="wrap_content"
+		    	android:inputType="textMultiLine"
+		       android:id="@+id/dialog_add_exam_description" >
+		   </EditText>
+		</LinearLayout>
+
+</LinearLayout>

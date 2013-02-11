@@ -16,6 +16,9 @@
     
     <!-- SESSION OVERVIEW -->
     <string name="session_overview_none_string">None</string>
+    <string name="session_overview_lessons_string">Lessons To Cover:</string>
+    <string name="session_overview_homework_due_string">Homework Due:</string>
+    <string name="session_overview_exams_string">Exams:</string>
     
     <!-- ERRORS: -->
     <string name="unsupported_filetype_error">Content file type not supported</string>
@@ -26,10 +29,16 @@
     <string name="attach_lesson">Add Lesson</string>
     <string name="take_attendance">Take Attendance</string>
     <string name="assign_homework">Assign Homework</string>
+    <string name="add_exam">Schedule Exam</string>
     <string name="homework_from_where_title">From Where?</string>
     <string name="homework_select_exercises">Which Ones?</string>
     <string name="homework_select_due_date">For When?</string>
     <string name="homework_assigned_successfully">Homework Assigned To Class</string>
+    
+    <!-- ADD EXAM DIALOG -->
+    <string name="add_exam_input_error">Please enter exam title</string>
+    <string name="dialog_add_exam_name">Title:</string>
+    <string name="dialog_add_exam_description">Description:</string>
     
     <!-- COURSE BROWSER: -->
     <string name="course_browser_courses_heading">Courses:</string>

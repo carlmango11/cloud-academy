@@ -45,7 +45,9 @@ public class InClassViewer extends FragmentActivity
 	AssignHomework.OnHomeworkAssignedListener,
 	CustomHomeworkDialog.CustomHomeworkListener,
 	Exercise.OnExerciseCreatedListener,
-	HomeworkViewerFragment.HomeworkViewerCallback {
+	HomeworkViewerFragment.HomeworkViewerCallback,
+	AddExamDialog.ExamAddedListener,
+	Exam.ExamCreatedListener {
 	
     private ActionBar actionBar;
     private MenuItem attendanceMenuItem;
@@ -130,6 +132,10 @@ public class InClassViewer extends FragmentActivity
             	AttendanceDialog.newInstance(currentSession.getClassId(), currentSession.getId())
             		.show(getFragmentManager(), "takeAttendanceDialog");
             	return true;
+            case R.id.add_exam:
+            	AddExamDialog.newInstance()
+            		.show(getFragmentManager(), "addExamDialog");
+            	return true;
             case R.id.assign_homework:
             	
             	HomeworkFromWhereDialog fromWhereDialog =
@@ -158,6 +164,9 @@ public class InClassViewer extends FragmentActivity
 		    iconToRemove.setVisible(false);
 
 		    iconToRemove = menu.findItem(R.id.assign_homework);
+		    iconToRemove.setVisible(false);
+
+		    iconToRemove = menu.findItem(R.id.add_exam);
 		    iconToRemove.setVisible(false);
 		    
 		    attendanceMenuItem.setVisible(false);
@@ -426,4 +435,21 @@ public class InClassViewer extends FragmentActivity
 	public void homeworkCompletionChanged(Homework homework) {
 		overview.updateHomeworkCompletionState(homework);
 	}
+
+	/**
+	 * Called by AddExamDialog when the info has been entered by user
+	 */
+	public void onExamSelected(String name, String description) {
+		//we need to save the new exam
+		System.out.println(name +" " + description);
+		Exam.addNewExam(this, currentSession, name, description);
+	}
+
+	/**
+	 * Called when a new exam has finished being created in the database
+	 */
+	public void examCreated() {
+		overview.downloadSessionData();
+	}
+
 }
