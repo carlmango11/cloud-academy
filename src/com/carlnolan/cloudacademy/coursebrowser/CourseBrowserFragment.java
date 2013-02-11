@@ -272,20 +272,21 @@ public class CourseBrowserFragment extends Fragment implements
 		notifyListViewChanged(lessonListView);
 
 		// do a check to see if any of these sections have been pre-selected
+		boolean foundSelected = false;
 		if (selectedSectionId != -1) {
 			for (int i = 0; i < sections.size(); i++) {
 				if (sections.get(i).getId() == selectedSectionId) {
 					sectionSelected(sections.get(i));
 					sectionListView.setItemChecked(i, true);
 					selectedSectionId = -1;
+					foundSelected = true;
 					break;
 				}
 			}
 		}
 
 		// If we have more than one section and selectedSectionId wasnt found
-		// (ie didn't get set to -1) then select 1st one:
-		if (newSections.size() > 0 && selectedSectionId != -1) {
+		if (newSections.size() > 0 && !foundSelected) {
 			// set the first one checked:
 			sectionListView.setItemChecked(0, true);
 			sectionSelected(sections.get(0));

@@ -28,7 +28,7 @@
 			    android:textSize="20dp"
 			    android:textColor="@color/White"
 			    android:text="Course" />
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			<TextView 
 			    android:id="@+id/session_overview_lead_name"
 			    android:layout_width="match_parent"
 			    android:textSize="15dp"
@@ -38,13 +38,13 @@
 			
 		</LinearLayout>
 		
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		<LinearLayout 
 		    android:layout_width="0dp"
 		    android:layout_weight="0.35"
 		    android:layout_height="match_parent"
 		    android:orientation="vertical" >
 		    
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			<TextView
 			    android:id="@+id/session_overview_room"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 			    android:gravity="right"
 			    android:textColor="#d0d0d0"
 			    android:text="Room" />
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			<TextView
 			    android:id="@+id/session_overview_time"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
@@ -65,17 +65,16 @@
 	</LinearLayout>
 	
 	<ScrollView
-	    xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		<LinearLayout 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
 		    android:background="@color/White"
 		    android:paddingBottom="15dp" >
 				
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			<TextView 
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 		        android:textAppearance="?android:attr/textAppearanceMedium"
@@ -84,13 +83,20 @@
 			    android:textStyle="bold"
 			    android:text="Lessons To Cover:" />
 				
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			<LinearLayout 
 			    android:id="@+id/lessons_to_cover"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" />
 			
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			<include
+			    android:id="@+id/session_overview_no_lessons"  
+			    android:layout_height="wrap_content"
+			    android:layout_width="fill_parent"
+			    layout="@layout/session_overview_none_view"
+			    /> 
+			
+			<TextView
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 		        android:textAppearance="?android:attr/textAppearanceMedium"
@@ -99,13 +105,20 @@
 		        android:padding="15dp"
 			    android:text="Homework Due:" />
 			
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			<LinearLayout 
 			    android:id="@+id/homework_due"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" />
 			
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			<include
+			    android:id="@+id/session_overview_no_homework"  
+			    android:layout_height="wrap_content"
+			    android:layout_width="fill_parent"
+			    layout="@layout/session_overview_none_view"
+			    /> 
+			
+			<TextView 
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 		        android:textAppearance="?android:attr/textAppearanceMedium"
@@ -114,11 +127,18 @@
 		        android:padding="15dp"
 			    android:text="Exams:" />
 			
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			<LinearLayout 
 			    android:id="@+id/exam_list"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" />
+			
+			<include
+			    android:id="@+id/session_overview_no_exams"  
+			    android:layout_height="wrap_content"
+			    android:layout_width="fill_parent"
+			    layout="@layout/session_overview_none_view"
+			    /> 
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:background="@color/Black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+	    android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/Gray"
+        android:padding="5dp"
+        android:visibility="gone"
+	    android:text="@string/session_overview_none_string" />

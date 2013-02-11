@@ -14,6 +14,9 @@
     
     <string name="upcoming_classes_list_header">Courses</string>
     
+    <!-- SESSION OVERVIEW -->
+    <string name="session_overview_none_string">None</string>
+    
     <!-- ERRORS: -->
     <string name="unsupported_filetype_error">Content file type not supported</string>
     <string name="no_upcoming_session_found">No upcoming session found for this course. Homework was not assigned</string>

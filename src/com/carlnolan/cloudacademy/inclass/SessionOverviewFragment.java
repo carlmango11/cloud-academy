@@ -40,6 +40,11 @@ public class SessionOverviewFragment extends Fragment
 	private LinearLayout homeworkDueList;
 	private LinearLayout examList;
 	
+	//"None" messages
+	private TextView noLessons;
+	private TextView noHomework;
+	private TextView noExams;
+	
 	private ArrayList<LessonListItem> lessons;
 	private ArrayList<HomeworkListItem> homework;
 	private ArrayList<ExamListItem> exams;
@@ -54,23 +59,30 @@ public class SessionOverviewFragment extends Fragment
 		public void onExamSelected(Exam exam);
 	}
 
-	public void updateLessonListList(ArrayList<Lesson> result) {
-    	lessonsToCoverList.removeAllViews();
-    	LayoutInflater inflater = getActivity().getLayoutInflater();
-		lessons = new ArrayList<LessonListItem>();
+	@Override
+	public void onStart() {
+		super.onStart();
 		
-    	for(int i=0; i<result.size(); i++) {
-    		TextView thisView = (TextView)inflater.inflate(R.layout.lesson_list_item, null);
-    		LessonListItem thisItem = new LessonListItem(result.get(i), thisView);
-    		lessons.add(thisItem);
-    		
-    		lessonsToCoverList.addView(thisItem.getView());
-    		
-    		//Select the first lesson
-    		if(i == 0) {
-    			thisItem.setSelected(true);
-    		}
-    	}
+        //Hook up all the views:
+		courseTitle = (TextView) getActivity().findViewById(R.id.session_overview_course_title);
+		leadName = (TextView) getActivity().findViewById(R.id.session_overview_lead_name);
+		room = (TextView) getActivity().findViewById(R.id.session_overview_room);
+		time = (TextView) getActivity().findViewById(R.id.session_overview_time);
+		
+		lessonsToCoverList = (LinearLayout) getActivity().findViewById(R.id.lessons_to_cover);
+		homeworkDueList = (LinearLayout) getActivity().findViewById(R.id.homework_due);
+		examList = (LinearLayout) getActivity().findViewById(R.id.exam_list);
+		
+		noLessons = (TextView) getActivity().findViewById(R.id.session_overview_no_lessons);
+		noHomework = (TextView) getActivity().findViewById(R.id.session_overview_no_homework);
+		noExams = (TextView) getActivity().findViewById(R.id.session_overview_no_exams);
+        
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        
+        loadSession();
+
+		Log.d("carl", "Started Session Overview");
 	}
 	
 	@Override
@@ -106,6 +118,32 @@ public class SessionOverviewFragment extends Fragment
 		}
 	}
 
+	public void updateLessonListList(ArrayList<Lesson> result) {
+    	lessonsToCoverList.removeAllViews();
+    	LayoutInflater inflater = getActivity().getLayoutInflater();
+		lessons = new ArrayList<LessonListItem>();
+		
+    	for(int i=0; i<result.size(); i++) {
+    		TextView thisView = (TextView)inflater.inflate(R.layout.lesson_list_item, null);
+    		LessonListItem thisItem = new LessonListItem(result.get(i), thisView);
+    		lessons.add(thisItem);
+    		
+    		lessonsToCoverList.addView(thisItem.getView());
+    		
+    		//Select the first lesson
+    		if(i == 0) {
+    			thisItem.setSelected(true);
+    		}
+    	}
+
+    	//if empty:
+    	if(lessons.size() == 0) {
+    		noLessons.setVisibility(View.VISIBLE);
+    	} else {
+    		noLessons.setVisibility(View.GONE);
+    	}
+	}
+
 	public void updateHomeworkList(List<Homework> result) {
     	homeworkDueList.removeAllViews();
     	LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -117,6 +155,13 @@ public class SessionOverviewFragment extends Fragment
     		homework.add(thisItem);
     		
     		homeworkDueList.addView(thisItem.getView());
+    	}
+    	
+    	//if empty:
+    	if(homework.size() == 0) {
+    		noHomework.setVisibility(View.VISIBLE);
+    	} else {
+    		noHomework.setVisibility(View.GONE);
     	}
 	}
 
@@ -131,6 +176,13 @@ public class SessionOverviewFragment extends Fragment
     		exams.add(thisItem);
     		
     		examList.addView(thisItem.getView());
+    	}
+
+    	//if empty:
+    	if(exams.size() == 0) {
+    		noExams.setVisibility(View.VISIBLE);
+    	} else {
+    		noExams.setVisibility(View.GONE);
     	}
 	}
 	
@@ -159,28 +211,6 @@ public class SessionOverviewFragment extends Fragment
         super.onSaveInstanceState(outState);
         outState.putInt("selectedId", selectedItem.getId());
     }
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		
-        //Hook up all the views:
-		courseTitle = (TextView) getActivity().findViewById(R.id.session_overview_course_title);
-		leadName = (TextView) getActivity().findViewById(R.id.session_overview_lead_name);
-		room = (TextView) getActivity().findViewById(R.id.session_overview_room);
-		time = (TextView) getActivity().findViewById(R.id.session_overview_time);
-		
-		lessonsToCoverList = (LinearLayout) getActivity().findViewById(R.id.lessons_to_cover);
-		homeworkDueList = (LinearLayout) getActivity().findViewById(R.id.homework_due);
-		examList = (LinearLayout) getActivity().findViewById(R.id.exam_list);
-        
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        
-        loadSession();
-
-		Log.d("carl", "Started Session Overview");
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
