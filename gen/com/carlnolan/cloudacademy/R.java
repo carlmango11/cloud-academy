@@ -217,11 +217,10 @@ containing a value of this type.
         public static final int x_icon=0x7f020028;
     }
     public static final class id {
-        public static final int add_exam=0x7f09006a;
-        public static final int assign_homework=0x7f09006b;
-        public static final int attach_lesson=0x7f09006c;
+        public static final int add_exam=0x7f09006e;
+        public static final int assign_homework=0x7f09006f;
+        public static final int attach_lesson=0x7f090070;
         public static final int calendar_view=0x7f09000d;
-        public static final int classroom_container=0x7f090067;
         public static final int course_browser_back_button=0x7f090005;
         public static final int course_browser_course_item_name=0x7f090001;
         public static final int course_browser_course_item_teacher=0x7f090002;
@@ -297,7 +296,6 @@ containing a value of this type.
         public static final int lesson_viewer_content_panel=0x7f090042;
         public static final int lesson_viewer_exercises=0x7f09004a;
         public static final int lesson_viewer_footer=0x7f09004e;
-        public static final int lesson_viewer_fragment=0x7f090069;
         public static final int lesson_viewer_header=0x7f090041;
         public static final int lesson_viewer_learning_material=0x7f090046;
         public static final int lesson_viewer_no_exercises=0x7f09004d;
@@ -321,12 +319,18 @@ containing a value of this type.
         public static final int session_overview_room=0x7f09005d;
         public static final int session_overview_time=0x7f09005e;
         public static final int student_grid_item_name=0x7f090065;
-        public static final int take_attendance=0x7f09006d;
+        public static final int take_attendance=0x7f090071;
         public static final int time=0x7f09000b;
         public static final int title=0x7f09000a;
         public static final int upcoming_classes_list_header=0x7f090066;
         public static final int username_field=0x7f090053;
-        public static final int work_due_fragment=0x7f090068;
+        public static final int workload_browser_all=0x7f090069;
+        public static final int workload_browser_calendar=0x7f090067;
+        public static final int workload_browser_day=0x7f09006a;
+        public static final int workload_browser_due_date=0x7f09006c;
+        public static final int workload_browser_due_label=0x7f09006b;
+        public static final int workload_browser_list=0x7f09006d;
+        public static final int workload_browser_radio_group=0x7f090068;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -362,7 +366,7 @@ containing a value of this type.
         public static final int session_overview_none_view=0x7f03001e;
         public static final int student_grid_item=0x7f03001f;
         public static final int upcoming_classes_list_header=0x7f030020;
-        public static final int workload_fragment=0x7f030021;
+        public static final int workload_browser=0x7f030021;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;

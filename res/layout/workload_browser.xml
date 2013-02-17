@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <CalendarView
+        android:id="@+id/workload_browser_calendar"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+    
+    <RadioGroup
+        android:id="@+id/workload_browser_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/workload_browser_calendar"
+         >
+
+        <RadioButton
+            android:id="@+id/workload_browser_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="All" />
+
+        <RadioButton
+            android:id="@+id/workload_browser_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Day" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/workload_browser_due_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workload_browser_calendar"
+        android:layout_alignParentLeft="true"
+        android:text="Due:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/workload_browser_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/workload_browser_due_label"
+        android:layout_below="@id/workload_browser_calendar"
+        android:text="12th Dec 2012"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ExpandableListView
+        android:id="@+id/workload_browser_list"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignLeft="@id/workload_browser_due_label"
+        android:layout_below="@id/workload_browser_due_label" >
+    </ExpandableListView>
+
+</RelativeLayout>

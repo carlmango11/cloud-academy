@@ -19,6 +19,7 @@ import com.carlnolan.cloudacademy.planner.ScheduleFragment;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.usermanagement.User;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
+import com.carlnolan.cloudacademy.workload.WorkloadBrowser;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -53,8 +54,13 @@ public class MainActivity extends FragmentActivity
     private CourseBrowserFragment browser;
     private LessonViewerFragment lessonViewer;
     
+    /**
+     * Fragments for PLANNER tab
+     */
     private DayViewerFragment calendar;
     private ScheduleFragment schedule;
+    
+    private WorkloadBrowser workloadBrowser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,12 +146,12 @@ public class MainActivity extends FragmentActivity
             	fragmentTransaction.attach(schedule);
         	}
         } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
-        	/*if(lessonViewer == null) {
-        		lessonViewer = new LessonOverviewFragment();
-        		fragmentTransaction.add(R.id.main_container, lessonViewer);
+        	if(workloadBrowser == null) {
+        		workloadBrowser = WorkloadBrowser.newInstance();
+        		fragmentTransaction.add(R.id.main_container, workloadBrowser);
         	} else {
-            	fragmentTransaction.attach(lessonViewer);
-        	}*/
+            	fragmentTransaction.attach(workloadBrowser);
+        	}
         } else {
         	
         }
@@ -174,9 +180,9 @@ public class MainActivity extends FragmentActivity
         		fragmentTransaction.detach(schedule);
         	}
         } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
-        	/*if(lessonViewer != null) {
-        		fragmentTransaction.detach(lessonViewer);
-        	}*/
+        	if(workloadBrowser != null) {
+        		fragmentTransaction.detach(workloadBrowser);
+        	}
         } else {
         }
         

@@ -84,9 +84,6 @@ public class UpcomingClassesFragment extends ListFragment {
 		// TODO Auto-generated method stub
 		super.onStart();
 		
-		if(getFragmentManager().findFragmentById(R.id.lesson_viewer_fragment) != null) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		}
 	}
 
 	/* (non-Javadoc)

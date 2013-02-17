@@ -91,9 +91,6 @@ public class LessonListFragment extends ListFragment {
 	public void onStart() {
 		super.onStart();
 		
-		if(getFragmentManager().findFragmentById(R.id.lesson_viewer_fragment) != null) {
-			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		}
 	}
 
 	public void loadLessons(Section section) {
