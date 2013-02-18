@@ -54,6 +54,14 @@
     <!-- HOMEWORK ASSIGN DIALOGS -->
     <string name="dialog_select_exercises_none">None Available</string>
     
+    <!-- WORKLOAD LIST FRAGMENT -->
+    <string name="workload_list_full_workload">Your Workload</string>
+    <string name="workload_list_specific_date_prefix">Things Due:\u0020</string>
+    
+    <!-- WORKLOAD BROWSER FRAGMENT -->
+    <string name="workload_browser_all_radio">All</string>
+    <string name="workload_browser_day_radio">Day</string>
+    
     <!-- Properties: REDUNDANT ATM -->
     <string name="core_address">http://192.168.2.7/cloudacademy</string>
     <string name="web_service_url">/webservice/</string>

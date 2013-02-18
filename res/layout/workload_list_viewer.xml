@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp" >
+    
+    <TextView
+        android:id="@+id/workload_list_viewer_due_date"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="10dp"
+	    android:textStyle="bold"
+	    android:textColor="@color/White"
+	    android:text="12th December 2012"
+   		android:background="@drawable/scheme_dark_gradient_topbar" />
+
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/white_back_black_border"
+	    android:orientation="vertical" >
+	    
+		<ExpandableListView
+        android:id="@+id/workload_list_viewer_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ExpandableListView>
+    
+	</LinearLayout>    
+
+</LinearLayout>

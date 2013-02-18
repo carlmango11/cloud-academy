@@ -1,17 +1,23 @@
 package com.carlnolan.cloudacademy.coursebrowser;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.FrameLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment.CourseBrowserLessonSelectedListener;
 import com.carlnolan.cloudacademy.courses.Lesson;
+import com.carlnolan.cloudacademy.inclass.InClassViewer;
 import com.carlnolan.cloudacademy.inclass.LessonViewerFragment;
 
 public class FullBrowserActivity extends FragmentActivity
 	implements CourseBrowserLessonSelectedListener {
+	private ActionBar actionBar;
+	
 	private CourseBrowserFragment courseBrowser;
 	private LessonViewerFragment lessonViewer;
 	
@@ -19,6 +25,10 @@ public class FullBrowserActivity extends FragmentActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.full_course_browser);
+		
+		//Get action bar and enabled 'up' button
+		actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		Bundle bundle = getIntent().getExtras();
 		int courseId = bundle.getInt("COURSE_ID");
@@ -44,17 +54,20 @@ public class FullBrowserActivity extends FragmentActivity
 		lessonViewer.loadLesson();
 	}
 	
-	/*@Override
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; go up
-                Intent intent = new Intent(this, InClassViewer.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+            	//Close this activity to return to previous screen
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }*/
+    }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return true;
+	}
 }

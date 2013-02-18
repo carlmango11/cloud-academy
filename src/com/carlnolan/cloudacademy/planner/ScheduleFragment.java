@@ -100,9 +100,9 @@ public class ScheduleFragment extends Fragment {
         Bundle savedInstanceState) {
 		View defaultView = inflater.inflate(R.layout.schedule_viewer, container, false);
     	
-		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
+		/*LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
 		p1.weight = 0.5f;
-		defaultView.setLayoutParams(p1);
+		defaultView.setLayoutParams(p1);*/
 		
 		return defaultView;
     }

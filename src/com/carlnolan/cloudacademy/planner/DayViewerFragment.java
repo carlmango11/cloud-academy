@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.carlnolan.cloudacademy.R;
-import com.carlnolan.cloudacademy.courses.CourseListFragment.OnCourseSelectedListener;
-import com.carlnolan.cloudacademy.courses.UpcomingClassesFragment.OnClassSelectedListener;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
@@ -18,20 +16,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class DayViewerFragment extends Fragment {
 	private TextView title;
@@ -49,25 +39,6 @@ public class DayViewerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    
-   /* void updateList(ArrayList<Session> newSessions) {
-    	Session [] sessions = new Session[newSessions.size()];
-    	sessions = newSessions.toArray(sessions);
-        
-    	sessionList.setAdapter(
-        		new UpcomingSessionsAdapter(
-        				getActivity(),
-        				R.layout.upcoming_classes_list_item,
-        				sessions
-        		)
-        );
-    	sessionList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				callback.onSessionSelected(upcomingSessions.get(arg2));
-			}
-    	});
-    }*/
     
     private void updateTextFields(Date d) {
 		callback.onScheduleDayChanged(d);
@@ -155,9 +126,9 @@ public class DayViewerFragment extends Fragment {
         Bundle savedInstanceState) {
 		View defaultView = inflater.inflate(R.layout.day_viewer, container, false);
 
-		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
+		/*LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
 		p1.weight = 0.5f;
-		defaultView.setLayoutParams(p1);
+		defaultView.setLayoutParams(p1);*/
 		
 		return defaultView;
     }

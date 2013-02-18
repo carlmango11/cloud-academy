@@ -2,5 +2,20 @@
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:orientation="horizontal" />
+    android:orientation="horizontal" >
+
+    <FrameLayout 
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:id="@+id/main_container_left_container"
+	    android:layout_weight="1"
+        />
+
+    <FrameLayout 
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:id="@+id/main_container_right_container"
+	    android:layout_weight="1"
+        />
+    
+</LinearLayout>

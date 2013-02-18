@@ -21,6 +21,11 @@ public class ExamViewerFragment extends Fragment {
 	private TextView description;
 	private Button course;
 
+	public static ExamViewerFragment newInstance() {
+		ExamViewerFragment instance = new ExamViewerFragment();
+		return instance;
+	}
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

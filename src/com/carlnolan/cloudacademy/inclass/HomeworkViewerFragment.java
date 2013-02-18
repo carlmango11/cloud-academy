@@ -52,6 +52,11 @@ public class HomeworkViewerFragment extends Fragment
 		public void homeworkCompletionChanged(Homework homework);
 	}
 
+	public static HomeworkViewerFragment newInstance() {
+		HomeworkViewerFragment instance = new HomeworkViewerFragment();
+		return instance;
+	}
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
