@@ -104,10 +104,6 @@ public class MainActivity extends FragmentActivity
         leftContainer = (FrameLayout) findViewById(leftContainerId);
         rightContainer = (FrameLayout) findViewById(rightContainerId);
         
-        //create fragments that will be used later but not created by tab code:
-        examViewer = ExamViewerFragment.newInstance();
-        homeworkViewer = HomeworkViewerFragment.newInstance();
-        
         //set up gesture recogniser
         SwipeRightGestureListener listener =
         		new SwipeRightGestureListener(this);
@@ -197,8 +193,18 @@ public class MainActivity extends FragmentActivity
         	} else {
             	fragmentTransaction.attach(schedule);
         	}
-        } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {    		
-        	if(workloadBrowser == null) {
+        } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
+        	setUpWorkloadLayout(fragmentTransaction);
+        } else {
+        	
+        }
+        
+        fragmentTransaction.commit();
+    }
+
+    private void setUpWorkloadLayout(FragmentTransaction fragmentTransaction) {
+    	if(homeworkViewer == null) {
+    		if(workloadBrowser == null) {
         		workloadBrowser = WorkloadBrowserFragment.newInstance();
         		fragmentTransaction.replace(leftContainerId, workloadBrowser);
         	} else {
@@ -211,14 +217,18 @@ public class MainActivity extends FragmentActivity
         	} else {
             	fragmentTransaction.attach(workloadList);
         	}
-        } else {
-        	
-        }
-        
-        fragmentTransaction.commit();
-    }
+    	} else {
+    		if(workloadList == null) {
+        		workloadList = WorkloadListFragment.newInstance();
+        		fragmentTransaction.replace(leftContainerId, workloadList);
+        	} else {
+            	fragmentTransaction.attach(workloadList);
+        	}
+    		fragmentTransaction.attach(homeworkViewer);
+    	}
+	}
 
-    public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ignore) {
+	public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ignore) {
     	Context context = getBaseContext();
     	FragmentManager fragmentManager = getSupportFragmentManager();
     	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -245,7 +255,9 @@ public class MainActivity extends FragmentActivity
         	if(workloadList != null) {
         		fragmentTransaction.detach(workloadList);
         	}
-        	returnToWorkloadBrowser();
+        	if(homeworkViewer != null) {
+        		fragmentTransaction.detach(homeworkViewer);
+        	}
         } else {
         }
         
@@ -342,20 +354,24 @@ public class MainActivity extends FragmentActivity
 		//test
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction ft = manager.beginTransaction();
+		
+		WorkloadListFragment tempInstance = WorkloadListFragment.newInstance();
+		homeworkViewer = HomeworkViewerFragment.newInstance();
 
 		//set up animations:
 		ft.setCustomAnimations(
 				R.anim.slide_in_right,
-				R.anim.slide_out_left,
-				R.anim.slide_in_left,
-				R.anim.slide_out_right);
+				R.anim.slide_out_left);
 		
 		ft.remove(workloadList);
-		ft.replace(leftContainerId, WorkloadListFragment.newInstance(), HOMEWORK_VIEWER_FRAGMENT_TAG);
+		ft.replace(leftContainerId, tempInstance, HOMEWORK_VIEWER_FRAGMENT_TAG);
 		ft.replace(rightContainerId, homeworkViewer);
 		
-		ft.addToBackStack("SHOW_THIRD_PANE_TRANS");
 		ft.commit();
+		manager.executePendingTransactions();
+		
+		//set workloadList as this new instance
+		workloadList = tempInstance;
 	}
 
 	/**
@@ -370,23 +386,29 @@ public class MainActivity extends FragmentActivity
 	 * pops the stack to return to normal
 	 */
 	private void returnToWorkloadBrowser() {
-		ActionBar.Tab thisTab = actionBar.getSelectedTab();
+		FragmentManager manager = getSupportFragmentManager();
 		
-		if(thisTab.getText().equals(getString(R.string.title_workload_tab))) {
+		boolean thirdPanelShowing =
+				homeworkViewer != null
+				|| manager.findFragmentByTag(EXAM_VIEWER_FRAGMENT_TAG) != null;
+		if(thirdPanelShowing) {
 			//if we are showing the homework viewer or exam viewer then we
 			//want to return to showing the WorkloadBrowser (ie the first panel and hide
 			//the third one), we can achieve this by popping from the back stack as the 
 			//transaction which added the homework/exam viewer was added to the back stack
+			FragmentTransaction ft = manager.beginTransaction();
+
+			//set up animations:
+			ft.setCustomAnimations(
+					R.anim.slide_in_left,
+					R.anim.slide_out_right);
 			
-			FragmentManager manager = getSupportFragmentManager();
-			boolean thirdPanelShowing =
-					manager.findFragmentByTag(HOMEWORK_VIEWER_FRAGMENT_TAG) != null
-					|| manager.findFragmentByTag(EXAM_VIEWER_FRAGMENT_TAG) != null;
+        	ft.replace(leftContainerId, workloadBrowser);
+			ft.replace(rightContainerId, WorkloadListFragment.newInstance());
 			
-			if(thirdPanelShowing) {
-				//pop back stack
-				getSupportFragmentManager().popBackStack();
-			}
+			ft.commit();
+			
+			homeworkViewer = null;
 		}
 	}
 }
