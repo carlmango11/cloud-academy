@@ -223,9 +223,9 @@ containing a value of this type.
         public static final int x_icon=0x7f020028;
     }
     public static final class id {
-        public static final int add_exam=0x7f0a006e;
-        public static final int assign_homework=0x7f0a006f;
-        public static final int attach_lesson=0x7f0a0070;
+        public static final int add_exam=0x7f0a0075;
+        public static final int assign_homework=0x7f0a0076;
+        public static final int attach_lesson=0x7f0a0077;
         public static final int calendar_view=0x7f0a000e;
         public static final int course_browser_back_button=0x7f0a0007;
         public static final int course_browser_course_item_name=0x7f0a0003;
@@ -314,6 +314,7 @@ containing a value of this type.
         public static final int main_container_right_container=0x7f0a0002;
         public static final int material_list=0x7f0a0048;
         public static final int password_field=0x7f0a0055;
+        public static final int row_simple_parent=0x7f0a006f;
         public static final int session_list_item_course=0x7f0a0059;
         public static final int session_list_item_room=0x7f0a005a;
         public static final int session_list_item_teacher_class=0x7f0a005b;
@@ -326,7 +327,7 @@ containing a value of this type.
         public static final int session_overview_room=0x7f0a005e;
         public static final int session_overview_time=0x7f0a005f;
         public static final int student_grid_item_name=0x7f0a0066;
-        public static final int take_attendance=0x7f0a0071;
+        public static final int take_attendance=0x7f0a0078;
         public static final int time=0x7f0a000c;
         public static final int title=0x7f0a000b;
         public static final int upcoming_classes_list_header=0x7f0a0067;
@@ -335,8 +336,14 @@ containing a value of this type.
         public static final int workload_browser_calendar=0x7f0a0068;
         public static final int workload_browser_day=0x7f0a006b;
         public static final int workload_browser_radio_group=0x7f0a0069;
-        public static final int workload_list_viewer_due_date=0x7f0a006c;
-        public static final int workload_list_viewer_list=0x7f0a006d;
+        public static final int workload_list_date=0x7f0a006c;
+        public static final int workload_list_date_header=0x7f0a0070;
+        public static final int workload_list_homework_name=0x7f0a006d;
+        public static final int workload_list_row_dropdown=0x7f0a0072;
+        public static final int workload_list_row_parent=0x7f0a006e;
+        public static final int workload_list_row_simple_parent_invis_cover=0x7f0a0071;
+        public static final int workload_list_viewer_due_date=0x7f0a0073;
+        public static final int workload_list_viewer_list=0x7f0a0074;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -372,7 +379,10 @@ containing a value of this type.
         public static final int student_grid_item=0x7f03001e;
         public static final int upcoming_classes_list_header=0x7f03001f;
         public static final int workload_browser=0x7f030020;
-        public static final int workload_list_viewer=0x7f030021;
+        public static final int workload_list_date_item=0x7f030021;
+        public static final int workload_list_homework_item=0x7f030022;
+        public static final int workload_list_row=0x7f030023;
+        public static final int workload_list_viewer=0x7f030024;
     }
     public static final class menu {
         public static final int activity_main=0x7f090000;
@@ -388,10 +398,10 @@ containing a value of this type.
         /**  INCLASS: 
          */
         public static final int attach_lesson=0x7f070012;
-        public static final int authentication_failure=0x7f07002c;
+        public static final int authentication_failure=0x7f07002b;
         /**  Properties: REDUNDANT ATM 
          */
-        public static final int core_address=0x7f070029;
+        public static final int core_address=0x7f070028;
         /**  COURSE BROWSER: 
          */
         public static final int course_browser_courses_heading=0x7f07001d;
@@ -401,7 +411,7 @@ containing a value of this type.
         /**  HOMEWORK ASSIGN DIALOGS 
          */
         public static final int dialog_select_exercises_none=0x7f070024;
-        public static final int file_provider_url=0x7f07002b;
+        public static final int file_provider_url=0x7f07002a;
         public static final int homework_assigned_successfully=0x7f070019;
         public static final int homework_completed=0x7f070020;
         public static final int homework_confirm_completion=0x7f070023;
@@ -423,27 +433,28 @@ containing a value of this type.
         public static final int session_overview_none_string=0x7f07000b;
         public static final int take_attendance=0x7f070013;
         public static final int title_activity_main=0x7f070006;
-        public static final int title_class_tab=0x7f070003;
         public static final int title_full_browser_activity=0x7f07001e;
         public static final int title_in_class_viewer=0x7f070009;
         public static final int title_lesson_viewer=0x7f070008;
+        /**  ACTION BAR TABS 
+         */
         public static final int title_planner_tab=0x7f070001;
         public static final int title_progress_tab=0x7f070004;
         public static final int title_session_overview=0x7f070007;
+        public static final int title_syllabus_tab=0x7f070003;
         public static final int title_workload_tab=0x7f070002;
         /**  ERRORS: 
          */
         public static final int unsupported_filetype_error=0x7f07000f;
         public static final int upcoming_classes_list_header=0x7f07000a;
-        public static final int web_service_url=0x7f07002a;
+        public static final int web_service_url=0x7f070029;
         /**  WORKLOAD BROWSER FRAGMENT 
          */
-        public static final int workload_browser_all_radio=0x7f070027;
-        public static final int workload_browser_day_radio=0x7f070028;
+        public static final int workload_browser_all_radio=0x7f070026;
+        public static final int workload_browser_day_radio=0x7f070027;
         /**  WORKLOAD LIST FRAGMENT 
          */
         public static final int workload_list_full_workload=0x7f070025;
-        public static final int workload_list_specific_date_prefix=0x7f070026;
     }
     public static final class style {
         public static final int AppTheme=0x7f080000;

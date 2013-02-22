@@ -229,7 +229,7 @@ public class WebServiceInterface {
 		int userId = AcademyProperties.getInstance().getUser().getId();
 		
 		// Add your data
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
         nameValuePairs.add(new BasicNameValuePair("course", "" + courseId));
         nameValuePairs.add(new BasicNameValuePair("date", "" + date));
         nameValuePairs.add(new BasicNameValuePair("class", "" + classId));
@@ -243,6 +243,52 @@ public class WebServiceInterface {
         
         List<Homework> homework = Homework.buildHomeworkFromJSON(json);
         return homework;
+	}
+
+	public List<Homework> getHomeworkDueForRange(Calendar start, Calendar end) {
+		int userId = AcademyProperties.getInstance().getUser().getId();
+		
+		//Turn calendars into sql strings
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String startString = formatter.format(start.getTime());
+		String endString = formatter.format(end.getTime());
+		
+		// Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("userid", "" + userId));
+        nameValuePairs.add(new BasicNameValuePair("start", startString));
+        nameValuePairs.add(new BasicNameValuePair("end", endString));
+
+        String json = callService(
+        		"getHomeworkDueForRange",
+        		nameValuePairs,
+        		true);
+        
+        List<Homework> homework = Homework.buildHomeworkFromJSON(json);
+        return homework;
+	}
+
+	public List<Exam> getExamsForRange(Calendar start, Calendar end) {
+		int userId = AcademyProperties.getInstance().getUser().getId();
+		
+		//Turn calendars into sql strings
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String startString = formatter.format(start.getTime());
+		String endString = formatter.format(end.getTime());
+		
+		// Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("userid", "" + userId));
+        nameValuePairs.add(new BasicNameValuePair("start", startString));
+        nameValuePairs.add(new BasicNameValuePair("end", endString));
+
+        String json = callService(
+        		"getExamsForRange",
+        		nameValuePairs,
+        		true);
+        
+        List<Exam> exams = Exam.buildExamsFromJSON(json);
+        return exams;
 	}
 
 	public List<Exam> getExamsForSession(int sessionId) {

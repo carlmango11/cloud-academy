@@ -21,11 +21,11 @@
 	    android:background="@drawable/white_back_black_border"
 	    android:orientation="vertical" >
 	    
-		<ExpandableListView
-        android:id="@+id/workload_list_viewer_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ExpandableListView>
+		<ListView
+	        android:id="@+id/workload_list_viewer_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+    </ListView>
     
 	</LinearLayout>    
 

@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.scheduling.Session.CalendarDeserializer;
+import com.carlnolan.cloudacademy.scheduling.Session.DownloadExamsCallback;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,6 +27,10 @@ public class Exam {
 		public void examCreated();
 	}
 	
+	public interface DownloadExamsForRangeListener {
+		public void onExamsForRangeDownloaded(List<Exam> exams);
+	}
+	
 	public static List<Exam> buildExamsFromJSON(String json) {
 		Gson gson = new GsonBuilder()
 			.registerTypeAdapter(Calendar.class, new CalendarDeserializer())
@@ -39,6 +44,10 @@ public class Exam {
 	public static void addNewExam(ExamCreatedListener callback, Session thisSession, String newName,
 			String newDesc) {
 		new AddNewExam(callback, thisSession, newName, newDesc).execute();
+	}
+	
+	public static void downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end) {
+		new DownloadExamsForRange(c, start, end).execute();
 	}
 	
 	private static class AddNewExam extends AsyncTask<Void, Void, Void> {
@@ -64,6 +73,32 @@ public class Exam {
 		protected void onPostExecute(Void nothing) {
 			super.onPostExecute(nothing);
 			callback.examCreated();
+		}
+	}
+	
+	private static class DownloadExamsForRange extends AsyncTask<Void, Void, List<Exam>> {
+		private DownloadExamsForRangeListener callback;
+		private Calendar start;
+		private Calendar end;
+		
+		DownloadExamsForRange(DownloadExamsForRangeListener c,
+				Calendar s, Calendar e) {
+			callback = c;
+			start = s;
+			end = e;
+		}
+		
+		@Override
+		protected List<Exam> doInBackground(Void... params) {
+			List<Exam> ls = WebServiceInterface.getInstance()
+					.getExamsForRange(start, end);
+			return ls;
+		}
+
+		@Override
+		protected void onPostExecute(List<Exam> result) {
+			super.onPostExecute(result);
+			callback.onExamsForRangeDownloaded(result);
 		}
 	}
 
