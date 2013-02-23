@@ -25,6 +25,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -295,6 +296,9 @@ public class MainActivity extends FragmentActivity
         
         fragmentTransaction.commit();
     }
+
+    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
+    }
     
     /**
      * Changes the containers layouts, unused atm
@@ -326,8 +330,6 @@ public class MainActivity extends FragmentActivity
     }
 	
 	public void onSessionSelected(Session session) {
-		Log.d("cloudacademy", "Session selected");
-
 		Intent intent = new Intent(this, InClassViewer.class);
 		Bundle b = new Bundle();
 		b.putParcelable("thisSession", session);
@@ -344,9 +346,6 @@ public class MainActivity extends FragmentActivity
 			schedule.setDate(newDate);
 		}
 	}
-
-    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
-    }
 
     /**
      * Called when the course browser selects a lesson
@@ -383,10 +382,19 @@ public class MainActivity extends FragmentActivity
 	 * it should show the Homework
 	 */
 	public void onHomeworkSelected(Homework homework) {
+		if(!inHomeworkViewer) {
+			goToHomeworkViewer();
+		}
+		
+		//load homework
+		homeworkViewer.loadHomework(homework);
+	}
+
+	private void goToHomeworkViewer() {
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction ft = manager.beginTransaction();
 		
-		WorkloadListFragment tempInstance = WorkloadListFragment.newInstance();
+		WorkloadListFragment tempInstance = workloadList.cloneInstance();
 
 		//were now in homework viewer
 		inHomeworkViewer = true;
@@ -395,7 +403,7 @@ public class MainActivity extends FragmentActivity
 		ft.setCustomAnimations(
 				R.anim.slide_in_right,
 				R.anim.slide_out_left);
-		
+
 		ft.remove(workloadList);
 		ft.add(leftContainerId, tempInstance);
 		ft.detach(workloadBrowser);
@@ -441,7 +449,7 @@ public class MainActivity extends FragmentActivity
 		//transaction which added the homework/exam viewer was added to the back stack
 		FragmentTransaction ft = manager.beginTransaction();
 
-		WorkloadListFragment tempInstance = WorkloadListFragment.newInstance();
+		WorkloadListFragment tempInstance = workloadList.cloneInstance();
 
 		//set up animations:
 		ft.setCustomAnimations(

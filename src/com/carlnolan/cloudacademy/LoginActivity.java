@@ -122,6 +122,7 @@ public class LoginActivity extends Activity
 	private void continueToMainScreen() {
 		final Intent myIntent = new Intent(this, MainActivity.class);
         startActivity(myIntent);
+        finish();
 	}
     
 	private class LogIn extends AsyncTask<String, Void, Boolean> {

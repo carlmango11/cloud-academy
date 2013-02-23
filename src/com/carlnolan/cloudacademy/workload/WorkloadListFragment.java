@@ -21,26 +21,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class WorkloadListFragment extends Fragment
 	implements DownloadHomeworkDueForRange.DownloadHomeworkDueForRangeListener,
 	Exam.DownloadExamsForRangeListener {
+	private boolean isClone;
 	private WorkloadItemSelectedListener callback;
 	
 	private ListView list;
 	private TextView dueDateView;
-	
-	private String fullWorkloadString;
-	
 	private List<Homework> homework;
 	private List<Exam> exams;
 	
+	private int listPos;
+	private int listTop;	
+	private String fullWorkloadString;
+	
 	/**
 	 * Homework and Exams are d/l'ed simultaneously so I need to wait until both
-	 * are d/l'd. When one downloads it will set this to true. Cos theyre both
-	 * running simulaneously
+	 * are d/l'd. When one downloads it will set this to true. Cos they're both
+	 * running simultaneously
 	 */
 	private boolean otherDownloaded;
 	
@@ -55,9 +58,52 @@ public class WorkloadListFragment extends Fragment
 		return instance;
 	}
 
+	public static WorkloadListFragment newInstance(int savedPos, int savedTop) {
+		WorkloadListFragment instance = new WorkloadListFragment();
+		
+		Bundle args = new Bundle();
+		args.putInt("LIST_POS", savedPos);
+		args.putInt("LIST_TOP", savedTop);
+		instance.setArguments(args);
+		
+		return instance;
+	}
+
+	/**
+	 * Used to build an identical instance of an existing workloadlistfragment
+	 * Used to get around a bug in android where you cant move a fragment to 
+	 * a different container, you have to create a new one
+	 * @param workloadList
+	 * @return
+	 */
+	public WorkloadListFragment cloneInstance() {		
+		int savedPosition = list.getFirstVisiblePosition();
+	    View firstVisibleView = list.getChildAt(0);
+	    int savedListTop = (firstVisibleView == null) ? 0 : firstVisibleView.getTop();
+	    
+		WorkloadListFragment instance = WorkloadListFragment.newInstance(savedPosition, savedListTop);
+		
+		instance.callback = callback;
+		instance.list = list;
+		instance.dueDateView = dueDateView;
+		instance.fullWorkloadString = fullWorkloadString;
+		instance.homework = homework;
+		instance.exams = exams;
+		instance.otherDownloaded = otherDownloaded;
+		instance.isClone = true;
+		
+		return instance;
+	}
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle args = getArguments();
+        if(args != null) {
+	        listPos = args.getInt("LIST_POS");
+	        listTop = args.getInt("LIST_TOP");
+        }
     }
 
     @Override
@@ -78,14 +124,30 @@ public class WorkloadListFragment extends Fragment
 	public void onStart() {
 		super.onStart();
 		
-		dueDateView = (TextView) getActivity().findViewById(R.id.workload_list_viewer_due_date);
-		
 		//get strings for header:
 		fullWorkloadString = getActivity().getString(R.string.workload_list_full_workload);
 		
-		//list
+		dueDateView = (TextView) getActivity().findViewById(R.id.workload_list_viewer_due_date);
+		dueDateView.setText(fullWorkloadString);
+
+		//If this fragment is a clone of a previous one we need to save the listadapter then restore it
+		ListAdapter savedAdapter = null;
+		if(isClone) {
+			savedAdapter = list.getAdapter();
+		}
 		list = (ListView) getActivity().findViewById(R.id.workload_list_viewer_list);
 		list.setOnItemClickListener(new WorkloadClickListener(getActivity()));
+		
+		if(isClone) {
+			list.setAdapter(savedAdapter);
+			list.invalidate();
+			
+			//Set the saved position
+			if(listPos >= 0) {
+	        	System.out.println("listTop");
+	        	list.setSelectionFromTop(listPos, listTop);
+	        }
+		}
         
         otherDownloaded = false;
 	}
@@ -104,17 +166,17 @@ public class WorkloadListFragment extends Fragment
 		//get dates for range of homework we want
 		Calendar startDate = Calendar.getInstance();
 		Calendar endDate = Calendar.getInstance();
-
-		dueDateView.setText(fullWorkloadString);
 		
 		if(date == null) {
 			//get h/w for next 2 weeks
 			endDate.add(Calendar.DAY_OF_YEAR, 14);
-		} else {			
+		} else {
 			//get homework just for the selected day
 			startDate = date;
 			endDate = date;
 		}
+		System.out.println(startDate.getTime());
+		System.out.println(endDate.getTime());
 		
 		//fire off asyncs for exam and h/w downloads
 		new DownloadHomeworkDueForRange(this, startDate, endDate).execute();
@@ -158,10 +220,9 @@ public class WorkloadListFragment extends Fragment
 		
 		//build the list adapter
 		WorkloadListAdapter adapter = new WorkloadListAdapter(getActivity(),
-				R.layout.workload_list_row, entries);
+				callback, R.layout.workload_list_row, entries);
 		list.setAdapter(adapter);
 		list.invalidate();
-		System.out.println("lists built");
 	}
 
 	public void onHomeworkRangeDownloaded(List<Homework> result) {

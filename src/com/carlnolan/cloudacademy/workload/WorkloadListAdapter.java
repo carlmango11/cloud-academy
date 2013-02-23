@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -19,14 +20,19 @@ import com.carlnolan.cloudacademy.inclass.Homework;
 public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> {
 	private List<WorkloadListAdapterEntry> entries;
 	private Context context;
+	private WorkloadListFragment.WorkloadItemSelectedListener listener;
     private int resourceId;
     
-	public WorkloadListAdapter(Context context, int resourceId,
+	public WorkloadListAdapter(Context context,
+			WorkloadListFragment.WorkloadItemSelectedListener l,
+			int resourceId,
 			List<WorkloadListAdapterEntry> entries) {
 		
 		super(context, resourceId, entries);
+		
 		this.entries = entries;
 		this.context = context;
+		this.listener = l;
 		this.resourceId = resourceId;
 	}
 	
@@ -73,11 +79,22 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 	    	//set values:
 	    	homeworkName.setText(h.toString());
 	    	
+	    	//set onclick
+	    	final Homework selectedHomework = h;
+	    	homeworkLayout.setOnClickListener(new OnClickListener() {
+				public void onClick(View arg0) {
+					listener.onHomeworkSelected(selectedHomework);
+				}
+	    	});
+	    	
 	    	//add to the linearlayout
 	    	holder.dropdown.addView(homeworkLayout);
 	    }
 	    
-	    holder.dropdown.setVisibility(View.GONE);
+	    //set the visiblity
+	    int visibility = thisEntry.isExpanded() ? View.VISIBLE : View.GONE;
+	    holder.dropdown.setVisibility(visibility);
+	    
 	    return convertView;
 	}
 	

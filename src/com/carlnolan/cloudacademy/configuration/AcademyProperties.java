@@ -40,7 +40,7 @@ public class AcademyProperties {
 	}
 	
 	void readValues() {
-		coreAddress = "http://192.168.2.10/cloudacademy";
+		coreAddress = "http://192.168.2.9/cloudacademy";
 		webServiceUrl = coreAddress + "/webservice/";
 		fileProviderUrl = coreAddress + "/fileprovider/getFile.php?";
 		userPhotoProviderUrl = coreAddress + "/fileprovider/getUserPhoto.php?";

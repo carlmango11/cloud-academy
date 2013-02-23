@@ -12,6 +12,7 @@ public class WorkloadListAdapterEntry implements Comparable {
 	private Calendar date;
 	private List<Homework> homework;
 	private List<Exam> exams;
+	private boolean expanded;
 	
 	WorkloadListAdapterEntry(Calendar d) {
 		date = d;
@@ -49,6 +50,14 @@ public class WorkloadListAdapterEntry implements Comparable {
 
 	public Calendar getDate() {
 		return date;
+	}
+
+	public void toggleExpanded() {
+		expanded = !expanded;
+	}
+
+	public boolean isExpanded() {
+		return expanded;
 	}
 
 	/*public Object get(int index) {

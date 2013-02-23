@@ -21,7 +21,8 @@ public class WorkloadClickListener implements OnItemClickListener {
 	}
 
 	public void onItemClick(AdapterView<?> list, View view, int position, long id) {
-		//final WorkloadListAdapterEntry item = (WorkloadListAdapterEntry) list.getAdapter().getItem(position);
+		final WorkloadListAdapterEntry item = (WorkloadListAdapterEntry) list.getAdapter().getItem(position);
+		item.toggleExpanded();
 		
 	    // set dropdown data
 		WorkloadListAdapter.WorkloadListItemHolder holder = (WorkloadListAdapter.WorkloadListItemHolder) view.getTag();
@@ -55,6 +56,7 @@ public class WorkloadClickListener implements OnItemClickListener {
 	        }
 	    };
 
+	    //I actually don't know when this is ever invoked
 	    simpleView.setOnClickListener(new OnClickListener() {
 	        public void onClick(View v) {
 	            handler.sendEmptyMessage(1);

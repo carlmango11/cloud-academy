@@ -3,6 +3,7 @@ package com.carlnolan.cloudacademy.workload;
 import java.util.Calendar;
 import com.carlnolan.cloudacademy.R;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -62,21 +63,30 @@ public class WorkloadBrowserFragment extends Fragment {
 			public void onClick(View arg0) {				
 				//Send null to the callback, this will be interpreted as "all dates"
 				callback.onWorkloadDateSelected(null);
+				
+				setCalendarEnabled(false);
 			}
     	});
 		day.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {				
+			public void onClick(View arg0) {
 				updateDate();
+				setCalendarEnabled(true);
 			}
     	});
 		
 		calendar.setOnDateChangeListener(new OnDateChangeListener() {
 			public void onSelectedDayChange(CalendarView view, int year,
 					int month, int dayOfMonth) {
-				day.setChecked(true);
 				updateDate();
 			}
 		});
+	}
+
+	private void setCalendarEnabled(boolean b) {
+		//disable the calendar
+		int newColour = b ? Color.WHITE : Color.GRAY;
+		calendar.setBackgroundColor(newColour);
+		calendar.setEnabled(b);
 	}
 	
 	/**
