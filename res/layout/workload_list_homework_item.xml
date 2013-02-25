@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-    
-    <TextView 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:id="@+id/workload_list_homework_name"
-	    android:padding="20dp"
-	    android:text="HOMEWORK"
-        />
+	android:layout_height="wrap_content"
+	android:padding="10dp"
+	 >
 	
-</LinearLayout>
+	<TextView
+    	android:id="@+id/workload_list_homework_name"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:textStyle="bold"
+	    android:textSize="15sp"
+	    android:text="Stage of Mitosis" />
+	
+	<TextView
+    	android:id="@+id/workload_list_subject_name"
+	    android:layout_below="@id/workload_list_homework_name"
+	    android:layout_alignParentLeft="true"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="LC Biology" />
+	
+	<!-- 
+	<Button 
+	    android:id="@+id/workload_list_completed_button"
+	    android:layout_width="35dp"
+	    android:layout_height="35dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    /> -->
+	
+	<ImageView 
+	    android:id="@+id/workload_list_completed_marker"
+	    android:layout_width="10dp"
+	    android:layout_height="10dp"
+	    android:layout_marginRight="12dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:src="@drawable/homework_complete_marker"
+	    />
+	
+</RelativeLayout>

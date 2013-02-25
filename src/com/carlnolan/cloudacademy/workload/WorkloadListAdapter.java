@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -73,11 +75,21 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 	    //add the homework
 	    for(Homework h:homework) {
 	    	//inflate the views, find views
-	    	LinearLayout homeworkLayout = (LinearLayout) inflater.inflate(R.layout.workload_list_homework_item, null);
+	    	RelativeLayout homeworkLayout = (RelativeLayout) inflater.inflate(R.layout.workload_list_homework_item, null);
 	    	TextView homeworkName = (TextView) homeworkLayout.findViewById(R.id.workload_list_homework_name);
+	    	TextView homeworkSubject = (TextView) homeworkLayout.findViewById(R.id.workload_list_subject_name);
+	    	ImageView homeworkMarker = (ImageView) homeworkLayout.findViewById(R.id.workload_list_completed_marker);
 	    	
 	    	//set values:
 	    	homeworkName.setText(h.toString());
+	    	homeworkSubject.setText(h.getCourseName());
+	    	
+	    	//set marker to red if incomplete:
+	    	if(!h.isComplete()) {
+	    		homeworkMarker.setImageDrawable(
+	    				context.getResources().getDrawable(
+	    						R.drawable.homework_incomplete_marker));
+	    	}
 	    	
 	    	//set onclick
 	    	final Homework selectedHomework = h;

@@ -62,7 +62,7 @@ public class MainActivity extends FragmentActivity
     private FrameLayout rightContainer;
     
     /**
-     * Ids for layout types used internally
+     * Ids for layout types
      */
     private static final int HALF_HALF_CONTAINER_LAYOUT = 0;
     private static final int ONE_CONTAINER_LAYOUT = 1;
@@ -114,7 +114,7 @@ public class MainActivity extends FragmentActivity
     }
     
     /**
-     * If were in the workload tab AND the homework viewer is showing
+     * If we're in the workload tab AND the homework viewer is showing
      * we should return to the workload browser layout
      * otherwise normal back behaviour
      */
