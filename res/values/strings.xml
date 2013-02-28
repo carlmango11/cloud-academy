@@ -68,4 +68,7 @@
     <string name="file_provider_url">/fileprovider/getFile.php?</string>
     <string name="authentication_failure">null</string>
     
+    <!-- NOTIFICATIONS -->
+    <string name="homework_assigned_notification_title">New Homework Assigned</string>
+    
 </resources>

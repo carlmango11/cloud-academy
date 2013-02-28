@@ -4,8 +4,8 @@
     android:background="@drawable/white_menu_item_gradient"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
     >
     
     <TextView 

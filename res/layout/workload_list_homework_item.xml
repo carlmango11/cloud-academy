@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:padding="10dp"
+	android:background="@drawable/highlight_selected_background"
 	 >
 	
 	<TextView
     	android:id="@+id/workload_list_homework_name"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentLeft="true" 
 	    android:layout_alignParentTop="true"
 	    android:textStyle="bold"
 	    android:textSize="15sp"
@@ -36,7 +37,6 @@
 	    android:id="@+id/workload_list_completed_marker"
 	    android:layout_width="10dp"
 	    android:layout_height="10dp"
-	    android:layout_marginRight="12dp"
 	    android:layout_alignParentRight="true"
 	    android:layout_centerVertical="true"
 	    android:src="@drawable/homework_complete_marker"

@@ -1,7 +1,10 @@
 package com.carlnolan.cloudacademy;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment;
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment.CourseBrowserLessonSelectedListener;
@@ -12,6 +15,7 @@ import com.carlnolan.cloudacademy.inclass.Homework;
 import com.carlnolan.cloudacademy.inclass.HomeworkViewerFragment;
 import com.carlnolan.cloudacademy.inclass.InClassViewer;
 import com.carlnolan.cloudacademy.inclass.LessonViewerFragment;
+import com.carlnolan.cloudacademy.notifications.HomeworkAssignedNotification;
 import com.carlnolan.cloudacademy.planner.DayViewerFragment;
 import com.carlnolan.cloudacademy.planner.ScheduleFragment;
 import com.carlnolan.cloudacademy.scheduling.Session;
@@ -20,10 +24,12 @@ import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.carlnolan.cloudacademy.workload.SwipeRightGestureListener;
 import com.carlnolan.cloudacademy.workload.WorkloadBrowserFragment;
 import com.carlnolan.cloudacademy.workload.WorkloadListFragment;
+import com.google.android.gcm.GCMRegistrar;
 
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -42,7 +48,6 @@ public class MainActivity extends FragmentActivity
 		implements ActionBar.TabListener,
 		DayViewerFragment.OnScheduleDayChangedListener,
 		ScheduleFragment.OnSessionSelectedListener,
-		User.GetCurrentUser.OnGetUserCompleteListener,
 		CourseBrowserLessonSelectedListener,
 		HomeworkViewerFragment.HomeworkViewerCallback,
 		WorkloadBrowserFragment.WorkloadDateSelectedListener,
@@ -50,6 +55,8 @@ public class MainActivity extends FragmentActivity
 		SwipeRightGestureListener.RightSwipeListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+    public static final String PRESET_TAB_STRING = "PRESET_TAB";
+    public static final String SENDER_ID = "313750621136";
     
     private ActionBar actionBar;
     
@@ -108,12 +115,46 @@ public class MainActivity extends FragmentActivity
         //homework viewer isnt being shown at the beginning:
         inHomeworkViewer = false;
         
-        //Check if authenticated user is a teacher or pupil
-        int userId = WebServiceInterface.getInstance().getUserId();
-        new User.GetCurrentUser(this, userId).execute();
+        // Set up the action bar.
+        actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // For each of the sections in the app, add a tab to the action bar.
+        actionBar.addTab(actionBar.newTab().setText(R.string.title_syllabus_tab).setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText(R.string.title_planner_tab).setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText(R.string.title_workload_tab).setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText(R.string.title_progress_tab).setTabListener(this));
+        
+        registerGCM();
+        selectPresetTab();
     }
-    
-    /**
+
+	/**
+     * Registers with GCM if we haven't already and then updates the DB with the reg id
+     * regardless of whether we already registered. Hopefully that will ensure the reg
+     * id in the DB is always correct
+     */
+    private void registerGCM() {
+    	//Make sure GCM is possible:
+    	GCMRegistrar.checkDevice(this);
+    	GCMRegistrar.checkManifest(this);
+    	
+    	//Check for existing registration
+    	final String regId = GCMRegistrar.getRegistrationId(this);
+    	if (regId.equals("")) {
+    		GCMRegistrar.register(this, SENDER_ID);
+    	} else {
+    		new AsyncTask<Void, Void, Void>() {
+				@Override
+				protected Void doInBackground(Void... arg0) {
+		    		WebServiceInterface.getInstance().registerGCMId(regId);
+		    		return null;
+				}
+    		}.execute();
+    	}
+	}
+
+	/**
      * If we're in the workload tab AND the homework viewer is showing
      * we should return to the workload browser layout
      * otherwise normal back behaviour
@@ -136,22 +177,7 @@ public class MainActivity extends FragmentActivity
         return super.onTouchEvent(event);
     }
 
-    /**
-     * Do anything that needed the user info to be downloaded
-     */
-	public void onUserComplete() {
-        // Set up the action bar.
-        actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        // For each of the sections in the app, add a tab to the action bar.
-        actionBar.addTab(actionBar.newTab().setText(R.string.title_syllabus_tab).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(R.string.title_planner_tab).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(R.string.title_workload_tab).setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText(R.string.title_progress_tab).setTabListener(this));
-	}
-
-    @Override
+	@Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
             getActionBar().setSelectedNavigationItem(
@@ -170,6 +196,29 @@ public class MainActivity extends FragmentActivity
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
+
+	/**
+	 * If the PRESET_TAB variable is set this method will set the tab
+	 * to the correct one
+	 */
+    private void selectPresetTab() {
+		Bundle params = getIntent().getExtras();
+		if(params == null) {
+			return;
+		}
+		
+		String presetTab = params.getString(PRESET_TAB_STRING);
+		if(presetTab == null) {
+			return;
+		}
+		
+		for(int i=0;i<actionBar.getTabCount();i++) {
+			if(actionBar.getTabAt(i).getText().equals(presetTab)) {
+				actionBar.setSelectedNavigationItem(i);
+				break;
+			}
+		}
+	}
 
     public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ignore) {
     	Context context = getBaseContext();
@@ -250,12 +299,42 @@ public class MainActivity extends FragmentActivity
     		fragmentTransaction.add(rightContainerId, homeworkViewer);
     		fragmentTransaction.detach(homeworkViewer);
     	}
+    	//TODO: Optimise the transaction by calling detach later on
+    	
+    	Calendar preselectedDate = null;
+    	//Check to see if we have preselected a date
+    	Intent intent = getIntent();
+    	String presetDueDateString = intent.getStringExtra(HomeworkAssignedNotification.PRESET_HOMEWORK_DUE_DATE);
+		int presetHomeworkId = intent.getIntExtra(HomeworkAssignedNotification.PRESET_HOMEWORK_ID, -1);
+    	if(presetDueDateString != null) {
+    		//whatever started the activity wants us to go directly to a due date and piece of h/w
+    		
+    		//parse date:
+    		preselectedDate = Calendar.getInstance();
+    	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	    try {
+    	    	preselectedDate.setTime(sdf.parse(presetDueDateString));
+    		} catch (ParseException e) {
+    			e.printStackTrace();
+    			Log.e("cloudacademy", "Error parsing server response");
+    		}
+    	    
+    	    setTransactionForHomeworkViewer(fragmentTransaction, false);
+    	    
+    	    //workloadBrowser.setSelectedDate(preselectedDate);
+    	    workloadList.setDate(preselectedDate);
+    	    workloadList.setSelectedHomework(presetHomeworkId);
+    	    
+    	    //delete the variable that caused all this so that if the
+    	    //user returns to workload tab it wont preselect anything
+    	    intent.removeExtra(HomeworkAssignedNotification.PRESET_HOMEWORK_DUE_DATE);
+    	}
     	
     	if(inHomeworkViewer) {
     		//workloadlist should already be on the left side and homeworkviewer should be on the right
     		fragmentTransaction.attach(workloadList);
     		fragmentTransaction.attach(homeworkViewer);
-    	} else {
+    	} else if(preselectedDate == null) {
     		fragmentTransaction.attach(workloadBrowser);
     		fragmentTransaction.attach(workloadList);
     	}
@@ -356,9 +435,11 @@ public class MainActivity extends FragmentActivity
 		lessonViewer.loadLesson();
 	}
 
+	/**
+	 * Called from the homeworkViewer Fragment in Workload
+	 */
 	public void homeworkCompletionChanged(Homework homework) {
-		// TODO Auto-generated method stub
-		
+		workloadList.updateCompletionMarker(homework);
 	}
 
 	/**
@@ -383,37 +464,11 @@ public class MainActivity extends FragmentActivity
 	 */
 	public void onHomeworkSelected(Homework homework) {
 		if(!inHomeworkViewer) {
-			goToHomeworkViewer();
+			goToHomeworkViewer(null);
 		}
 		
 		//load homework
 		homeworkViewer.loadHomework(homework);
-	}
-
-	private void goToHomeworkViewer() {
-		FragmentManager manager = getSupportFragmentManager();
-		FragmentTransaction ft = manager.beginTransaction();
-		
-		WorkloadListFragment tempInstance = workloadList.cloneInstance();
-
-		//were now in homework viewer
-		inHomeworkViewer = true;
-
-		//set up animations:
-		ft.setCustomAnimations(
-				R.anim.slide_in_right,
-				R.anim.slide_out_left);
-
-		ft.remove(workloadList);
-		ft.add(leftContainerId, tempInstance);
-		ft.detach(workloadBrowser);
-		ft.attach(homeworkViewer);
-		
-		ft.commit();
-		manager.executePendingTransactions();
-		
-		//set workloadList as this new instance
-		workloadList = tempInstance;
 	}
 
 	/**
@@ -469,5 +524,45 @@ public class MainActivity extends FragmentActivity
 		
 		//no longer in homework viewer
 		inHomeworkViewer = false;
+	}
+
+	private void goToHomeworkViewer(Calendar presetDueDate) {
+		FragmentManager manager = getSupportFragmentManager();
+		FragmentTransaction ft = manager.beginTransaction();
+
+		//set up animations:
+		ft.setCustomAnimations(
+				R.anim.slide_in_right,
+				R.anim.slide_out_left);
+
+		setTransactionForHomeworkViewer(ft, true);
+		
+		ft.commit();
+		manager.executePendingTransactions();
+	}
+	
+	/**
+	 * Sets up the fragment transaction to transition to the homework viewer layout.
+	 * @param ft The transaction to set up
+	 * @param clone True if you want to preserve the state of the existing workloadListFragment
+	 * by cloning, false if you want/don't mind a new one (better performance)
+	 */
+	private void setTransactionForHomeworkViewer(FragmentTransaction ft, boolean clone) {
+		//New instance of workloadList for moving to left
+	    WorkloadListFragment oldInstance = workloadList;
+	    
+	    if(clone) {
+	    	workloadList = oldInstance.cloneInstance();
+	    } else {
+	    	workloadList = WorkloadListFragment.newInstance();
+	    }
+	    
+		ft.remove(oldInstance);
+		ft.add(leftContainerId, workloadList);
+		ft.detach(workloadBrowser);
+		ft.attach(homeworkViewer);
+
+		//were now in homework viewer
+	    inHomeworkViewer = true;
 	}
 }

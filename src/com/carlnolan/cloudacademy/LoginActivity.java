@@ -26,11 +26,14 @@ import android.widget.EditText;
 
 import com.carlnolan.cloudacademy.asynctasks.TestAuthentication;
 import com.carlnolan.cloudacademy.configuration.AcademyProperties;
+import com.carlnolan.cloudacademy.usermanagement.User;
 import com.carlnolan.cloudacademy.webservice.WebServiceAuthentication;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
+import com.google.android.gcm.GCMRegistrar;
 
 public class LoginActivity extends Activity
-	implements TestAuthentication.TestAuthenticationResultListener {
+	implements TestAuthentication.TestAuthenticationResultListener,
+	User.GetCurrentUser.OnGetUserCompleteListener {
 	
 	private Button loginButton;
 	private EditText usernameField;
@@ -86,7 +89,7 @@ public class LoginActivity extends Activity
 		dismissDialog(DIALOG_LOADING);
 		
 		if(result) {
-	        continueToMainScreen();
+			downloadFullUser();
 		} else {
 			showDialog(DIALOG_LOGIN_INVALID);
 		}
@@ -118,6 +121,19 @@ public class LoginActivity extends Activity
 	    }
 	    return dialog;
 	}
+
+	/**
+	 * Called after the full user profile is d/l'ed
+	 */
+	public void onUserComplete() {
+		continueToMainScreen();
+	}
+	
+	private void downloadFullUser() {
+        //Download full user profile
+        int userId = WebServiceInterface.getInstance().getUserId();
+        new User.GetCurrentUser(this, userId).execute();
+	}
 	
 	private void continueToMainScreen() {
 		final Intent myIntent = new Intent(this, MainActivity.class);
@@ -147,7 +163,7 @@ public class LoginActivity extends Activity
 		
 		if(result) {
 			//User is already authenticated. We can continue login
-			continueToMainScreen();
+			downloadFullUser();
 		}
 	}
 }

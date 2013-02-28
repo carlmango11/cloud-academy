@@ -109,6 +109,10 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 	    
 	    return convertView;
 	}
+
+	public List<WorkloadListAdapterEntry> getEntries() {
+		return entries;
+	}
 	
 	public static class WorkloadListItemHolder {
 		LinearLayout header;

@@ -130,6 +130,22 @@ public class WebServiceInterface {
         return user;
 	}
 
+	public boolean registerGCMId(String regId) {
+		int userId = AcademyProperties.getInstance().getUser().getId();
+		
+		// Add your data
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+        nameValuePairs.add(new BasicNameValuePair("user", "" + userId));
+        nameValuePairs.add(new BasicNameValuePair("regid", "" + regId));
+
+        String result = callService(
+        		"registerGCM",
+        		nameValuePairs,
+        		true);
+        
+        return result.equals("1");
+	}
+
 	public ArrayList<Session> getSessionsForDate(Date date) {
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		

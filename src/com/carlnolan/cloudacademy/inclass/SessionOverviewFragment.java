@@ -350,6 +350,7 @@ public class SessionOverviewFragment extends Fragment
 			name = (TextView) view.findViewById(R.id.homework_list_item_name);
 			
 			name.setText(homework.toString());
+			name.setCompoundDrawablePadding(5);
 			
 			if(!AcademyProperties.getInstance().getUser().isTeacher()) {
 				setCompletionState(homework.isComplete());
@@ -369,9 +370,9 @@ public class SessionOverviewFragment extends Fragment
 		public void setCompletionState(boolean complete) {
 			int correctIcon;
 			if(complete) {
-				correctIcon = R.drawable.tick_icon;
+				correctIcon = R.drawable.homework_complete_marker;
 			} else {
-				correctIcon = R.drawable.x_icon;
+				correctIcon = R.drawable.homework_incomplete_marker;
 			}
 			name.setCompoundDrawablesWithIntrinsicBounds(correctIcon, 0, 0, 0);
 		}

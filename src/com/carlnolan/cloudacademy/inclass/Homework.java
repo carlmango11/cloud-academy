@@ -9,7 +9,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.carlnolan.cloudacademy.courses.Exercise;
@@ -66,7 +68,7 @@ public class Homework extends Exercise {
 			.create();
 		json = json.replace("\"completed\":\"0\"", "\"completed\":\"false\"");
 		json = json.replace("\"completed\":\"1\"", "\"completed\":\"true\"");
-		Log.d("json", "" + json);
+		
 		Homework [] homeworkArray = gson.fromJson(json, Homework[].class);
 		
 		return new ArrayList<Homework>(Arrays.asList(homeworkArray));

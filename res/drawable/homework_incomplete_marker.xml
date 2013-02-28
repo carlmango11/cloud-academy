@@ -6,4 +6,9 @@
 	  android:startColor="#eb1919" 
 	  android:endColor="#b41515" 
 	  android:angle="270"/>
+  
+  <size
+      android:height="10dp"
+      android:width="10dp"
+      />
 </shape>

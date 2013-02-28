@@ -25,7 +25,7 @@ public class SwipeRightGestureListener extends SimpleOnGestureListener {
 
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {		
+			float velocityY) {
 		try {
             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                 return false;

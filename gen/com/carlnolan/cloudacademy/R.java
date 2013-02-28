@@ -180,51 +180,53 @@ containing a value of this type.
         public static final int scheme_text_on_background=0x7f060003;
     }
     public static final class drawable {
-        public static final int add_exam=0x7f020000;
-        public static final int add_icon=0x7f020001;
-        public static final int all_day_radio_background=0x7f020002;
-        public static final int arch=0x7f020003;
-        public static final int assign_homework=0x7f020004;
-        public static final int attach_lesson=0x7f020005;
-        public static final int backgroundstate=0x7f020006;
-        public static final int blackboard_footer=0x7f020007;
-        public static final int blackboard_header=0x7f020008;
-        public static final int blackboard_row=0x7f020009;
-        public static final int book_icon=0x7f02000a;
-        public static final int book_list_selector=0x7f02000b;
-        public static final int bookshelf_bottom=0x7f02000c;
-        public static final int bookshelf_row=0x7f02000d;
-        public static final int bookshelf_top=0x7f02000e;
-        public static final int clicked_white_menu_item_gradient=0x7f02000f;
-        public static final int homework_complete_marker=0x7f020010;
-        public static final int homework_icon=0x7f020011;
-        public static final int homework_incomplete_marker=0x7f020012;
-        public static final int ic_action_attach=0x7f020013;
-        public static final int ic_action_search=0x7f020014;
-        public static final int ic_launcher=0x7f020015;
-        public static final int ic_launcher_old=0x7f020016;
-        public static final int login_background=0x7f020017;
-        public static final int login_background_img=0x7f020018;
-        public static final int no_user_pic_available=0x7f020019;
-        public static final int notebook_background=0x7f02001a;
-        public static final int notebook_header=0x7f02001b;
-        public static final int notebook_row=0x7f02001c;
-        public static final int openbook=0x7f02001d;
-        public static final int postit=0x7f02001e;
-        public static final int rounded_panel_shape=0x7f02001f;
-        public static final int scheme_dark_gradient=0x7f020020;
-        public static final int scheme_dark_gradient_topbar=0x7f020021;
-        public static final int scheme_light_gradient=0x7f020022;
-        public static final int scheme_light_gradient_topbar=0x7f020023;
-        public static final int spine=0x7f020024;
-        public static final int spine_highlighted=0x7f020025;
-        public static final int take_attendance_green=0x7f020026;
-        public static final int take_attendance_red=0x7f020027;
-        public static final int tick_icon=0x7f020028;
-        public static final int title=0x7f020029;
-        public static final int white_back_black_border=0x7f02002a;
-        public static final int white_menu_item_gradient=0x7f02002b;
-        public static final int x_icon=0x7f02002c;
+        public static final int actionbar_background=0x7f020000;
+        public static final int add_exam=0x7f020001;
+        public static final int add_icon=0x7f020002;
+        public static final int all_day_radio_background=0x7f020003;
+        public static final int arch=0x7f020004;
+        public static final int assign_homework=0x7f020005;
+        public static final int attach_lesson=0x7f020006;
+        public static final int backgroundstate=0x7f020007;
+        public static final int blackboard_footer=0x7f020008;
+        public static final int blackboard_header=0x7f020009;
+        public static final int blackboard_row=0x7f02000a;
+        public static final int book_icon=0x7f02000b;
+        public static final int book_list_selector=0x7f02000c;
+        public static final int bookshelf_bottom=0x7f02000d;
+        public static final int bookshelf_row=0x7f02000e;
+        public static final int bookshelf_top=0x7f02000f;
+        public static final int clicked_white_menu_item_gradient=0x7f020010;
+        public static final int highlight_selected_background=0x7f020011;
+        public static final int homework_complete_marker=0x7f020012;
+        public static final int homework_icon=0x7f020013;
+        public static final int homework_incomplete_marker=0x7f020014;
+        public static final int ic_action_attach=0x7f020015;
+        public static final int ic_action_search=0x7f020016;
+        public static final int ic_launcher=0x7f020017;
+        public static final int ic_launcher_old=0x7f020018;
+        public static final int login_background=0x7f020019;
+        public static final int login_background_img=0x7f02001a;
+        public static final int no_user_pic_available=0x7f02001b;
+        public static final int notebook_background=0x7f02001c;
+        public static final int notebook_header=0x7f02001d;
+        public static final int notebook_row=0x7f02001e;
+        public static final int openbook=0x7f02001f;
+        public static final int postit=0x7f020020;
+        public static final int rounded_panel_shape=0x7f020021;
+        public static final int scheme_dark_gradient=0x7f020022;
+        public static final int scheme_dark_gradient_topbar=0x7f020023;
+        public static final int scheme_light_gradient=0x7f020024;
+        public static final int scheme_light_gradient_topbar=0x7f020025;
+        public static final int spine=0x7f020026;
+        public static final int spine_highlighted=0x7f020027;
+        public static final int take_attendance_green=0x7f020028;
+        public static final int take_attendance_red=0x7f020029;
+        public static final int tick_icon=0x7f02002a;
+        public static final int title=0x7f02002b;
+        public static final int white_back_black_border=0x7f02002c;
+        public static final int white_menu_item_gradient=0x7f02002d;
+        public static final int x_icon=0x7f02002e;
     }
     public static final class id {
         public static final int add_exam=0x7f0a0077;
@@ -418,6 +420,9 @@ containing a value of this type.
          */
         public static final int dialog_select_exercises_none=0x7f070024;
         public static final int file_provider_url=0x7f07002a;
+        /**  NOTIFICATIONS 
+         */
+        public static final int homework_assigned_notification_title=0x7f07002c;
         public static final int homework_assigned_successfully=0x7f070019;
         public static final int homework_completed=0x7f070020;
         public static final int homework_confirm_completion=0x7f070023;
@@ -464,6 +469,12 @@ containing a value of this type.
     }
     public static final class style {
         public static final int AppTheme=0x7f080000;
+        public static final int CloudDark_ActionBar_TitleTextStyle=0x7f080003;
+        public static final int CloudDark_TabTextStyle=0x7f080004;
+        /**  <item name="android:actionButtonStyle">@style/CloudDark.ActionBarButtonStyle</item> 
+         */
+        public static final int Theme_CloudDark=0x7f080001;
+        public static final int Widget_ActionBar=0x7f080002;
     }
     public static final class styleable {
         /** Attributes that can be used with a ListItemState.

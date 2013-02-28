@@ -25,6 +25,10 @@ public class WorkloadListAdapterEntry implements Comparable {
 		homework = h;
 		exams = e;
 	}
+
+	public int indexOfHomework(Homework updatedHomework) {
+		return homework.indexOf(updatedHomework);
+	}
 	
 	public void addHomework(Homework h) {
 		homework.add(h);
@@ -60,11 +64,12 @@ public class WorkloadListAdapterEntry implements Comparable {
 		return expanded;
 	}
 
-	/*public Object get(int index) {
-		if (homework.size() > index) {
-			return homework.get(index);
-		} else {
-			return exams.get(index - homework.size());
-		}
-	}*/
+	public void setExpanded(boolean b) {
+		expanded = true;
+	}
+
+	public boolean isSameDay(Calendar selectedDate) {
+		return date.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR) &&
+				date.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR);
+	}
 }

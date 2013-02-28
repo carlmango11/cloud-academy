@@ -1,0 +1,20 @@
+<resources>
+	<style name="Theme.CloudDark" parent="android:Theme.Holo.Light">
+	    <item name="android:actionBarStyle">@style/Widget.ActionBar</item>
+	    <item name="android:actionBarTabTextStyle">@style/CloudDark.TabTextStyle</item>
+	    <!-- <item name="android:actionButtonStyle">@style/CloudDark.ActionBarButtonStyle</item> -->
+	</style>
+	
+	<style name="Widget.ActionBar" parent="android:Widget.Holo.Light.ActionBar">
+	    <item name="android:background">@drawable/actionbar_background</item>
+	    <item name="android:titleTextStyle">@style/CloudDark.ActionBar.TitleTextStyle</item>
+	</style>
+	
+	<style name="CloudDark.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+	    <item name="android:textColor">@color/White</item>
+	</style>
+	
+	<style name="CloudDark.TabTextStyle" parent="@android:style/TextAppearance.Holo">
+	    <item name="android:textColor">@color/White</item>
+	</style>
+</resources>

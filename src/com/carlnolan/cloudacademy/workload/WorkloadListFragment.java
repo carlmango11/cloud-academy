@@ -29,6 +29,7 @@ public class WorkloadListFragment extends Fragment
 	implements DownloadHomeworkDueForRange.DownloadHomeworkDueForRangeListener,
 	Exam.DownloadExamsForRangeListener {
 	private boolean isClone;
+	private int preselectedHomework;
 	private WorkloadItemSelectedListener callback;
 	
 	private ListView list;
@@ -39,6 +40,7 @@ public class WorkloadListFragment extends Fragment
 	private int listPos;
 	private int listTop;	
 	private String fullWorkloadString;
+	private Calendar expandedDate;
 	
 	/**
 	 * Homework and Exams are d/l'ed simultaneously so I need to wait until both
@@ -54,6 +56,8 @@ public class WorkloadListFragment extends Fragment
 
 	public static WorkloadListFragment newInstance() {
 		WorkloadListFragment instance = new WorkloadListFragment();
+		
+		instance.preselectedHomework = -1;
 		
 		return instance;
 	}
@@ -144,7 +148,6 @@ public class WorkloadListFragment extends Fragment
 			
 			//Set the saved position
 			if(listPos >= 0) {
-	        	System.out.println("listTop");
 	        	list.setSelectionFromTop(listPos, listTop);
 	        }
 		}
@@ -159,7 +162,8 @@ public class WorkloadListFragment extends Fragment
 	}
 
 	/**
-	 * Called by outside to update the date we should be showing workload for
+	 * Called by outside to update the date we should be showing workload for.
+	 * Will download workload items.
 	 * @param date The date, if null we want all dates
 	 */
 	public void setDate(Calendar date) {
@@ -175,8 +179,6 @@ public class WorkloadListFragment extends Fragment
 			startDate = date;
 			endDate = date;
 		}
-		System.out.println(startDate.getTime());
-		System.out.println(endDate.getTime());
 		
 		//fire off asyncs for exam and h/w downloads
 		new DownloadHomeworkDueForRange(this, startDate, endDate).execute();
@@ -218,6 +220,19 @@ public class WorkloadListFragment extends Fragment
 				new ArrayList<WorkloadListAdapterEntry>(items.values());
 		Collections.sort(entries);
 		
+		//if selectedDate is not null we should set that date as expanded:
+		/*if(expandedDate != null) {
+			//find that date
+			for(int i=0;i<entries.size();i++) {
+				if(entries.get(i).isSameDay(expandedDate)) {
+					entries.get(i).setExpanded(true);
+					System.out.println("found");
+					break;
+				}
+			}
+			expandedDate = null;
+		}*/
+		
 		//build the list adapter
 		WorkloadListAdapter adapter = new WorkloadListAdapter(getActivity(),
 				callback, R.layout.workload_list_row, entries);
@@ -244,5 +259,50 @@ public class WorkloadListFragment extends Fragment
 		} else {
 			otherDownloaded = true;
 		}
+	}
+
+	/**
+	 * Called from outside to notify that a piece of h/w has had its
+	 * completion state changed
+	 * @param updatedHomework
+	 */
+	public void updateCompletionMarker(Homework updatedHomework) {
+		//Try to find it the updatedHomework in our entries:
+		
+		WorkloadListAdapter adapter = (WorkloadListAdapter) list.getAdapter();
+		List<WorkloadListAdapterEntry> ls = adapter.getEntries();
+		
+		int i = -1;
+		int location = -1;
+		while(i < ls.size() && location == -1) {
+			i++;
+			location = ls.get(i).indexOfHomework(updatedHomework);
+		}
+		
+		if(location != -1) {
+			//found it, replace with new homework
+			ls.get(i).getHomework().set(location, updatedHomework);
+			list.invalidate();
+			adapter.notifyDataSetChanged();
+		}
+	}
+
+	/**
+	 * Will expand the item with the same date as the one passed when the
+	 * dates are d/l'ed
+	 * @param due
+	 */
+	public void setExpandedDate(Calendar date) {
+		expandedDate = date;
+	}
+
+	/**
+	 * Set the preselected homework. When the workload items are downloaded
+	 * if there is a match between the passed id and any item, that item
+	 * will be selected and the callback called.
+	 * @param id
+	 */
+	public void setSelectedHomework(int id) {
+		preselectedHomework = id;
 	}
 }

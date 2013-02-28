@@ -18,6 +18,8 @@ import android.widget.CalendarView.OnDateChangeListener;
 public class WorkloadBrowserFragment extends Fragment {	
 	private WorkloadDateSelectedListener callback;
 	
+	private Calendar selectedDate;
+	
 	private CalendarView calendar;
 	private RadioButton all;
 	private RadioButton day;
@@ -80,6 +82,13 @@ public class WorkloadBrowserFragment extends Fragment {
 				updateDate();
 			}
 		});
+
+		//If there has been a preselected date we should select it
+		if(selectedDate != null) {
+			calendar.setDate(selectedDate.getTimeInMillis(), false, true);
+			day.setChecked(true);
+			selectedDate = null;
+		}
 	}
 
 	private void setCalendarEnabled(boolean b) {
@@ -87,6 +96,14 @@ public class WorkloadBrowserFragment extends Fragment {
 		int newColour = b ? Color.WHITE : Color.GRAY;
 		calendar.setBackgroundColor(newColour);
 		calendar.setEnabled(b);
+	}
+
+	/**
+	 * Used to set the date on the calendar
+	 * @param due
+	 */
+	public void setSelectedDate(Calendar due) {
+		selectedDate = due;
 	}
 	
 	/**
