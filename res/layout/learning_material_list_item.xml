@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lesson_list_item"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-	android:background="@drawable/white_menu_item_gradient" >
-    
-	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/learning_material_list_item_name"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textStyle="bold"
-	    android:padding="10dp" />
+    android:layout_marginBottom="5dp"
+    >
 	
-	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/learning_material_description"
-	    android:text="This is a description"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:paddingRight="10dp"
-	    android:paddingBottom="10dp"
-	    android:paddingLeft="40dp" 
-	    android:textStyle="italic"/>
+	<ImageView
+	    android:id="@+id/learning_material_red_bar"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignTop="@+id/learning_material_list_item_name"
+	    android:layout_alignBottom="@+id/learning_material_description"
+	    android:src="@drawable/lesson_colour_shape"
+	    android:layout_width="7dp"
+	    android:layout_height="0dp" />
 	
-</LinearLayout>
+		<TextView
+		    android:id="@id/learning_material_list_item_name"
+	    	android:layout_alignParentTop="true"
+	    	android:layout_toRightOf="@id/learning_material_red_bar"
+	    	android:layout_toLeftOf="@+id/learning_material_open_content"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="Title Content"
+		    android:textStyle="bold"
+		    android:paddingTop="10dp"
+		    android:paddingBottom="10dp"
+		    android:paddingRight="10dp"
+		    android:paddingLeft="15dp" />
+		
+		<TextView
+		    android:id="@id/learning_material_description"
+		    android:layout_below="@id/learning_material_list_item_name"
+	    	android:layout_toLeftOf="@id/learning_material_open_content"
+	    	android:layout_toRightOf="@id/learning_material_red_bar"
+		    android:text="This is a description"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingRight="10dp"
+		    android:paddingBottom="10dp"
+		    android:paddingLeft="15dp" />
+	
+    <ImageButton
+        android:id="@id/learning_material_open_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_attach" />
+</RelativeLayout>

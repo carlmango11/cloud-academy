@@ -2,160 +2,154 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login_background" >
+    android:layout_height="match_parent">
 	
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="20dp" >
-    
-	<ImageView
-    	android:id="@+id/lesson_viewer_header"
+				    
+	<TextView 
+        android:id="@+id/lesson_title"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:scaleType="fitXY"
-	    android:src="@drawable/blackboard_header" />
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    android:textStyle="bold"
+	    android:textSize="25dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Title"
+        android:background="@color/lesson_main_colour"
+	    android:textColor="@color/White" />
 	
-	<FrameLayout 
-    	android:id="@+id/lesson_viewer_content_panel"
+	<TextView
+        android:id="@+id/lesson_description"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content">
-	    
-	     <ImageView
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/lesson_title"
+	    android:text="Description\nGoes\nHere"
+	    android:textSize="15dp" />
+	
+	<View 
+	    android:id="@+id/lesson_viewer_description_border"
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:background="@drawable/lesson_colour_shape"
+	    android:layout_below="@id/lesson_description"
+	    />
+		
+	<TextView 
+        android:id="@+id/lesson_viewer_learning_material"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/lesson_viewer_description_border"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+	    android:textStyle="bold"
+	    android:text="Learning Material:" />
+		
+	<LinearLayout 
+	    android:id="@+id/lesson_viewer_material_list_holder"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/lesson_viewer_learning_material"
+	    android:orientation="vertical" >
+		<LinearLayout 
+		    android:id="@+id/material_list"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-		    android:id="@+id/lesson_viewer_row"
-		    android:scaleType="fitXY"
-		    android:src="@drawable/blackboard_row" />
-	     
-	     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingLeft="22dp"
-		    android:paddingRight="21dp"
-		    android:orientation="vertical">
-				    
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		        android:id="@+id/lesson_title"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:textStyle="bold"
-			    android:textSize="25dp"
-		        android:paddingLeft="15dp"
-			    android:textColor="@color/White" />
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		        android:id="@+id/lesson_description"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginTop="10dp"
-			    android:textSize="15dp"
-		        android:paddingLeft="15dp"
-			    android:textColor="@color/White" />
-				
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		        android:id="@+id/lesson_viewer_learning_material"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-		        android:textSize="20dp"
-		        android:padding="15dp"
-			    android:textStyle="bold"
-			    android:textColor="@color/lesson_headers"
-			    android:text="Learning Material:" />
-				
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/material_list"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="vertical" />
-		    
-		    <ProgressBar 
-		        android:id="@+id/learning_material_download_progress"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="center"
-		        android:visibility="gone"
-		         />
-		    
-		    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		        android:id="@+id/lesson_viewer_no_learning_material"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:background="@color/Black"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-			    android:textStyle="bold"
-		        android:textSize="20sp"
-		        android:gravity="center"
-		        android:textColor="@color/Gray"
-		        android:padding="15dp"
-		        android:visibility="gone"
-			    android:text="None" />
-			
-			<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		        android:id="@+id/lesson_viewer_exercises"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-			    android:textStyle="bold"
-		        android:textSize="20dp"
-		        android:paddingLeft="15dp"
-		        android:paddingRight="15dp"
-		        android:paddingBottom="15dp"
-		        android:paddingTop="25dp"
-			    android:textColor="@color/lesson_headers"
-			    android:text="Exercises:" />
-			
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			    android:id="@+id/exercise_list"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="vertical" />
-		    
-		    <ProgressBar 
-		        android:id="@+id/exercises_download_progress"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="center"
-		        android:visibility="gone"
-		         />
-		    
-		    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		        android:id="@+id/lesson_viewer_no_exercises"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:background="@color/Black"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-			    android:textStyle="bold"
-		        android:textSize="20sp"
-		        android:gravity="center"
-		        android:textColor="@color/Gray"
-		        android:padding="15dp"
-		        android:visibility="gone"
-			    android:text="None" />
-			
-		</LinearLayout>
-	</FrameLayout>
-	
-	<ImageView
-    	android:id="@+id/lesson_viewer_footer"
+		    android:orientation="vertical" />
+	    
+	    <ProgressBar 
+	        android:id="@+id/learning_material_download_progress"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:visibility="gone"
+	         />
+	</LinearLayout>
+    
+    <TextView
+        android:id="@+id/lesson_viewer_no_learning_material"
+	    android:layout_below="@id/lesson_viewer_material_list_holder"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:scaleType="fitXY"
-	    android:src="@drawable/blackboard_footer" />
+	    android:background="@color/Black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+	    android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/Gray"
+        android:padding="15dp"
+        android:visibility="gone"
+	    android:text="None" />
+	
+	<TextView 
+        android:id="@+id/lesson_viewer_exercises"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/lesson_viewer_no_learning_material"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+	    android:textStyle="bold"
+        android:textSize="20dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="25dp"
+	    android:text="Exercises:" />
+	
+	<LinearLayout 
+	    android:id="@+id/lesson_viewer_exercise_list_holder"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/lesson_viewer_exercises"
+	    android:orientation="vertical" >
+		<LinearLayout
+		    android:id="@+id/exercise_list"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical" />
+	    
+	    <ProgressBar
+	        android:id="@+id/exercises_download_progress"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:visibility="gone"
+	         />
+	</LinearLayout>
+    
+    <TextView
+        android:id="@+id/lesson_viewer_no_exercises"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@color/Black"
+	    android:layout_below="@id/lesson_viewer_exercise_list_holder"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+	    android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/Gray"
+        android:padding="15dp"
+        android:visibility="gone"
+	    android:text="None" />
 	
 	<TextView
 	    android:id="@+id/lesson_viewer_no_lessons"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
 	    android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="90dp"
         android:textSize="40dp"
+        android:layout_marginTop="90dp"
 	    android:textStyle="bold"
 	    android:textColor="@color/scheme_text_on_background"
 	    android:text="No\nLesson\nSelected" />
 
-</LinearLayout>
+</RelativeLayout>
 </ScrollView>

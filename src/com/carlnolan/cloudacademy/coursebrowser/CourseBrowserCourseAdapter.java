@@ -39,8 +39,8 @@ public class CourseBrowserCourseAdapter extends ArrayAdapter<Course> {
             row = inflater.inflate(layoutResourceId, parent, false);
             
             holder = new CourseHolder();
-            holder.name = (TextView)row.findViewById(R.id.course_browser_course_item_name);
-            holder.teacher = (TextView)row.findViewById(R.id.course_browser_course_item_teacher);
+            holder.name = (TextView) row.findViewById(R.id.course_browser_course_item_name);
+            holder.teacher = (TextView) row.findViewById(R.id.course_browser_course_item_teacher);
             
             row.setTag(holder);
         } else {

@@ -63,8 +63,7 @@ public class CourseBrowserFragment extends Fragment implements
 	private ViewFlipper flipper;
 
 	// Course names list stuff:
-	private LinearLayout courseListHolder;
-	private CourseBrowserCourseAdapter adapter;
+	private ListView courseList;
 
 	// Section/lesson lists stuff:
 	private ListView sectionListView;
@@ -120,8 +119,8 @@ public class CourseBrowserFragment extends Fragment implements
 		backButton = (Button) getActivity().findViewById(
 				R.id.course_browser_back_button);
 
-		courseListHolder = (LinearLayout) getActivity().findViewById(
-				R.id.course_browser_course_list);
+		courseList = (ListView) getActivity().findViewById(
+				R.id.course_browser_courses_list);
 
 		// set ListView adapters:
 		sections = new ArrayList<Section>();
@@ -219,29 +218,18 @@ public class CourseBrowserFragment extends Fragment implements
 
 	public void onCoursesDownloaded(ArrayList<Course> result) {
 		courses = result;
-
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-		courseListHolder.removeAllViews();
-
-		for (int i = 0; i < result.size(); i++) {
-			View thisView = inflater.inflate(
-					R.layout.course_browser_course_item, null);
-			TextView courseName = (TextView) thisView
-					.findViewById(R.id.course_browser_course_item_name);
-			TextView teacherName = (TextView) thisView
-					.findViewById(R.id.course_browser_course_item_teacher);
-			courseName.setText(result.get(i).toString());
-			teacherName.setText("by " + result.get(i).getOwner());
-
-			final Course finalCourse = result.get(i);
-			thisView.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					courseSelected(finalCourse);
-				}
-			});
-
-			courseListHolder.addView(thisView);
-		}
+		
+		CourseBrowserCourseAdapter adapter =
+				new CourseBrowserCourseAdapter(getActivity(),
+						R.layout.course_browser_course_item,
+						courses);
+		courseList.setAdapter(adapter);
+		courseList.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				courseSelected(courses.get(position));
+			}
+		});
 
 		// do a check to see if any of these courses have been pre-selected
 		if (selectedCourseId != -1) {

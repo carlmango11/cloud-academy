@@ -1,154 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" 
-    android:layout_height="match_parent"
-	android:background="@drawable/login_background"
-    android:id="@+id/course_browser_flipper" >
-    
-	<ScrollView
-		android:layout_width="match_parent"
-	    android:layout_height="match_parent" >
-		<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		    android:padding="20dp" >
-		    
-		    <TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:paddingBottom="10dp"
-			    android:gravity="center"
-			    android:textStyle="bold"
-			    android:textSize="30dp"
-			    android:text="@string/course_browser_courses_heading"
-			    android:textColor="@color/White" />
-		    
-			<ImageView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:scaleType="fitXY"
-			    android:src="@drawable/bookshelf_top" />
-			
-			<FrameLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent" >
-			    
-			     <ImageView
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:scaleType="fitXY"
-				    android:src="@drawable/bookshelf_row" />
-				    
-				    <LinearLayout
-				        android:layout_marginLeft="48dp"
-				        android:layout_marginRight="45dp"
-				        android:orientation="vertical"
-					    android:layout_height="wrap_content"
-				    	android:layout_width="match_parent"
-					    android:id="@+id/course_browser_course_list" />
-					
-			</FrameLayout>
-			
-			<ImageView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:scaleType="fitXY"
-			    android:src="@drawable/bookshelf_bottom" />
-		
-		</LinearLayout>
-	</ScrollView>
+    android:id="@+id/course_browser_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_background" >
+
+        <TextView
+            android:id="@+id/course_browser_course_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/course_browser_courses_heading"
+            android:textColor="@color/Black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true" />
+        
+       	<ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_browser_courses_list"
+            android:scrollbarStyle="outsideOverlay"
+       		android:padding="20dp"
+       		android:layout_below="@id/course_browser_course_header"
+            android:fastScrollEnabled="true" />
+   
+	    <View
+		    android:layout_width="20dp"
+		    android:layout_height="match_parent"
+		    android:background="@drawable/drop_shadow_right"
+		    android:layout_alignParentRight="true" />
+        	
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+    	android:background="@color/grey_background">
+
+        <Button
+            android:id="@+id/course_browser_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="Back" />
+
+        <TextView
+            android:id="@+id/course_browser_course_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+            android:layout_below="@id/course_browser_back_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true" >
+            
+            <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+	            android:orientation="vertical"
+	            android:layout_weight="1" >
+            
+		         <TextView
+		             android:layout_width="match_parent"
+		             android:layout_height="wrap_content"
+		             android:gravity="center"
+		             android:text="Sections"
+		             android:textSize="20dp"
+		             android:textStyle="bold" />
 	
-	<LinearLayout 
-	    android:orientation="vertical"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" >
-	    
-	    <LinearLayout 
-	    android:orientation="horizontal"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-			
-	        <Button
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_margin="18dp"
-			    android:id="@+id/course_browser_back_button"
-			    android:text="Back" />
-			
-			<TextView
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginTop="25dp"
-			    android:gravity="center"
-			    android:textStyle="bold"
-			    android:textSize="30dp"
-			    android:textColor="@color/White"
-			    android:id="@+id/course_browser_course_title" />
-	    </LinearLayout>
-		
-		<FrameLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:layout_marginTop="20dp" >
-			    
-			     <ImageView
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:src="@drawable/openbook" />
-				    
-				 <LinearLayout
-				        android:orientation="horizontal"
-				   		android:layout_marginTop="30dp"
-					    android:layout_height="wrap_content"
-				    	android:layout_width="match_parent" >
-				    
-				   		 <LinearLayout 
-				   		     android:layout_marginLeft="40dp"
-						    android:orientation="vertical"
-						    android:layout_width="190dp"
-						    android:layout_height="250dp" >
-						     <TextView
-							    android:layout_width="wrap_content"
-							    android:layout_height="wrap_content"
-							    android:layout_marginLeft="30dp"
-							    android:gravity="center"
-							    android:textStyle="bold"
-							    android:textSize="20dp"
-							    android:text="Sections" />
-						    
-							<ListView
-							    android:layout_width="match_parent" 
-							    android:layout_height="match_parent"
-							    android:layout_marginTop="5dp"
-							    android:id="@+id/course_browser_section_list" />
-						 </LinearLayout>
-					     
-					     <LinearLayout 
-						    android:orientation="vertical"
-						    android:layout_marginLeft="20dp"
-						    android:layout_width="190dp"
-						    android:layout_height="250dp">
-						     <TextView
-							    android:layout_width="wrap_content"
-							    android:layout_height="wrap_content"
-							    android:layout_marginLeft="30dp"
-							    android:gravity="center"
-							    android:textStyle="bold"
-							    android:textSize="20dp"
-							    android:text="Lessons" />
-							<ListView
-							    android:layout_width="match_parent" 
-							    android:layout_height="match_parent"
-							    android:layout_marginTop="5dp"
-							    android:id="@+id/course_browser_lesson_list" />
-						</LinearLayout>
-				 </LinearLayout>
-					
-			</FrameLayout>
-			
-		
-		
-	</LinearLayout>
+		         <ListView
+		             android:id="@+id/course_browser_section_list"
+		             android:layout_width="match_parent"
+		             android:layout_height="match_parent"
+		             android:layout_marginTop="5dp" />
+	         
+	         </LinearLayout>
+	         <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+	            android:orientation="vertical"
+	            android:layout_weight="1" >
 	
+		         <TextView
+		             android:layout_width="match_parent"
+		             android:layout_height="wrap_content"
+		             android:layout_alignParentRight="true"
+		             android:gravity="center"
+		             android:text="Lessons"
+		             android:textSize="20dp"
+		             android:textStyle="bold" />
+
+		         <ListView
+		             android:id="@+id/course_browser_lesson_list"
+		             android:layout_width="match_parent"
+		             android:layout_height="match_parent"
+		             android:layout_marginTop="5dp" />
+		      </LinearLayout>
+         
+         </LinearLayout>
+   
+	    <View
+		    android:layout_width="20dp"
+		    android:layout_height="match_parent"
+		    android:background="@drawable/drop_shadow_right"
+		    android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
 </ViewFlipper>

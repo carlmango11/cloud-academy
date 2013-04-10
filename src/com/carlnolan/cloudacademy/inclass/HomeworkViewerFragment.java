@@ -29,7 +29,12 @@ import android.widget.TextView;
 
 public class HomeworkViewerFragment extends Fragment
 	implements Content.ContentDownloadCallback,
-	Homework.UpdateHomeworkCompletionCallback {
+	Homework.UpdateHomeworkCompletionCallback,
+	ConfirmCompletionDialog.HomeworkCompleteDialogCallback {
+	
+	private static final String FROM_LESSON_PREFIX = "Lesson - ";
+	private static final String FROM_COURSE_PREFIX = "Course - ";
+	
 	private Homework currentHomework;
 	private HomeworkViewerCallback callback;
 	
@@ -37,12 +42,11 @@ public class HomeworkViewerFragment extends Fragment
 	
 	private TextView title;
 	private TextView description;
+	private TextView fromLesson;
 	private TextView dueDate;
 	private TextView teacherName;
-	private TextView inText;
 	private Button completed;
-	private Button lesson;
-	private Button course;
+	private ImageButton goButton;
 	private ImageButton content;
 	
 	private ProgressDialog progressDialog;
@@ -118,26 +122,16 @@ public class HomeworkViewerFragment extends Fragment
 		completed = (Button) getActivity().findViewById(R.id.homework_completed_text);
 		dueDate = (TextView) getActivity().findViewById(R.id.homework_due_date_text);
 		teacherName = (TextView) getActivity().findViewById(R.id.homework_teacher_name);
-		inText = (TextView) getActivity().findViewById(R.id.homework_in_text);
+		fromLesson = (TextView) getActivity().findViewById(R.id.homework_from_lesson);
 		
-		lesson = (Button) getActivity().findViewById(R.id.homework_lesson_button);
-		course = (Button) getActivity().findViewById(R.id.homework_course_button);
+		goButton = (ImageButton) getActivity().findViewById(R.id.homework_go_button);
 		content = (ImageButton) getActivity().findViewById(R.id.homework_content_button);
 		
 		completionProgress = (ProgressBar) getActivity().findViewById(R.id.homework_completion_progress);
 		
-		setFonts();
+		//setFonts();
 		
 		Log.d("carl", "Started Lesson Viewer");
-	}
-	
-	/**
-	 * Called to change the state of this homework to
-	 * completed/not completed.
-	 * @param c
-	 */
-	private void setCompleted(boolean c) {
-		currentHomework.setIsCompleteAndUpdate(c, this);
 	}
 	
 	/**
@@ -159,13 +153,24 @@ public class HomeworkViewerFragment extends Fragment
 							R.color.Red));
 		}
 		
+		final ConfirmCompletionDialog.HomeworkCompleteDialogCallback callback =
+				this;
 		completed.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				ConfirmCompletionDialog confirmDialog
-					= new ConfirmCompletionDialog();
+					= ConfirmCompletionDialog.newInstance(currentHomework, callback);
 				confirmDialog.show(getFragmentManager(), "confirmDialog");
 			}
 		});
+	}
+
+	/**
+	 * Called by the ComfirmCompletionDialog when a response is gotten
+	 */
+	public void onHomeworkCompleteDialogResponse(Homework updatedHomework, boolean complete) {
+		completed.setVisibility(View.GONE);
+		completionProgress.setVisibility(View.VISIBLE);
+		updatedHomework.setIsCompleteAndUpdate(complete, this);
 	}
 
 	/**
@@ -180,7 +185,15 @@ public class HomeworkViewerFragment extends Fragment
 				AcademyProperties.getInstance().getUser().isTeacher();
 		
 		title.setText(currentHomework.toString());
-		description.setText(currentHomework.getDescription());
+		
+		//Set up description
+		String descriptionString = currentHomework.getDescription();
+		if(descriptionString.length() == 0) {
+			description.setVisibility(View.GONE);
+		} else {
+			description.setText(descriptionString);
+			description.setVisibility(View.VISIBLE);
+		}
 		
 		if(isTeacher) {
 			teacherName.setText(R.string.homework_for_text_teacher);
@@ -194,14 +207,14 @@ public class HomeworkViewerFragment extends Fragment
 		dueDate.setText(dueDateText);
 		
 		//Set up lesson button, check if theres a lesson to go with this exercsie
+		String fromString = "";
 		if(currentHomework.getAccompanyingLessonName() != null) {
-			lesson.setText(currentHomework.getAccompanyingLessonName());
+			fromString = FROM_LESSON_PREFIX + currentHomework.getAccompanyingLessonName() +"\n";
 			
-			//Make visible (may be invisible from other h/w
-			lesson.setVisibility(View.VISIBLE);
-			inText.setVisibility(View.VISIBLE);
+			//show go button
+			goButton.setVisibility(View.VISIBLE);
 			
-			lesson.setOnClickListener(new OnClickListener() {
+			goButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), FullBrowserActivity.class);
 					
@@ -213,26 +226,13 @@ public class HomeworkViewerFragment extends Fragment
 				}
 			});
 		} else {
-			//Homework is custom so doesnt have a lesson attached, hide buttons
-			lesson.setVisibility(View.GONE);
-			inText.setVisibility(View.GONE);
+			//hide go button
+			goButton.setVisibility(View.GONE);
 		}
 		
-		//Set up the course button
-		course.setText(currentHomework.getCourseName());
-		
-		//set up click listener for course:
-		course.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), FullBrowserActivity.class);
-				
-				intent.putExtra("COURSE_ID", currentHomework.getCourseId());
-				intent.putExtra("SECTION_ID", -1);
-				intent.putExtra("LESSON_ID", -1);
-				
-				startActivity(intent);
-			}
-		});
+		//Set up "from" label
+		fromString += FROM_COURSE_PREFIX + currentHomework.getCourseName();
+		fromLesson.setText(fromString);
 		
 		if(!isTeacher) {
 			setCompletedView();
@@ -267,36 +267,5 @@ public class HomeworkViewerFragment extends Fragment
 		completionProgress.setVisibility(View.GONE);
 		setCompletedView();
 		callback.homeworkCompletionChanged(currentHomework);
-	}
-	
-	/**
-	 * Dialog which asks user to confirm that they have finished a
-	 * piece of homework.
-	 * @author Carl
-	 *
-	 */
-	private class ConfirmCompletionDialog extends DialogFragment {
-		@Override
-	    public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-			
-			int alertMessageId;
-			if(currentHomework.isComplete()) {
-				alertMessageId = R.string.homework_confirm_noncompletion;
-			} else {
-				alertMessageId = R.string.homework_confirm_completion;
-			}
-			
-			alert.setTitle(alertMessageId)
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						completed.setVisibility(View.GONE);
-						completionProgress.setVisibility(View.VISIBLE);
-						setCompleted(!currentHomework.isComplete());
-					}
-				}).setNegativeButton("No", null);
-			
-			return alert.create();
-		}
 	}
 }

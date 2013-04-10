@@ -52,6 +52,9 @@
     <string name="homework_confirm_noncompletion">Mark As Incomplete?</string>
     <string name="homework_confirm_completion">Finished?</string>
     
+    <!-- LESSON_VIEWER -->
+    <string name="lesson_viewer_none_string">None</string>   
+    
     <!-- HOMEWORK ASSIGN DIALOGS -->
     <string name="dialog_select_exercises_none">None Available</string>
     
@@ -61,6 +64,9 @@
     <!-- WORKLOAD BROWSER FRAGMENT -->
     <string name="workload_browser_all_radio">All</string>
     <string name="workload_browser_day_radio">Day</string>
+    
+    <!-- PROGRESS MENU -->
+    <string name="progress_record_grades">Record Grades</string>
     
     <!-- Properties: REDUNDANT ATM -->
     <string name="core_address">http://192.168.2.7/cloudacademy</string>

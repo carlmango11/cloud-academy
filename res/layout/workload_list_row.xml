@@ -31,7 +31,6 @@
         android:id="@+id/workload_list_row_dropdown"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingLeft="20dp"
         android:orientation="vertical"
         >
     </LinearLayout>

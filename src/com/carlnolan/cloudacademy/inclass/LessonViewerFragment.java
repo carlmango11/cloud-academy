@@ -20,10 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class LessonViewerFragment extends Fragment
@@ -37,10 +40,6 @@ public class LessonViewerFragment extends Fragment
 	 */
 	private boolean weighted;
 	
-	private ImageView headerView;
-	private ImageView footerView;
-	private ImageView rowView;
-	private FrameLayout contentPanel;
 	private TextView noLessonsView;
 	
 	//None views:
@@ -49,6 +48,7 @@ public class LessonViewerFragment extends Fragment
 	
 	private TextView title;
 	private TextView description;
+	private View descriptionBorder;
 	private TextView learningMaterialHeader;
 	private TextView exercisesHeader;
 	private LinearLayout learningMaterialList;
@@ -93,13 +93,20 @@ public class LessonViewerFragment extends Fragment
     	learningMaterialList.removeAllViews();
     	
     	for(int i=0; i<newMaterial.size(); i++) {
-    		View thisView = inflater.inflate(R.layout.learning_material_list_item, null);
+    		View thisView = inflater.inflate(R.layout.learning_material_list_item, learningMaterialList, false);
     		TextView materialTitle = (TextView)thisView.findViewById(R.id.learning_material_list_item_name);
     		TextView materialDescription = (TextView)thisView.findViewById(R.id.learning_material_description);
+    		ImageButton downloadMaterial = (ImageButton)thisView.findViewById(R.id.learning_material_open_content);
+    		
     		materialTitle.setText(newMaterial.get(i).toString());
     		materialDescription.setText(newMaterial.get(i).getDescription());
     		
-    		addContentClickListener(thisView, newMaterial.get(i));
+    		if(newMaterial.get(i).getFilename().length() > 0) {
+        		addContentClickListener(downloadMaterial, newMaterial.get(i));
+        		downloadMaterial.setVisibility(View.VISIBLE);
+    		} else {
+    			downloadMaterial.setVisibility(View.GONE);
+    		}
     		
     		learningMaterialList.addView(thisView);
     	}
@@ -120,10 +127,17 @@ public class LessonViewerFragment extends Fragment
     		View thisView = inflater.inflate(R.layout.exercise_list_item, null);
     		TextView exerciseTitle = (TextView)thisView.findViewById(R.id.exercise_list_item_name);
     		TextView exerciseDescription = (TextView)thisView.findViewById(R.id.exercise_list_item_description);
+    		ImageButton downloadExercise = (ImageButton)thisView.findViewById(R.id.exercise_list_open_content);
+    		
     		exerciseTitle.setText(newExercises.get(i).toString());
     		exerciseDescription.setText(newExercises.get(i).getDescription());
     		
-    		addContentClickListener(thisView, newExercises.get(i));
+    		if(newExercises.get(i).getFilename().length() > 0) {
+        		addContentClickListener(downloadExercise, newExercises.get(i));
+        		downloadExercise.setVisibility(View.VISIBLE);
+    		} else {
+    			downloadExercise.setVisibility(View.GONE);
+    		}
     		
     		exerciseList.addView(thisView);
     	}
@@ -192,14 +206,11 @@ public class LessonViewerFragment extends Fragment
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         
         //Bind xml controls:
-        headerView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_header);
-        contentPanel = (FrameLayout) getActivity().findViewById(R.id.lesson_viewer_content_panel);
-        footerView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_footer);
-        rowView = (ImageView) getActivity().findViewById(R.id.lesson_viewer_row);
         noLessonsView = (TextView) getActivity().findViewById(R.id.lesson_viewer_no_lessons);
         
         title = (TextView) getActivity().findViewById(R.id.lesson_title);
 		description = (TextView) getActivity().findViewById(R.id.lesson_description);
+		descriptionBorder = (View) getActivity().findViewById(R.id.lesson_viewer_description_border);
 		learningMaterialList = (LinearLayout) getActivity().findViewById(R.id.material_list);
 		exerciseList = (LinearLayout) getActivity().findViewById(R.id.exercise_list);
 
@@ -215,9 +226,9 @@ public class LessonViewerFragment extends Fragment
 		//Set typeface of headers
 		Typeface crayonFont = Typeface.createFromAsset(getActivity().getAssets(), "CrayonCrumble.ttf");  
 		learningMaterialHeader = (TextView) getActivity().findViewById(R.id.lesson_viewer_learning_material);
-		learningMaterialHeader.setTypeface(crayonFont);
+		//learningMaterialHeader.setTypeface(crayonFont);
 		exercisesHeader = (TextView) getActivity().findViewById(R.id.lesson_viewer_exercises);
-		exercisesHeader.setTypeface(crayonFont);
+		//exercisesHeader.setTypeface(crayonFont);
 
 		//Show "no lessons selected" message
 		showMainScreen(false);
@@ -256,11 +267,11 @@ public class LessonViewerFragment extends Fragment
 		int mainComps = show ? View.VISIBLE : View.GONE;
 		int noLessonsComps = !show ? View.VISIBLE : View.GONE;
 		
+		title.setVisibility(mainComps);
+		description.setVisibility(mainComps);
+		descriptionBorder.setVisibility(mainComps);
 		learningMaterialHeader.setVisibility(mainComps);
 		exercisesHeader.setVisibility(mainComps);
-		headerView.setVisibility(mainComps);
-		footerView.setVisibility(mainComps);
-		contentPanel.setVisibility(mainComps);
 		
 		noLessonsView.setVisibility(noLessonsComps);
 	}
@@ -284,7 +295,6 @@ public class LessonViewerFragment extends Fragment
 	}	
     
 	private class DownloadLessonMaterial extends AsyncTask<Integer, Void, List<LearningMaterial>> {
-
 		@Override
 		protected List<LearningMaterial> doInBackground(Integer... params) {
 			List<LearningMaterial> ls = WebServiceInterface.getInstance().getLearningMaterial(params[0]);

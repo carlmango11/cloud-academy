@@ -13,6 +13,7 @@ public class AcademyProperties {
 	private String webServiceUrl;
 	private String fileProviderUrl;
 	private String userPhotoProviderUrl;
+	private String chartingUrl;
 	
 	/** App preference key/value keys
 	 */
@@ -40,10 +41,12 @@ public class AcademyProperties {
 	}
 	
 	void readValues() {
+		//coreAddress = "http://cloudacademy.carlnolan.com/";
 		coreAddress = "http://192.168.2.10/cloudacademy";
 		webServiceUrl = coreAddress + "/webservice/";
 		fileProviderUrl = coreAddress + "/fileprovider/getFile.php?";
 		userPhotoProviderUrl = coreAddress + "/fileprovider/getUserPhoto.php?";
+		chartingUrl = coreAddress + "/charts/";
 		
 		authenticationFailure = "null";
 		
@@ -57,6 +60,10 @@ public class AcademyProperties {
 	 */
 	public String getWebServiceUrl() {
 		return webServiceUrl;
+	}
+	
+	public String getChartingUrl() {
+		return chartingUrl;
 	}
 
 	public String getFileProviderUrl() {

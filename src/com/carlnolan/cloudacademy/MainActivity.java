@@ -18,6 +18,7 @@ import com.carlnolan.cloudacademy.inclass.LessonViewerFragment;
 import com.carlnolan.cloudacademy.notifications.HomeworkAssignedNotification;
 import com.carlnolan.cloudacademy.planner.DayViewerFragment;
 import com.carlnolan.cloudacademy.planner.ScheduleFragment;
+import com.carlnolan.cloudacademy.progress.ProgressViewerFragment;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.usermanagement.User;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
@@ -94,6 +95,11 @@ public class MainActivity extends FragmentActivity
     private ExamViewerFragment examViewer;
     private HomeworkViewerFragment homeworkViewer;
     private boolean inHomeworkViewer;
+    
+    /**
+     * Fragments for PROGRESS tab
+     */
+    private ProgressViewerFragment progressFragment;
     
     private GestureDetectorCompat gestureDetector;
 
@@ -233,13 +239,13 @@ public class MainActivity extends FragmentActivity
         } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
         	setUpWorkloadLayout(fragmentTransaction);
         } else {
-        	
+        	setUpProgressLayout(fragmentTransaction);
         }
         
         fragmentTransaction.commit();
     }
-    
-    /**
+
+	/**
      * Sets up the transaction to build the syllabus tab layout
      * @param fragmentTransaction
      */
@@ -339,6 +345,20 @@ public class MainActivity extends FragmentActivity
     		fragmentTransaction.attach(workloadList);
     	}
 	}
+    
+    /**
+     * Sets up the transaction to build the progress tab
+     * I think it will be a lot simpler than the other tabs
+     * @param fragmentTransaction
+     */
+    private void setUpProgressLayout(FragmentTransaction fragmentTransaction) {
+    	if(progressFragment == null) {
+    		progressFragment = new ProgressViewerFragment();
+    		fragmentTransaction.add(leftContainerId, progressFragment);
+    	} else {
+        	fragmentTransaction.attach(progressFragment);
+    	}
+	}
 
 	public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ignore) {
     	Context context = getBaseContext();
@@ -371,6 +391,9 @@ public class MainActivity extends FragmentActivity
         		fragmentTransaction.detach(homeworkViewer);
         	}
         } else {
+        	if(progressFragment != null) {
+        		fragmentTransaction.detach(progressFragment);
+        	}
         }
         
         fragmentTransaction.commit();

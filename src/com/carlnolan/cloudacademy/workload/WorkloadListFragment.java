@@ -16,6 +16,7 @@ import com.carlnolan.cloudacademy.inclass.Homework;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -234,8 +235,9 @@ public class WorkloadListFragment extends Fragment
 		}*/
 		
 		//build the list adapter
+		FragmentManager fm = getActivity().getSupportFragmentManager();
 		WorkloadListAdapter adapter = new WorkloadListAdapter(getActivity(),
-				callback, R.layout.workload_list_row, entries);
+				callback, R.layout.workload_list_row, entries, fm);
 		list.setAdapter(adapter);
 		list.invalidate();
 	}

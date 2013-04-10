@@ -5,9 +5,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,18 +19,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.carlnolan.cloudacademy.R;
+import com.carlnolan.cloudacademy.inclass.ConfirmCompletionDialog;
 import com.carlnolan.cloudacademy.inclass.Homework;
 
-public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> {
+public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry>
+	implements ConfirmCompletionDialog.HomeworkCompleteDialogCallback,
+	Homework.UpdateHomeworkCompletionCallback {
 	private List<WorkloadListAdapterEntry> entries;
 	private Context context;
 	private WorkloadListFragment.WorkloadItemSelectedListener listener;
     private int resourceId;
+    private FragmentManager fragMan;
+    
+    private static final int INCOMPLETE_MARKER = R.drawable.homework_incomplete_marker;
+    private static final int COMPLETE_MARKER = R.drawable.homework_complete_marker;
     
 	public WorkloadListAdapter(Context context,
 			WorkloadListFragment.WorkloadItemSelectedListener l,
 			int resourceId,
-			List<WorkloadListAdapterEntry> entries) {
+			List<WorkloadListAdapterEntry> entries,
+			FragmentManager fm) {
 		
 		super(context, resourceId, entries);
 		
@@ -36,6 +46,7 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 		this.context = context;
 		this.listener = l;
 		this.resourceId = resourceId;
+		fragMan = fm;
 	}
 	
 	@Override
@@ -88,7 +99,7 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 	    	if(!h.isComplete()) {
 	    		homeworkMarker.setImageDrawable(
 	    				context.getResources().getDrawable(
-	    						R.drawable.homework_incomplete_marker));
+	    						INCOMPLETE_MARKER));
 	    	}
 	    	
 	    	//set onclick
@@ -96,6 +107,20 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 	    	homeworkLayout.setOnClickListener(new OnClickListener() {
 				public void onClick(View arg0) {
 					listener.onHomeworkSelected(selectedHomework);
+				}
+	    	});
+	    	
+	    	//set onLongClick
+	    	final ConfirmCompletionDialog.HomeworkCompleteDialogCallback callback =
+					this;
+	    	homeworkLayout.setOnLongClickListener(new OnLongClickListener() {
+				public boolean onLongClick(View v) {
+					//Show dialog asking if homework is finished:
+					ConfirmCompletionDialog confirmDialog
+						= ConfirmCompletionDialog.newInstance(selectedHomework, callback);
+					confirmDialog.show(fragMan, "CONFIRM_COMPLETION_DIALOG");
+					
+					return true;
 				}
 	    	});
 	    	
@@ -118,5 +143,19 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry> 
 		LinearLayout header;
 		TextView dateTextView;
 		LinearLayout dropdown;
+	}
+
+	/**
+	 * Called when the ConfirmCompletion dialog returns
+	 */
+	public void onHomeworkCompleteDialogResponse(Homework updatedHomework, boolean complete) {
+		updatedHomework.setIsCompleteAndUpdate(complete, this);
+	}
+
+	/**
+	 * Called when the homework completion has been updated in the db
+	 */
+	public void homeworkCompletionUpdated() {
+		notifyDataSetChanged();
 	}
 }
