@@ -29,6 +29,11 @@ public class AcademyProperties {
 	 */
 	private User user;
 	
+	/**
+	 * School specific settings
+	 */
+	private int passMinimum;
+	
 	private AcademyProperties() {
 		readValues();
 	}
@@ -42,7 +47,7 @@ public class AcademyProperties {
 	
 	void readValues() {
 		//coreAddress = "http://cloudacademy.carlnolan.com/";
-		coreAddress = "http://192.168.2.10/cloudacademy";
+		coreAddress = "http://192.168.2.11/cloudacademy";
 		webServiceUrl = coreAddress + "/webservice/";
 		fileProviderUrl = coreAddress + "/fileprovider/getFile.php?";
 		userPhotoProviderUrl = coreAddress + "/fileprovider/getUserPhoto.php?";
@@ -53,6 +58,8 @@ public class AcademyProperties {
 		authKeyFilename = "existing_auth.key";
 		
 		user = null;
+		
+		passMinimum = 40;
 	}
 
 	/**
@@ -80,6 +87,10 @@ public class AcademyProperties {
 	
 	public String getAuthKeyFilename() {
 		return authKeyFilename;
+	}
+	
+	public int getPassMinimum() {
+		return passMinimum;
 	}
 
 	/**

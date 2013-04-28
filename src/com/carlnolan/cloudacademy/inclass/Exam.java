@@ -27,6 +27,10 @@ public class Exam {
 		public void examCreated();
 	}
 	
+	public interface DownloadTask {
+		public void cancelTask();
+	}
+	
 	public interface DownloadExamsForRangeListener {
 		public void onExamsForRangeDownloaded(List<Exam> exams);
 	}
@@ -46,8 +50,14 @@ public class Exam {
 		new AddNewExam(callback, thisSession, newName, newDesc).execute();
 	}
 	
-	public static void downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end) {
-		new DownloadExamsForRange(c, start, end).execute();
+	public static DownloadTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end) {
+		return downloadExamsForRange(c, start, end, -1);
+	}
+	
+	public static DownloadTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end, int course) {
+		DownloadExamsForRange t = new DownloadExamsForRange(c, start, end, course);
+		t.execute();
+		return t;
 	}
 	
 	private static class AddNewExam extends AsyncTask<Void, Void, Void> {
@@ -76,22 +86,25 @@ public class Exam {
 		}
 	}
 	
-	private static class DownloadExamsForRange extends AsyncTask<Void, Void, List<Exam>> {
+	private static class DownloadExamsForRange extends AsyncTask<Void, Void, List<Exam>>
+		implements DownloadTask {
 		private DownloadExamsForRangeListener callback;
 		private Calendar start;
 		private Calendar end;
+		private int courseId;
 		
 		DownloadExamsForRange(DownloadExamsForRangeListener c,
-				Calendar s, Calendar e) {
+				Calendar s, Calendar e, int co) {
 			callback = c;
 			start = s;
 			end = e;
+			courseId = co;
 		}
 		
 		@Override
 		protected List<Exam> doInBackground(Void... params) {
 			List<Exam> ls = WebServiceInterface.getInstance()
-					.getExamsForRange(start, end);
+					.getExamsForRange(start, end, courseId);
 			return ls;
 		}
 
@@ -99,6 +112,10 @@ public class Exam {
 		protected void onPostExecute(List<Exam> result) {
 			super.onPostExecute(result);
 			callback.onExamsForRangeDownloaded(result);
+		}
+
+		public void cancelTask() {
+			this.cancel(true);
 		}
 	}
 

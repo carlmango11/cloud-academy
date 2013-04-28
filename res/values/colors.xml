@@ -9,10 +9,12 @@
     <color name="lesson_headers">#e2fd00</color>
     <color name="homework_labels_colour">#0c60dd</color>
     <color name="grey_background">#e6e6e6</color>
-    <color name="lesson_main_colour">#a7322a</color>
     <color name="section_list_divider_colour">#a0a0a0</color>
 
     <!-- LESSON VIEWER -->
+    <color name="lesson_main_colour">#a7322a</color>
+    
+    <!-- HOMEWORK VIEWER -->
     <color name="homework_viewer_main_colour">#29793f</color>
     <color name="homework_viewer_duefor">#8c8c8c</color>
     

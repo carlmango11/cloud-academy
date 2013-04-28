@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <DatePicker
+        android:id="@+id/dialog_select_exam_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:calendarViewShown="false"
+        android:endYear="2100"
+        android:startYear="1900" />
+
+    <ProgressBar
+        android:id="@+id/dialog_select_exam_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_select_exam_date"
+        android:layout_centerHorizontal="true" />
+
+    <ListView
+        android:id="@+id/dialog_select_exam_list"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_below="@id/dialog_select_exam_date" >
+    </ListView>
+
+</RelativeLayout>

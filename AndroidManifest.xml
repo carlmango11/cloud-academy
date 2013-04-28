@@ -63,6 +63,12 @@
 		    android:configChanges="orientation"
 		    android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name="com.carlnolan.cloudacademy.progress.RecordGrades"
+            android:label="@string/title_record_grades_activity"
+		    android:configChanges="orientation"
+		    android:screenOrientation="landscape" >
+        </activity>
         
 	    <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 		  <intent-filter>

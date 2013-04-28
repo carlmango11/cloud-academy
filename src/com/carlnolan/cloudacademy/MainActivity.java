@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
-
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment;
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment.CourseBrowserLessonSelectedListener;
 import com.carlnolan.cloudacademy.courses.Lesson;
@@ -19,8 +17,9 @@ import com.carlnolan.cloudacademy.notifications.HomeworkAssignedNotification;
 import com.carlnolan.cloudacademy.planner.DayViewerFragment;
 import com.carlnolan.cloudacademy.planner.ScheduleFragment;
 import com.carlnolan.cloudacademy.progress.ProgressViewerFragment;
+import com.carlnolan.cloudacademy.progress.SelectExamDialog;
+import com.carlnolan.cloudacademy.progress.SelectCourseDialog;
 import com.carlnolan.cloudacademy.scheduling.Session;
-import com.carlnolan.cloudacademy.usermanagement.User;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.carlnolan.cloudacademy.workload.SwipeRightGestureListener;
 import com.carlnolan.cloudacademy.workload.WorkloadBrowserFragment;
@@ -32,16 +31,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -53,7 +49,9 @@ public class MainActivity extends FragmentActivity
 		HomeworkViewerFragment.HomeworkViewerCallback,
 		WorkloadBrowserFragment.WorkloadDateSelectedListener,
 		WorkloadListFragment.WorkloadItemSelectedListener,
-		SwipeRightGestureListener.RightSwipeListener {
+		SwipeRightGestureListener.RightSwipeListener,
+		SelectCourseDialog.CourseSelectedCallback,
+		SelectExamDialog.ExamToGradeSelectedListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
     public static final String PRESET_TAB_STRING = "PRESET_TAB";
@@ -239,6 +237,7 @@ public class MainActivity extends FragmentActivity
         } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
         	setUpWorkloadLayout(fragmentTransaction);
         } else {
+    		setLayout(ONE_CONTAINER_LAYOUT);
         	setUpProgressLayout(fragmentTransaction);
         }
         
@@ -392,6 +391,7 @@ public class MainActivity extends FragmentActivity
         	}
         } else {
         	if(progressFragment != null) {
+        		setLayout(HALF_HALF_CONTAINER_LAYOUT);
         		fragmentTransaction.detach(progressFragment);
         	}
         }
@@ -492,6 +492,20 @@ public class MainActivity extends FragmentActivity
 		
 		//load homework
 		homeworkViewer.loadHomework(homework);
+	}
+
+	/**
+	 * Called when a course is selected from a dialog in the Progress tab
+	 */
+	public void courseSelected(int id) {
+		progressFragment.recordGradesForCourseId(id);
+	}
+
+	/**
+	 * Called when the user has selected an exam to record grades for 
+	 */
+	public void examToGradeSelected(int id) {
+		progressFragment.recordGradesForExamId(id);
 	}
 
 	/**

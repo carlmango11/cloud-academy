@@ -3,6 +3,8 @@
 	    <item name="android:actionBarStyle">@style/Widget.ActionBar</item>
 	    <item name="android:actionBarTabTextStyle">@style/CloudDark.TabTextStyle</item>
 	    <!-- <item name="android:actionButtonStyle">@style/CloudDark.ActionBarButtonStyle</item> -->
+	    <item name="android:actionMenuTextColor">@android:color/white</item>
+	    <!-- <item name="android:android:actionBarDivider">@drawable/</item> -->
 	</style>
 	
 	<style name="Widget.ActionBar" parent="android:Widget.Holo.Light.ActionBar">

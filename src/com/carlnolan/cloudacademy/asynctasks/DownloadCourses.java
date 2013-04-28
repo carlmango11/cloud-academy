@@ -8,6 +8,11 @@ import com.carlnolan.cloudacademy.configuration.AcademyProperties;
 import com.carlnolan.cloudacademy.courses.Course;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
+/**
+ * Downloads a List of Courses for the current user
+ * @author Carl
+ *
+ */
 public class DownloadCourses extends AsyncTask<Void, Void, ArrayList<Course>> {
 	private OnCoursesDownloadedListener callback;
 	

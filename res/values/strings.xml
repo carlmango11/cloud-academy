@@ -68,6 +68,29 @@
     <!-- PROGRESS MENU -->
     <string name="progress_record_grades">Record Grades</string>
     
+    <!-- PROGRESS FRAGMENT SCREEN -->
+    <string name="progress_radio_all">All</string>
+    <string name="progress_radio_specific">Specific</string>
+    <string name="progress_back">All Courses</string>
+    
+    <!-- SELECT COURSE DIALOG -->
+    <string name="dialog_select_course_cancel">Cancel</string>
+    <string name="dialog_select_course_title">Which Course?</string>
+    
+    <!-- SELECT EXAM TO GRADE DIALOG -->
+    <string name="dialog_select_exam_cancel">Cancel</string>
+    <string name="dialog_select_exam_title">Which Exam?</string>
+    
+    <!-- RECORD GRADES -->
+    <string name="record_grades_finish">Finished</string>
+    <string name="title_record_grades_activity">Record Grades</string>
+    
+    <!-- GRADE STUDENT DIALOG -->
+    <string name="grade_student_dialog_title">Enter Student\'s Grade</string>
+    <string name="grade_student_dialog_cancel">Cancel</string>
+    <string name="grade_student_dialog_save">Save</string>
+    <string name="dialog_grade_student_error">Invalid grade!</string>
+    
     <!-- Properties: REDUNDANT ATM -->
     <string name="core_address">http://192.168.2.7/cloudacademy</string>
     <string name="web_service_url">/webservice/</string>

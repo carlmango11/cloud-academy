@@ -74,7 +74,7 @@ public class Homework extends Exercise {
 		return new ArrayList<Homework>(Arrays.asList(homeworkArray));
 	}
 	
-	private static class DateDeserializer implements JsonDeserializer<Calendar> {
+	public static class DateDeserializer implements JsonDeserializer<Calendar> {
 		public Calendar deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

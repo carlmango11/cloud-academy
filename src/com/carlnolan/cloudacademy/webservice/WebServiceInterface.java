@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -44,6 +45,7 @@ import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.courses.Section;
 import com.carlnolan.cloudacademy.inclass.Exam;
 import com.carlnolan.cloudacademy.inclass.Homework;
+import com.carlnolan.cloudacademy.progress.RecordGrades;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.usermanagement.Student;
 import com.carlnolan.cloudacademy.usermanagement.Teacher;
@@ -261,6 +263,22 @@ public class WebServiceInterface {
         return homework;
 	}
 
+	/**
+	 * Takes an exam and returns the id of the class who took that exam
+	 * @param examId
+	 * @return
+	 */
+	public int getClassIdFromExamId(int examId) {
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("exam", "" + examId));
+       
+        String result = callService(
+        		"getClassIdFromExamId",
+        		nameValuePairs,
+        		true);
+        return Integer.parseInt(result);
+	}
+
 	public List<Homework> getHomeworkDueForRange(Calendar start, Calendar end) {
 		int userId = AcademyProperties.getInstance().getUser().getId();
 		
@@ -284,8 +302,10 @@ public class WebServiceInterface {
         return homework;
 	}
 
-	public List<Exam> getExamsForRange(Calendar start, Calendar end) {
-		int userId = AcademyProperties.getInstance().getUser().getId();
+	public List<Exam> getExamsForRange(Calendar start, Calendar end, int courseId) {
+		User user = AcademyProperties.getInstance().getUser();
+		int userId = user.getId();
+		int isTeacher = user.isTeacher() ? 1 : 0;
 		
 		//Turn calendars into sql strings
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -297,12 +317,14 @@ public class WebServiceInterface {
         nameValuePairs.add(new BasicNameValuePair("userid", "" + userId));
         nameValuePairs.add(new BasicNameValuePair("start", startString));
         nameValuePairs.add(new BasicNameValuePair("end", endString));
+        nameValuePairs.add(new BasicNameValuePair("isteacher", "" + isTeacher));
+        nameValuePairs.add(new BasicNameValuePair("course", "" + courseId));
 
         String json = callService(
         		"getExamsForRange",
         		nameValuePairs,
         		true);
-        
+        System.out.println(json);
         List<Exam> exams = Exam.buildExamsFromJSON(json);
         return exams;
 	}
@@ -343,6 +365,30 @@ public class WebServiceInterface {
        
         callService(
         		"updateHomeworkCompletion",
+        		nameValuePairs,
+        		true);
+	}
+
+	public Map<Integer, Integer> getExistingGrades(int examId) {
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        nameValuePairs.add(new BasicNameValuePair("exam", "" + examId));
+        
+        String json = callService(
+        		"getExistingGrades",
+        		nameValuePairs,
+        		true);
+        
+        return RecordGrades.GradesHolder.buildMapFromGrades(json);
+	}
+
+	public void saveGrade(int examId, int id, int g) {
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("student", "" + id));
+        nameValuePairs.add(new BasicNameValuePair("exam", "" + examId));
+        nameValuePairs.add(new BasicNameValuePair("grade", "" + g));
+        
+        callService(
+        		"saveGrade",
         		nameValuePairs,
         		true);
 	}
@@ -544,6 +590,10 @@ public class WebServiceInterface {
         }
         
         return true;
+	}
+	
+	public String getAuthPostParameters() {
+		return "auth_id=" + authentication.getId() + "&auth_token=" + authentication.getToken();
 	}
 	
 	private String callService(String name, List<NameValuePair> params, boolean withAuthentication)
