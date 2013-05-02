@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class SelectExamDialog extends DialogFragment implements
 	private ProgressBar progress;
 	private DatePicker date;
 	private List<Exam> allExams;
-	private Exam.DownloadTask currentTask;
+	private AsyncTask currentTask;
 	private int courseId;
 
 	public interface ExamToGradeSelectedListener {
@@ -94,7 +95,7 @@ public class SelectExamDialog extends DialogFragment implements
 	private void updateDate() {
 		//if theres an outstanding request cancel it
 		if(currentTask != null) {
-			currentTask.cancelTask();
+			currentTask.cancel(true);
 			currentTask = null;
 		}
 		

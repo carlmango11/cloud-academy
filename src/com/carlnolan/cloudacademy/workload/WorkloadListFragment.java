@@ -1,14 +1,11 @@
 package com.carlnolan.cloudacademy.workload;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDueForRange;
 import com.carlnolan.cloudacademy.inclass.Exam;
@@ -21,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,12 +39,8 @@ public class WorkloadListFragment extends Fragment
 	private String fullWorkloadString;
 	private Calendar expandedDate;
 	
-	/**
-	 * Homework and Exams are d/l'ed simultaneously so I need to wait until both
-	 * are d/l'd. When one downloads it will set this to true. Cos they're both
-	 * running simultaneously
-	 */
-	private boolean otherDownloaded;
+	private Calendar startDate;
+	private Calendar endDate;
 	
 	public interface WorkloadItemSelectedListener {
 		public void onExamSelected(Exam exam);
@@ -94,7 +86,6 @@ public class WorkloadListFragment extends Fragment
 		instance.fullWorkloadString = fullWorkloadString;
 		instance.homework = homework;
 		instance.exams = exams;
-		instance.otherDownloaded = otherDownloaded;
 		instance.isClone = true;
 		
 		return instance;
@@ -152,8 +143,6 @@ public class WorkloadListFragment extends Fragment
 	        	list.setSelectionFromTop(listPos, listTop);
 	        }
 		}
-        
-        otherDownloaded = false;
 	}
 
 	@Override
@@ -169,8 +158,8 @@ public class WorkloadListFragment extends Fragment
 	 */
 	public void setDate(Calendar date) {
 		//get dates for range of homework we want
-		Calendar startDate = Calendar.getInstance();
-		Calendar endDate = Calendar.getInstance();
+		startDate = Calendar.getInstance();
+		endDate = Calendar.getInstance();
 		
 		if(date == null) {
 			//get h/w for next 2 weeks
@@ -183,10 +172,6 @@ public class WorkloadListFragment extends Fragment
 		
 		//fire off asyncs for exam and h/w downloads
 		new DownloadHomeworkDueForRange(this, startDate, endDate).execute();
-		/*the exam async is a static method contained within Exam. I think this is a cleaner way
-		 * of doing it rather than having a load of random asynctasks hanging around. Will do in future
-		 */
-		Exam.downloadExamsForRange(this, startDate, endDate);
 	}
 
 	/**
@@ -209,7 +194,6 @@ public class WorkloadListFragment extends Fragment
 		
 		for(Exam e:exams) {
 			if(!items.containsKey(e.getDate())) {
-				//yes the calendar object seems duplicated. pls ignore
 				items.put(e.getDate(), new WorkloadListAdapterEntry(e.getDate()));
 			}
 			
@@ -244,23 +228,16 @@ public class WorkloadListFragment extends Fragment
 
 	public void onHomeworkRangeDownloaded(List<Homework> result) {
 		homework = result;
-		
-		if(otherDownloaded) {
-			buildList();
-		} else {
-			otherDownloaded = true;
-		}
+
+		/*the exam async is a static method contained within Exam. I think this is a cleaner way
+		 * of doing it rather than having a load of random asynctasks hanging around. Will do in future
+		 */
+		Exam.downloadExamsForRange(this, startDate, endDate);
 	}
 
 	public void onExamsForRangeDownloaded(List<Exam> result) {
 		exams = result;
-		System.out.println("exams:"+result);
-		
-		if(otherDownloaded) {
-			buildList();
-		} else {
-			otherDownloaded = true;
-		}
+		buildList();
 	}
 
 	/**

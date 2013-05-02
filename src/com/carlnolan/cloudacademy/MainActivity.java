@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import com.carlnolan.cloudacademy.configuration.AcademyProperties;
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment;
 import com.carlnolan.cloudacademy.coursebrowser.CourseBrowserFragment.CourseBrowserLessonSelectedListener;
 import com.carlnolan.cloudacademy.courses.Lesson;

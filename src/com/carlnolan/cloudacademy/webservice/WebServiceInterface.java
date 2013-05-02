@@ -36,6 +36,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.carlnolan.cloudacademy.MainActivity;
+import com.carlnolan.cloudacademy.bo.ExamGrade;
 import com.carlnolan.cloudacademy.configuration.AcademyProperties;
 import com.carlnolan.cloudacademy.courses.Content;
 import com.carlnolan.cloudacademy.courses.Course;
@@ -369,6 +370,29 @@ public class WebServiceInterface {
         		true);
 	}
 
+	/**
+	 * Give it a course ID and it will return a list of all grades ever gotten
+	 * for exams in that course
+	 * @param courseId
+	 * @return
+	 */
+	public List<ExamGrade> getGradesForCourse(int courseId) {
+		int userId = AcademyProperties.getInstance().getUser().getId();
+		
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+        nameValuePairs.add(new BasicNameValuePair("course", "" + courseId));
+        nameValuePairs.add(new BasicNameValuePair("user", "" + userId));
+        addIsTeacherParameter(nameValuePairs);
+        
+        String json = callService(
+        		"getGradesForCourse",
+        		nameValuePairs,
+        		true);
+        
+        List<ExamGrade> grades = ExamGrade.buildExamGradesFromJSON(json);
+        return grades;
+	}
+
 	public Map<Integer, Integer> getExistingGrades(int examId) {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
         nameValuePairs.add(new BasicNameValuePair("exam", "" + examId));
@@ -410,7 +434,7 @@ public class WebServiceInterface {
 	}
 
 	public void addNewExam(String name, String desc, int id) {
-		// Add your data
+		// Add data
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
         nameValuePairs.add(new BasicNameValuePair("name", name));
         nameValuePairs.add(new BasicNameValuePair("description", desc));

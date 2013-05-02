@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.os.AsyncTask;
 
+import com.carlnolan.cloudacademy.inclass.Homework.DateDeserializer;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.scheduling.Session.CalendarDeserializer;
 import com.carlnolan.cloudacademy.scheduling.Session.DownloadExamsCallback;
@@ -21,14 +22,10 @@ public class Exam {
 	private String courseName;
 	private int courseId;
 	private int sessionId;
-	private Calendar date;
+	private Calendar time;
 	
 	public interface ExamCreatedListener {
 		public void examCreated();
-	}
-	
-	public interface DownloadTask {
-		public void cancelTask();
 	}
 	
 	public interface DownloadExamsForRangeListener {
@@ -37,9 +34,8 @@ public class Exam {
 	
 	public static List<Exam> buildExamsFromJSON(String json) {
 		Gson gson = new GsonBuilder()
-			.registerTypeAdapter(Calendar.class, new CalendarDeserializer())
+			.registerTypeAdapter(Calendar.class, new Homework.DateDeserializer())
 			.create();
-		
 		Exam [] examArray = gson.fromJson(json, Exam[].class);
 		
 		return new ArrayList<Exam>(Arrays.asList(examArray));
@@ -50,11 +46,11 @@ public class Exam {
 		new AddNewExam(callback, thisSession, newName, newDesc).execute();
 	}
 	
-	public static DownloadTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end) {
+	public static AsyncTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end) {
 		return downloadExamsForRange(c, start, end, -1);
 	}
 	
-	public static DownloadTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end, int course) {
+	public static AsyncTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end, int course) {
 		DownloadExamsForRange t = new DownloadExamsForRange(c, start, end, course);
 		t.execute();
 		return t;
@@ -86,8 +82,7 @@ public class Exam {
 		}
 	}
 	
-	private static class DownloadExamsForRange extends AsyncTask<Void, Void, List<Exam>>
-		implements DownloadTask {
+	private static class DownloadExamsForRange extends AsyncTask<Void, Void, List<Exam>> {
 		private DownloadExamsForRangeListener callback;
 		private Calendar start;
 		private Calendar end;
@@ -112,10 +107,6 @@ public class Exam {
 		protected void onPostExecute(List<Exam> result) {
 			super.onPostExecute(result);
 			callback.onExamsForRangeDownloaded(result);
-		}
-
-		public void cancelTask() {
-			this.cancel(true);
 		}
 	}
 
@@ -211,13 +202,13 @@ public class Exam {
 	 * @return the date
 	 */
 	public Calendar getDate() {
-		return date;
+		return time;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
 	public void setDate(Calendar date) {
-		this.date = date;
+		this.time = date;
 	}
 }

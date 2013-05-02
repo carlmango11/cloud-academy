@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_student_grade_report_course"
+        android:layout_alignParentLeft="true"
+        android:text="LC Biology"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_student_grade_report_date"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/dialog_student_grade_report_course"
+        android:text="Taken 12th September 2012"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_student_grade_report_grade"
+        android:layout_alignParentRight="true"
+        android:text="66%"
+        android:textSize="40sp" />
+
+</RelativeLayout>

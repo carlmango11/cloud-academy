@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.inclass.ConfirmCompletionDialog;
+import com.carlnolan.cloudacademy.inclass.Exam;
 import com.carlnolan.cloudacademy.inclass.Homework;
 
 public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry>
@@ -76,10 +77,12 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry>
 	    //set the values
 	    WorkloadListAdapterEntry thisEntry = entries.get(position);
 	    List<Homework> homework = thisEntry.getHomework();
+	    List<Exam> exams = thisEntry.getExams();
 	    
 	    //set the date:
 	    //format first:
 	    SimpleDateFormat formatter = new SimpleDateFormat("d MMMMMMMM yyyy");
+	    System.out.println(thisEntry.getDate());
 		String dateString = formatter.format(thisEntry.getDate().getTime());
 	    holder.dateTextView.setText(dateString);
 	    
@@ -126,6 +129,28 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry>
 	    	
 	    	//add to the linearlayout
 	    	holder.dropdown.addView(homeworkLayout);
+	    }
+	    
+	    for(Exam e:exams) {
+	    	//inflate the views, find views
+	    	RelativeLayout examLayout = (RelativeLayout) inflater.inflate(R.layout.workload_list_exam_item, null);
+	    	TextView examName = (TextView) examLayout.findViewById(R.id.workload_list_exam_name);
+	    	TextView examSubject = (TextView) examLayout.findViewById(R.id.workload_list_exam_subject_name);
+	    	
+	    	//set values:
+	    	examName.setText(e.toString());
+	    	examSubject.setText(e.getCourseName());
+	    	
+	    	//set onclick
+	    	final Exam selectedExam = e;
+	    	examLayout.setOnClickListener(new OnClickListener() {
+				public void onClick(View arg0) {
+					listener.onExamSelected(selectedExam);
+				}
+	    	});
+	    	
+	    	//add to the linearlayout
+	    	holder.dropdown.addView(examLayout);
 	    }
 	    
 	    //set the visiblity

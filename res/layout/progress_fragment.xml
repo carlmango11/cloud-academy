@@ -8,8 +8,8 @@
         android:id="@+id/progress_flipper"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/progress_graph_view"
-        android:layout_alignParentLeft="true" >
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/progress_graph_view" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,11 +20,11 @@
                 android:id="@+id/progress_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/all_day_radio_background"
                 android:orientation="horizontal"
-                android:layout_centerHorizontal="true"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp" >
+                android:padding="10dp" >
 
                 <RadioButton
                     android:id="@+id/progress_radio_all"
@@ -47,40 +47,37 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </RadioGroup>
-            
-            <ListView 
-                    android:id="@+id/progress_course_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/progress_radio_group"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toLeftOf="@id/progress_graph_view"
-                    android:background="@color/White"
-                />
+
+            <ListView
+                android:id="@+id/progress_course_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/progress_radio_group"
+                android:layout_toLeftOf="@id/progress_graph_view"
+                android:background="@color/White" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="10dp" >
-            
+
             <Button
                 android:id="@+id/progress_back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/progress_back"
-                android:layout_marginBottom="10dp" />
-            
-            <ListView 
-                    android:id="@+id/progress_exam_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/progress_back"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toLeftOf="@id/progress_graph_view"
-                    android:background="@color/White"
-                />
-            
+                android:layout_marginBottom="10dp"
+                android:text="@string/progress_back" />
+
+            <ListView
+                android:id="@+id/progress_exam_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/progress_back"
+                android:layout_toLeftOf="@id/progress_graph_view"
+                android:background="@color/White" />
         </RelativeLayout>
     </ViewFlipper>
 
