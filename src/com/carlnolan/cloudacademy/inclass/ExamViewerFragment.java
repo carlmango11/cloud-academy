@@ -1,17 +1,21 @@
 package com.carlnolan.cloudacademy.inclass;
 
+import java.text.SimpleDateFormat;
+
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.coursebrowser.FullBrowserActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ExamViewerFragment extends Fragment {
@@ -19,7 +23,8 @@ public class ExamViewerFragment extends Fragment {
 	
 	private TextView title;
 	private TextView description;
-	private Button course;
+	private TextView details;
+	private ImageButton course;
 
 	public static ExamViewerFragment newInstance() {
 		ExamViewerFragment instance = new ExamViewerFragment();
@@ -42,8 +47,9 @@ public class ExamViewerFragment extends Fragment {
 		super.onStart();
 		
 		title = (TextView) getActivity().findViewById(R.id.exam_title);
-		description = (TextView) getActivity().findViewById(R.id.exam_description_text);
-		course = (Button) getActivity().findViewById(R.id.exam_course_button);
+		description = (TextView) getActivity().findViewById(R.id.exam_description);
+		course = (ImageButton) getActivity().findViewById(R.id.exam_go_button);
+		details = (TextView) getActivity().findViewById(R.id.exam_from_box_details);
 	}
 	
 	/**
@@ -55,7 +61,10 @@ public class ExamViewerFragment extends Fragment {
 		
 		title.setText(currentExam.getName());
 		description.setText(currentExam.getDescription());
-		course.setText(currentExam.getCourseName());
+		
+	    SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy");
+		String dateString = formatter.format(exam.getDate().getTime());
+		details.setText(exam.getCourseName() + "\n" + dateString);
 		
 		//Set up course button to open the course browser on the relevant course
 		course.setOnClickListener(new OnClickListener() {

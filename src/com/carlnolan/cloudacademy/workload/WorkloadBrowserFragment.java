@@ -89,6 +89,13 @@ public class WorkloadBrowserFragment extends Fragment {
 			day.setChecked(true);
 			selectedDate = null;
 		}
+		
+		//set the calendar as enabled/disabled depending on which radio is selected
+		if(all.isChecked()) {
+			setCalendarEnabled(false);
+		} else {
+			setCalendarEnabled(true);
+		}
 	}
 
 	private void setCalendarEnabled(boolean b) {

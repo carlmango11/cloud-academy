@@ -82,7 +82,6 @@ public class WorkloadListAdapter extends ArrayAdapter<WorkloadListAdapterEntry>
 	    //set the date:
 	    //format first:
 	    SimpleDateFormat formatter = new SimpleDateFormat("d MMMMMMMM yyyy");
-	    System.out.println(thisEntry.getDate());
 		String dateString = formatter.format(thisEntry.getDate().getTime());
 	    holder.dateTextView.setText(dateString);
 	    

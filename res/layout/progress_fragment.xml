@@ -56,6 +56,16 @@
                 android:layout_below="@id/progress_radio_group"
                 android:layout_toLeftOf="@id/progress_graph_view"
                 android:background="@color/White" />
+            
+            <ProgressBar
+                android:id="@+id/progress_course_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/progress_radio_group"
+                android:layout_toLeftOf="@id/progress_graph_view"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -78,6 +88,17 @@
                 android:layout_below="@id/progress_back"
                 android:layout_toLeftOf="@id/progress_graph_view"
                 android:background="@color/White" />
+            
+            <ProgressBar
+                android:id="@+id/progress_grade_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/progress_back"
+                android:layout_toLeftOf="@id/progress_graph_view"
+                android:visibility="gone" />
+            
         </RelativeLayout>
     </ViewFlipper>
 

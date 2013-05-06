@@ -70,7 +70,6 @@ public class Lesson implements Parcelable {
     };
     
     private Lesson(Parcel in) {
-    	Log.d("cloudacademy", "Rebuilding Lesson from parcel");
     	id = in.readInt();
     	name = in.readString();
     	description = in.readString();
@@ -78,7 +77,17 @@ public class Lesson implements Parcelable {
     
     @Override
     public boolean equals(Object o) {
-    	Lesson l = (Lesson) o;
+    	Lesson l = null;
+    	try {
+    		l = (Lesson) o;
+    	} catch(ClassCastException e) {
+    		return false;
+    	}
+    	
+    	if(l == null) {
+    		return false;
+    	}
+    	
     	return this.getId() == l.getId();
     }
     

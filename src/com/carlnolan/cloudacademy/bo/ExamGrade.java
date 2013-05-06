@@ -26,7 +26,7 @@ public class ExamGrade {
 		Gson gson = new GsonBuilder()
     		.registerTypeAdapter(Calendar.class, new Homework.DateDeserializer())
 			.create();
-		System.out.println(json);
+		
 		ExamGrade [] gradeArray = gson.fromJson(json, ExamGrade[].class);
 		
 		return new ArrayList<ExamGrade>(Arrays.asList(gradeArray));

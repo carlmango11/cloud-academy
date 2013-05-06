@@ -14,6 +14,8 @@ public class AcademyProperties {
 	private String fileProviderUrl;
 	private String userPhotoProviderUrl;
 	private String chartingUrl;
+	private String studentChart;
+	private String teacherChart;
 	
 	/** App preference key/value keys
 	 */
@@ -52,6 +54,8 @@ public class AcademyProperties {
 		fileProviderUrl = coreAddress + "/fileprovider/getFile.php?";
 		userPhotoProviderUrl = coreAddress + "/fileprovider/getUserPhoto.php?";
 		chartingUrl = coreAddress + "/charts/";
+		studentChart = "studentGradeProgress.php";
+		teacherChart = "teacherGradeProgress.php";
 		
 		authenticationFailure = "null";
 		
@@ -70,7 +74,14 @@ public class AcademyProperties {
 	}
 	
 	public String getChartingUrl() {
-		return chartingUrl;
+		String url = chartingUrl;
+		
+		if(getUser().isTeacher()) {
+			url += teacherChart;
+		} else {
+			url += studentChart;
+		}
+		return url;
 	}
 
 	public String getFileProviderUrl() {

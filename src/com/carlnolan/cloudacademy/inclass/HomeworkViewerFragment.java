@@ -38,8 +38,6 @@ public class HomeworkViewerFragment extends Fragment
 	private Homework currentHomework;
 	private HomeworkViewerCallback callback;
 	
-	private RelativeLayout contentPanel;
-	
 	private TextView title;
 	private TextView description;
 	private TextView fromLesson;
@@ -113,9 +111,6 @@ public class HomeworkViewerFragment extends Fragment
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        
-        //Bind xml controls:
-        contentPanel = (RelativeLayout) getActivity().findViewById(R.id.homework_viewer_content_panel);
         
         title = (TextView) getActivity().findViewById(R.id.homework_title);
 		description = (TextView) getActivity().findViewById(R.id.homework_description);

@@ -441,7 +441,6 @@ public class InClassViewer extends FragmentActivity
 	 */
 	public void onExamSelected(String name, String description) {
 		//we need to save the new exam
-		System.out.println(name +" " + description);
 		Exam.addNewExam(this, currentSession, name, description);
 	}
 

@@ -11,6 +11,7 @@ import com.carlnolan.cloudacademy.asynctasks.DownloadHomeworkDueForRange;
 import com.carlnolan.cloudacademy.inclass.Exam;
 import com.carlnolan.cloudacademy.inclass.Homework;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class WorkloadListFragment extends Fragment
@@ -29,6 +31,7 @@ public class WorkloadListFragment extends Fragment
 	private int preselectedHomework;
 	private WorkloadItemSelectedListener callback;
 	
+	private ProgressBar progress;
 	private ListView list;
 	private TextView dueDateView;
 	private List<Homework> homework;
@@ -41,6 +44,9 @@ public class WorkloadListFragment extends Fragment
 	
 	private Calendar startDate;
 	private Calendar endDate;
+	
+	//The currently executing async task, stored in case we want to cancel
+	private AsyncTask currentTask;
 	
 	public interface WorkloadItemSelectedListener {
 		public void onExamSelected(Exam exam);
@@ -123,6 +129,9 @@ public class WorkloadListFragment extends Fragment
 		//get strings for header:
 		fullWorkloadString = getActivity().getString(R.string.workload_list_full_workload);
 		
+		//progress spinny "bar"
+		progress = (ProgressBar) getActivity().findViewById(R.id.workload_list_progress);
+		
 		dueDateView = (TextView) getActivity().findViewById(R.id.workload_list_viewer_due_date);
 		dueDateView.setText(fullWorkloadString);
 
@@ -170,8 +179,17 @@ public class WorkloadListFragment extends Fragment
 			endDate = date;
 		}
 		
+		//empty the lists and show the spinner thing
+		progress.setVisibility(View.VISIBLE);
+		list.setAdapter(null);
+		
+		//check if theres an outstanding request
+		if(currentTask != null) {
+			//cancel it
+			currentTask.cancel(true);
+		}
 		//fire off asyncs for exam and h/w downloads
-		new DownloadHomeworkDueForRange(this, startDate, endDate).execute();
+		currentTask = new DownloadHomeworkDueForRange(this, startDate, endDate).execute();
 	}
 
 	/**
@@ -211,7 +229,6 @@ public class WorkloadListFragment extends Fragment
 			for(int i=0;i<entries.size();i++) {
 				if(entries.get(i).isSameDay(expandedDate)) {
 					entries.get(i).setExpanded(true);
-					System.out.println("found");
 					break;
 				}
 			}
@@ -227,16 +244,19 @@ public class WorkloadListFragment extends Fragment
 	}
 
 	public void onHomeworkRangeDownloaded(List<Homework> result) {
+		currentTask = null;
 		homework = result;
 
 		/*the exam async is a static method contained within Exam. I think this is a cleaner way
 		 * of doing it rather than having a load of random asynctasks hanging around. Will do in future
 		 */
-		Exam.downloadExamsForRange(this, startDate, endDate);
+		currentTask = Exam.downloadExamsForRange(this, startDate, endDate);
 	}
 
 	public void onExamsForRangeDownloaded(List<Exam> result) {
+		currentTask = null;
 		exams = result;
+		progress.setVisibility(View.GONE);
 		buildList();
 	}
 

@@ -78,7 +78,8 @@ public class WebServiceInterface {
 				new WebServiceInterface(
 						AcademyProperties.getInstance().getWebServiceUrl());
 		
-		String passwordHash = md5(password);
+		String passwordHash = sha1(password);
+		System.out.println(passwordHash);
 		
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("username", username));
@@ -259,7 +260,7 @@ public class WebServiceInterface {
         		"getHomeworkDue",
         		nameValuePairs,
         		true);
-        
+
         List<Homework> homework = Homework.buildHomeworkFromJSON(json);
         return homework;
 	}
@@ -325,7 +326,7 @@ public class WebServiceInterface {
         		"getExamsForRange",
         		nameValuePairs,
         		true);
-        System.out.println(json);
+        
         List<Exam> exams = Exam.buildExamsFromJSON(json);
         return exams;
 	}
@@ -681,13 +682,13 @@ public class WebServiceInterface {
         nameValuePairs.add(new BasicNameValuePair("isTeacher", isTeacher));
 	}
 	
-	public static String md5(String string) {
+	public static String sha1(String string) {
 	    byte [] hash = {};
 
 	    try {
-	        hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+	        hash = MessageDigest.getInstance("SHA-1").digest(string.getBytes("UTF-8"));
 	    } catch (NoSuchAlgorithmException e) {
-	        Log.d("cloudacademy", "MD5 not supported. Cannot authenticate user");
+	        Log.d("cloudacademy", "SHA-1 not supported. Cannot authenticate user");
 	    } catch (UnsupportedEncodingException e) {
 	        Log.d("cloudacademy", "UTF-8 not supported");
 	    }

@@ -95,6 +95,7 @@ public class MainActivity extends FragmentActivity
     private ExamViewerFragment examViewer;
     private HomeworkViewerFragment homeworkViewer;
     private boolean inHomeworkViewer;
+    private boolean inExamViewer;
     
     /**
      * Fragments for PROGRESS tab
@@ -167,7 +168,7 @@ public class MainActivity extends FragmentActivity
      */
 	@Override
 	public void onBackPressed() {
-		if(inWorkloadAndHomeworkViewer()) {
+		if(inWorkloadAndHomeworkExamViewer()) {
 			returnToWorkloadBrowser();
 		} else {
 			super.onBackPressed();
@@ -185,6 +186,7 @@ public class MainActivity extends FragmentActivity
 
 	@Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
             getActionBar().setSelectedNavigationItem(
                     savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
@@ -193,6 +195,7 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
                 getActionBar().getSelectedNavigationIndex());
     }
@@ -305,6 +308,11 @@ public class MainActivity extends FragmentActivity
     		homeworkViewer = HomeworkViewerFragment.newInstance();
     		fragmentTransaction.add(rightContainerId, homeworkViewer);
     		fragmentTransaction.detach(homeworkViewer);
+    	}
+    	if(examViewer == null) {
+    		examViewer = ExamViewerFragment.newInstance();
+    		fragmentTransaction.add(rightContainerId, examViewer);
+    		fragmentTransaction.detach(examViewer);
     	}
     	//TODO: Optimise the transaction by calling detach later on
     	
@@ -479,8 +487,12 @@ public class MainActivity extends FragmentActivity
 	 * it should show the exam
 	 */
 	public void onExamSelected(Exam exam) {
-		// TODO Auto-generated method stub
+		if(!inExamViewer) {
+			goToExamViewer();
+		}
 		
+		//load homework
+		examViewer.loadExam(exam);
 	}
 
 	/**
@@ -514,16 +526,16 @@ public class MainActivity extends FragmentActivity
 	 * Called when the GestureDetector detects a swipe from left to right
 	 */
 	public void onSwipeRight() {
-		if(inWorkloadAndHomeworkViewer()) {
+		if(inWorkloadAndHomeworkExamViewer()) {
 			returnToWorkloadBrowser();
 		}
 	}
 	
-	private boolean inWorkloadAndHomeworkViewer() {
+	private boolean inWorkloadAndHomeworkExamViewer() {
 		ActionBar.Tab tab = actionBar.getSelectedTab();
 		
 		boolean thirdPanelShowing =
-				inHomeworkViewer;
+				inHomeworkViewer || inExamViewer;
 		//the swipe should only happen if we're in the workload tab
 		// and the homework viewer is actually showing
 		 return tab.getText().equals(getString(R.string.title_workload_tab))
@@ -552,7 +564,13 @@ public class MainActivity extends FragmentActivity
 
 		ft.remove(workloadList);
 		ft.add(rightContainerId, tempInstance);
-		ft.detach(homeworkViewer);
+		
+		//detach whichever fragment is attached
+		if(inHomeworkViewer) {
+			ft.detach(homeworkViewer);
+		} else if(inExamViewer) {
+			ft.detach(examViewer);
+		}
     	ft.attach(workloadBrowser);
 		
 		ft.commit();
@@ -563,6 +581,7 @@ public class MainActivity extends FragmentActivity
 		
 		//no longer in homework viewer
 		inHomeworkViewer = false;
+		inExamViewer = false;
 	}
 
 	private void goToHomeworkViewer(Calendar presetDueDate) {
@@ -575,6 +594,21 @@ public class MainActivity extends FragmentActivity
 				R.anim.slide_out_left);
 
 		setTransactionForHomeworkViewer(ft, true);
+		
+		ft.commit();
+		manager.executePendingTransactions();
+	}
+
+	private void goToExamViewer() {
+		FragmentManager manager = getSupportFragmentManager();
+		FragmentTransaction ft = manager.beginTransaction();
+
+		//set up animations:
+		ft.setCustomAnimations(
+				R.anim.slide_in_right,
+				R.anim.slide_out_left);
+
+		setTransactionForExamViewer(ft, true);
 		
 		ft.commit();
 		manager.executePendingTransactions();
@@ -603,5 +637,26 @@ public class MainActivity extends FragmentActivity
 
 		//were now in homework viewer
 	    inHomeworkViewer = true;
+	    inExamViewer = false;
+	}
+	
+	private void setTransactionForExamViewer(FragmentTransaction ft, boolean clone) {
+		//New instance of workloadList for moving to left
+	    WorkloadListFragment oldInstance = workloadList;
+	    
+	    if(clone) {
+	    	workloadList = oldInstance.cloneInstance();
+	    } else {
+	    	workloadList = WorkloadListFragment.newInstance();
+	    }
+	    
+		ft.remove(oldInstance);
+		ft.add(leftContainerId, workloadList);
+		ft.detach(workloadBrowser);
+		ft.attach(examViewer);
+
+		//were now in homework viewer
+	    inHomeworkViewer = false;
+	    inExamViewer = true;
 	}
 }

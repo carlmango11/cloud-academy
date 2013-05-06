@@ -21,6 +21,9 @@
     <!-- WORKLOAD LIST -->
     <color name="workload_list_exam_background">#c55555</color>
     
+    <!-- EXAM VIEWER -->
+    <color name="exam_viewer_main_colour">#61077f</color>
+    
     <!-- Standard Web Colours: -->
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>

@@ -88,34 +88,6 @@ public class SessionOverviewFragment extends Fragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		if(savedInstanceState != null) {
-			int id = savedInstanceState.getInt("selectedId");
-			
-			restoreSelected(id);
-		}
-	}
-	
-	//DONT WORK NO GOOD
-	public void restoreSelected(int id) {
-		if(lessons != null) {
-			for(LessonListItem l:lessons) {
-				if(l.getId() == id) {
-					selectedItem = l;
-					l.setSelected(true);
-					return;
-				}
-			}
-		}
-		if(homework != null) {
-			for(HomeworkListItem h:homework) {
-				if(h.getId() == id) {
-					selectedItem = h;
-					h.setSelected(true);
-					return;
-				}
-			}
-		}
 	}
 
 	public void updateLessonListList(ArrayList<Lesson> result) {
@@ -129,11 +101,6 @@ public class SessionOverviewFragment extends Fragment
     		lessons.add(thisItem);
     		
     		lessonsToCoverList.addView(thisItem.getView());
-    		
-    		//Select the first lesson
-    		if(i == 0) {
-    			thisItem.setSelected(true);
-    		}
     	}
 
     	//if empty:
@@ -142,6 +109,9 @@ public class SessionOverviewFragment extends Fragment
     	} else {
     		noLessons.setVisibility(View.GONE);
     	}
+
+    	//download homework now
+		new DownloadHomeworkDue(this).execute(session);
 	}
 
 	public void updateHomeworkList(List<Homework> result) {
@@ -205,12 +175,6 @@ public class SessionOverviewFragment extends Fragment
 					+ " upcoming! must implement SessionOverviewFragment.OnSessionChangedListener");
 		}
 	}
-	
-	@Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("selectedId", selectedItem.getId());
-    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -245,13 +209,14 @@ public class SessionOverviewFragment extends Fragment
 	public void downloadSessionData() {
 		if(session != null) {
 			new DownloadLessons().execute(session.getId());
-			new DownloadHomeworkDue(this).execute(session);
-			session.downloadExams(this);
 		}
 	}
 
 	public void onHomeworkDownloaded(List<Homework> result) {
 		updateHomeworkList(result);
+		
+		//finally download exams
+		session.downloadExams(this);
 	}
 
 	public void updateHomeworkCompletionState(Homework newHomework) {
@@ -268,10 +233,41 @@ public class SessionOverviewFragment extends Fragment
 	 */
 	public void examsDownloaded(List<Exam> exams) {
 		updateExamList(exams);
+		
+		//now that they're all downloaded we can select a preselected one
+		reselectSelectedItem();
+	}
+	
+	/**
+	 * Checks to see if there was an item in the list that
+	 * was already selected and selects it
+	 */
+	private void reselectSelectedItem() {
+		//Select the first lesson
+        if(selectedItem != null) {
+        	//reselect the selected item
+        	List<Selectable> items = new ArrayList<Selectable>(lessons.size() + homework.size() + exams.size());
+        	items.addAll(lessons);
+        	items.addAll(homework);
+        	items.addAll(exams);
+        	
+        	int i=0;
+        	while(i<items.size()) {
+    			System.out.println("NO FIND " + selectedItem.getId());
+        		if(items.get(i).equals(selectedItem)) {
+        			System.out.println("FOUND SELECTED " + selectedItem.getId());
+        			items.get(i).setSelected(true);
+        			break;
+        		}
+        		i++;
+        	}
+        } else if(lessons.size() > 0) {
+			//just selected the first lesson if there is one
+        	lessons.get(0).setSelected(true);
+		}
 	}
     
 	private class DownloadLessons extends AsyncTask<Integer, Void, ArrayList<Lesson>> {
-
 		@Override
 		protected ArrayList<Lesson> doInBackground(Integer... params) {
 			ArrayList<Lesson> ls = WebServiceInterface.getInstance()
@@ -336,6 +332,16 @@ public class SessionOverviewFragment extends Fragment
 
 		public int getId() {
 			return lesson.getId();
+		}
+		
+		public boolean equals(Object o) {
+			LessonListItem e = null;
+			try {
+	    		e = (LessonListItem) o;
+	    	} catch(ClassCastException ex) {
+	    		return false;
+	    	}
+			return lesson.getId() == e.getId();
 		}
 	}
 	
@@ -411,6 +417,16 @@ public class SessionOverviewFragment extends Fragment
 		public int getId() {
 			return homework.getId();
 		}
+		
+		public boolean equals(Object o) {
+			HomeworkListItem e = null;
+			try {
+	    		e = (HomeworkListItem) o;
+	    	} catch(ClassCastException ex) {
+	    		return false;
+	    	}
+			return homework.getId() == e.getId();
+		}
 	}
 	
 	private class ExamListItem implements Selectable {
@@ -462,6 +478,16 @@ public class SessionOverviewFragment extends Fragment
 		public int getId() {
 			return exam.getId();
 		}
+		
+		public boolean equals(Object o) {
+			ExamListItem e = null;
+			try {
+	    		e = (ExamListItem) o;
+	    	} catch(ClassCastException ex) {
+	    		return false;
+	    	}
+			return exam.getId() == e.getId();
+		}
 	}
 	
 	public interface Selectable {
@@ -469,5 +495,6 @@ public class SessionOverviewFragment extends Fragment
 		boolean isLessonListItem();
 		boolean isHomeworkItem();
 		int getId();
+		boolean equals(Object o);
 	}
 }

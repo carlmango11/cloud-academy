@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.os.AsyncTask;
 
+import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.inclass.Homework.DateDeserializer;
 import com.carlnolan.cloudacademy.scheduling.Session;
 import com.carlnolan.cloudacademy.scheduling.Session.CalendarDeserializer;
@@ -20,58 +21,79 @@ public class Exam {
 	private String name;
 	private String description;
 	private String courseName;
+	private String className;
 	private int courseId;
 	private int sessionId;
 	private Calendar time;
-	
+
 	public interface ExamCreatedListener {
 		public void examCreated();
 	}
-	
+
 	public interface DownloadExamsForRangeListener {
 		public void onExamsForRangeDownloaded(List<Exam> exams);
 	}
-	
+
 	public static List<Exam> buildExamsFromJSON(String json) {
-		Gson gson = new GsonBuilder()
-			.registerTypeAdapter(Calendar.class, new Homework.DateDeserializer())
-			.create();
-		Exam [] examArray = gson.fromJson(json, Exam[].class);
-		
+		Gson gson = new GsonBuilder().registerTypeAdapter(Calendar.class,
+				new Homework.DateDeserializer()).create();
+		Exam[] examArray = gson.fromJson(json, Exam[].class);
+
 		return new ArrayList<Exam>(Arrays.asList(examArray));
 	}
 
-	public static void addNewExam(ExamCreatedListener callback, Session thisSession, String newName,
-			String newDesc) {
+	public static void addNewExam(ExamCreatedListener callback,
+			Session thisSession, String newName, String newDesc) {
 		new AddNewExam(callback, thisSession, newName, newDesc).execute();
 	}
 	
-	public static AsyncTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end) {
+	public boolean equals(Object o) {
+		Exam e = null;
+    	try {
+    		e = (Exam) o;
+    	} catch(ClassCastException ex) {
+    		return false;
+    	}
+    	
+    	if(e == null) {
+    		return false;
+    	}
+    	
+    	return this.getId() == e.getId();
+	}
+
+	public static AsyncTask downloadExamsForRange(
+			DownloadExamsForRangeListener c, Calendar start, Calendar end) {
 		return downloadExamsForRange(c, start, end, -1);
 	}
-	
-	public static AsyncTask downloadExamsForRange(DownloadExamsForRangeListener c, Calendar start, Calendar end, int course) {
-		DownloadExamsForRange t = new DownloadExamsForRange(c, start, end, course);
+
+	public static AsyncTask downloadExamsForRange(
+			DownloadExamsForRangeListener c, Calendar start, Calendar end,
+			int course) {
+		DownloadExamsForRange t = new DownloadExamsForRange(c, start, end,
+				course);
 		t.execute();
 		return t;
 	}
-	
+
 	private static class AddNewExam extends AsyncTask<Void, Void, Void> {
 		private ExamCreatedListener callback;
 		private String examName;
 		private String examDescription;
 		private Session session;
-		
-		public AddNewExam(ExamCreatedListener callback0, Session session0, String name0, String desc0) {
+
+		public AddNewExam(ExamCreatedListener callback0, Session session0,
+				String name0, String desc0) {
 			callback = callback0;
 			examName = name0;
 			examDescription = desc0;
 			session = session0;
 		}
-		
+
 		@Override
 		protected Void doInBackground(Void... params) {
-			WebServiceInterface.getInstance().addNewExam(examName, examDescription, session.getId());
+			WebServiceInterface.getInstance().addNewExam(examName,
+					examDescription, session.getId());
 			return null;
 		}
 
@@ -81,25 +103,26 @@ public class Exam {
 			callback.examCreated();
 		}
 	}
-	
-	private static class DownloadExamsForRange extends AsyncTask<Void, Void, List<Exam>> {
+
+	private static class DownloadExamsForRange extends
+			AsyncTask<Void, Void, List<Exam>> {
 		private DownloadExamsForRangeListener callback;
 		private Calendar start;
 		private Calendar end;
 		private int courseId;
-		
-		DownloadExamsForRange(DownloadExamsForRangeListener c,
-				Calendar s, Calendar e, int co) {
+
+		DownloadExamsForRange(DownloadExamsForRangeListener c, Calendar s,
+				Calendar e, int co) {
 			callback = c;
 			start = s;
 			end = e;
 			courseId = co;
 		}
-		
+
 		@Override
 		protected List<Exam> doInBackground(Void... params) {
-			List<Exam> ls = WebServiceInterface.getInstance()
-					.getExamsForRange(start, end, courseId);
+			List<Exam> ls = WebServiceInterface.getInstance().getExamsForRange(
+					start, end, courseId);
 			return ls;
 		}
 
@@ -116,13 +139,18 @@ public class Exam {
 	public int getId() {
 		return id;
 	}
-	
+
 	public String toString() {
 		return name;
 	}
 
+	public String getClassName() {
+		return className;
+	}
+
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -136,7 +164,8 @@ public class Exam {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -150,7 +179,8 @@ public class Exam {
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param description
+	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -164,7 +194,8 @@ public class Exam {
 	}
 
 	/**
-	 * @param courseName the courseName to set
+	 * @param courseName
+	 *            the courseName to set
 	 */
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
@@ -178,7 +209,8 @@ public class Exam {
 	}
 
 	/**
-	 * @param courseId the courseId to set
+	 * @param courseId
+	 *            the courseId to set
 	 */
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
@@ -192,7 +224,8 @@ public class Exam {
 	}
 
 	/**
-	 * @param sessionId the sessionId to set
+	 * @param sessionId
+	 *            the sessionId to set
 	 */
 	public void setSessionId(int sessionId) {
 		this.sessionId = sessionId;
@@ -206,7 +239,8 @@ public class Exam {
 	}
 
 	/**
-	 * @param date the date to set
+	 * @param date
+	 *            the date to set
 	 */
 	public void setDate(Calendar date) {
 		this.time = date;

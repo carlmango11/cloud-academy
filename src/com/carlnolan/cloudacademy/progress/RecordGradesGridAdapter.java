@@ -43,7 +43,6 @@ public class RecordGradesGridAdapter extends ArrayAdapter<Student> {
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.grades = grades;
-        System.out.println("null??? " + (grades==null));
         
         passMin = AcademyProperties.getInstance().getPassMinimum();
         

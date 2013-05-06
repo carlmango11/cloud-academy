@@ -42,7 +42,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	protected void onRegistered(Context arg0, String regId) {
-		System.out.println("registration received");
 		WebServiceInterface.getInstance().registerGCMId(regId);
 	}
 

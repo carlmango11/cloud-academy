@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.carlnolan.cloudacademy.courses.Exercise;
+import com.carlnolan.cloudacademy.courses.Lesson;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -61,6 +62,22 @@ public class Homework extends Exercise {
 	public interface UpdateHomeworkCompletionCallback {
 		public void homeworkCompletionUpdated();
 	}
+
+    @Override
+    public boolean equals(Object o) {
+    	Homework h = null;
+    	try {
+    		h = (Homework) o;
+    	} catch(ClassCastException e) {
+    		return false;
+    	}
+    	
+    	if(h == null) {
+    		return false;
+    	}
+    	
+    	return this.getId() == h.getId();
+    }
 	
 	public static List<Homework> buildHomeworkFromJSON(String json) {
 		Gson gson = new GsonBuilder()
@@ -130,6 +147,10 @@ public class Homework extends Exercise {
 	 */
 	public String getCourseName() {
 		return courseName;
+	}
+	
+	public int getId() {
+		return homeworkId;
 	}
 	
 	/**

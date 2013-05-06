@@ -15,6 +15,7 @@ import com.carlnolan.cloudacademy.inclass.Exam;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,10 +23,12 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -167,16 +170,10 @@ public class SelectExamDialog extends DialogFragment implements
 		currentTask = null;
 		allExams = exams;
 		
-		//create string array
-		String [] strings = new String[exams.size()];
-		for(int i=0;i<exams.size();i++) {
-			strings[i] = exams.get(i).toString();
-		}
-		
-		list.setAdapter(new ArrayAdapter<String>(
+		list.setAdapter(new SelectExamListAdapter(
 				getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				strings
+				R.layout.dialog_select_exam_list_item,
+				exams
 		));
 		
 		list.setOnItemClickListener(new OnItemClickListener() {
@@ -193,5 +190,50 @@ public class SelectExamDialog extends DialogFragment implements
 	private void selectExam(int pos) {
 		dismiss();
 		callback.examToGradeSelected(allExams.get(pos).getId());
+	}
+	
+	private static class SelectExamListAdapter extends ArrayAdapter<Exam> {
+		private List<Exam> exams;
+		private int layoutResourceId;
+		private Context context;
+		
+		public SelectExamListAdapter(Context context, int resource,
+				List<Exam> theseExams) {
+			super(context, resource, theseExams);
+			this.context = context;
+			layoutResourceId = resource;
+			exams = theseExams;
+		}
+
+		@Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	        View row = convertView;
+	        ExamHolder holder = null;
+	        
+	        if(row == null)
+	        {
+	            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+	            row = inflater.inflate(layoutResourceId, parent, false);
+	            
+	            holder = new ExamHolder();
+	            holder.name = (TextView) row.findViewById(R.id.dialog_select_exam_list_exam_name);
+	            holder.className = (TextView) row.findViewById(R.id.dialog_select_exam_list_class_name);
+	            
+	            row.setTag(holder);
+	        } else {
+	            holder = (ExamHolder)row.getTag();
+	        }
+	        
+	        Exam exam = exams.get(position);
+	        holder.name.setText(exam.toString());
+	        holder.className.setText(exam.getClassName());
+	        
+	        return row;
+	    }
+		
+		private class ExamHolder {
+			TextView name;
+			TextView className;
+		}
 	}
 }

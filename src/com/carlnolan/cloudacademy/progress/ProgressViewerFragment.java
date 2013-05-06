@@ -17,6 +17,7 @@ import com.carlnolan.cloudacademy.inclass.AddExamDialog;
 import com.carlnolan.cloudacademy.inclass.AttachLessonDialog;
 import com.carlnolan.cloudacademy.inclass.AttendanceDialog;
 import com.carlnolan.cloudacademy.inclass.HomeworkFromWhereDialog;
+import com.carlnolan.cloudacademy.usermanagement.User;
 import com.carlnolan.cloudacademy.webservice.WebServiceInterface;
 
 import android.app.Activity;
@@ -44,8 +45,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 public class ProgressViewerFragment extends Fragment implements
@@ -57,9 +60,12 @@ public class ProgressViewerFragment extends Fragment implements
 	private RadioButton specific;
 	private ListView examList;
 	private Button back;
+	private ProgressBar gradeSpinner;
+	private ProgressBar courseSpinner;
 
 	private AsyncTask<Void, Void, List<ExamGrade>> currentTask;
 	private List<Course> courses;
+	private Course selectedCourse;
 	private List<ExamGrade> grades;
 	private boolean isTeacher;
 
@@ -125,11 +131,11 @@ public class ProgressViewerFragment extends Fragment implements
 		back = (Button) getActivity().findViewById(R.id.progress_back);
 		examList = (ListView) getActivity().findViewById(
 				R.id.progress_exam_list);
-		
-		//find out if the user is a teacher or not
-		isTeacher = AcademyProperties.getInstance().getUser().isTeacher();
+		gradeSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_grade_spinner);
+		courseSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_course_spinner);
 
-		setCourseListEnabled(false);
+		// find out if the user is a teacher or not
+		isTeacher = AcademyProperties.getInstance().getUser().isTeacher();
 
 		// setup click events for radios
 		all.setOnClickListener(new OnClickListener() {
@@ -147,11 +153,12 @@ public class ProgressViewerFragment extends Fragment implements
 
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//cancel any outstanding asynctask
-				if(currentTask != null) {
+				// cancel any outstanding asynctask
+				if (currentTask != null) {
 					currentTask.cancel(true);
 				}
-				
+
+				selectedCourse = null;
 				backToAllCourses();
 			}
 		});
@@ -160,7 +167,22 @@ public class ProgressViewerFragment extends Fragment implements
 		downloadCourses();
 
 		setUpWebView();
-		loadGraph(-1);
+
+		// if specfic is selected then enable the courselist
+		if (specific.isChecked()) {
+			setCourseListEnabled(true);
+		} else {
+			setCourseListEnabled(false);
+		}
+
+		// if theres a selected course, show graph for it, otherwise -1
+		int courseId = -1;
+		if (selectedCourse != null) {
+			courseId = selectedCourse.getId();
+			downloadExamGrades(courseId);
+			flipper.setDisplayedChild(1);
+		}
+		loadGraph(courseId);
 	}
 
 	private void backToAllCourses() {
@@ -177,6 +199,10 @@ public class ProgressViewerFragment extends Fragment implements
 	}
 
 	private void downloadCourses() {
+		//show course spinner
+		courseSpinner.setVisibility(View.VISIBLE);
+		
+		// TODO: Add spinner
 		new DownloadCourses(this).execute();
 	}
 
@@ -192,19 +218,22 @@ public class ProgressViewerFragment extends Fragment implements
 
 	private void loadGraph(final int courseId) {
 		String url = AcademyProperties.getInstance().getChartingUrl();
-		url += "gradeProgress.php";
 
+		User user = AcademyProperties.getInstance().getUser();
 		String postData = WebServiceInterface.getInstance()
 				.getAuthPostParameters()
 				+ "&course="
 				+ courseId
 				+ "&user="
-				+ AcademyProperties.getInstance().getUser().getId();
+				+ user.getId();
 
 		graphView.postUrl(url, EncodingUtils.getBytes(postData, "base64"));
 	}
 
 	private void gradesDownloaded(List<ExamGrade> results) {
+		//hide spinner
+		gradeSpinner.setVisibility(View.GONE);
+		
 		currentTask = null;
 		grades = results;
 
@@ -216,19 +245,21 @@ public class ProgressViewerFragment extends Fragment implements
 
 		examList.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_activated_1, gradeStrings));
-		
+
 		examList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
 					long arg3) {
 				DialogFragment dialog = null;
-				if(isTeacher) {
-					//show the proper report
+				if (isTeacher) {
+					// show the proper report
 				} else {
-					//show the simplified dialog
-					dialog = StudentGradeReportDialog.newInstance(grades.get(pos));
+					// show the simplified dialog
+					dialog = StudentGradeReportDialog.newInstance(grades
+							.get(pos));
 				}
-				
-				dialog.show(getActivity().getSupportFragmentManager(), "GRADE_REPORT");
+
+				dialog.show(getActivity().getSupportFragmentManager(),
+						"GRADE_REPORT");
 			}
 		});
 	}
@@ -262,15 +293,33 @@ public class ProgressViewerFragment extends Fragment implements
 	}
 
 	private void showGraphForCourse(final int pos) {
-		// load graph for selected course
-		loadGraph(courses.get(pos).getId());
+		// set selected course
+		selectedCourse = courses.get(pos);
 
+		// load graph for selected course
+		loadGraph(selectedCourse.getId());
+
+		// reset the examlist and start downloading grades
+		examList.setAdapter(null);
+
+		downloadExamGrades(courses.get(pos).getId());
+
+		// show exam list on next screen:
+		flipper.setInAnimation(getActivity(), R.anim.slide_in_right);
+		flipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
+		flipper.showNext();
+	}
+
+	private void downloadExamGrades(final int courseId) {
+		//show spinner 
+		gradeSpinner.setVisibility(View.VISIBLE);
+		
 		// download exam results for this course
 		currentTask = new AsyncTask<Void, Void, List<ExamGrade>>() {
 			@Override
 			protected List<ExamGrade> doInBackground(Void... params) {
 				List<ExamGrade> results = WebServiceInterface.getInstance()
-						.getGradesForCourse(courses.get(pos).getId());
+						.getGradesForCourse(courseId);
 				return results;
 			}
 
@@ -280,15 +329,7 @@ public class ProgressViewerFragment extends Fragment implements
 				gradesDownloaded(result);
 			}
 		};
-
-		// reset the examlist and start downloading grades
-		examList.setAdapter(null);
 		currentTask.execute();
-
-		// show exam list on next screen:
-		flipper.setInAnimation(getActivity(), R.anim.slide_in_right);
-		flipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
-		flipper.showNext();
 	}
 
 	@Override
@@ -298,6 +339,10 @@ public class ProgressViewerFragment extends Fragment implements
 	}
 
 	public void onCoursesDownloaded(ArrayList<Course> result) {
+		//hide spinner
+		courseSpinner.setVisibility(View.GONE);
+		
+		//save results
 		courses = result;
 
 		String[] strings = new String[courses.size()];

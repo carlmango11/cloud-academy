@@ -55,11 +55,9 @@ public class CourseBrowserFragment extends Fragment implements
 	private int selectedLessonId;
 
 	private List<Course> courses;
-	private List<Section> sections;
-	private List<Lesson> lessons;
+	private ArrayList<Section> sections;
+	private ArrayList<Lesson> lessons;
 	private Course selectedCourse;
-	private Section selectedSection;
-	private Lesson selectedLesson;
 	private ViewFlipper flipper;
 
 	// Course names list stuff:
@@ -96,7 +94,12 @@ public class CourseBrowserFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//init section/lesson holders
+		sections = new ArrayList<Section>();
+		lessons = new ArrayList<Lesson>();
 
+		//Check for any preselected thingies
 		selectedCourseId = getArguments().getInt("COURSE_ID");
 		selectedSectionId = getArguments().getInt("SECTION_ID");
 		selectedLessonId = getArguments().getInt("LESSON_ID");
@@ -123,8 +126,6 @@ public class CourseBrowserFragment extends Fragment implements
 				R.id.course_browser_courses_list);
 
 		// set ListView adapters:
-		sections = new ArrayList<Section>();
-		lessons = new ArrayList<Lesson>();
 		lessonListView.setAdapter(new ArrayAdapter<Lesson>(getActivity(),
 				android.R.layout.simple_list_item_activated_1, lessons));
 		sectionListView.setAdapter(new ArrayAdapter<Section>(getActivity(),
@@ -164,6 +165,17 @@ public class CourseBrowserFragment extends Fragment implements
 
 		return defaultView;
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		//restore the state if we were in the sections/lessons part
+		if(flipper.getDisplayedChild() == 1) {
+			onDownloadSectionsComplete(sections, -1);
+			onDownloadLessonsComplete(lessons);
+		}
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -202,8 +214,8 @@ public class CourseBrowserFragment extends Fragment implements
 	 * @param course
 	 */
 	private void sectionSelected(Section section) {
-		selectedSection = section;
-		new DownloadLessons(this, selectedSection.getId()).execute();
+		selectedSectionId = section.getId();
+		new DownloadLessons(this, section.getId()).execute();
 	}
 
 	/**
@@ -212,7 +224,7 @@ public class CourseBrowserFragment extends Fragment implements
 	 * @param course
 	 */
 	private void lessonSelected(Lesson lesson) {
-		selectedLesson = lesson;
+		selectedLessonId = lesson.getId();
 		callback.courseBrowserLessonSelected(lesson);
 	}
 
@@ -259,7 +271,7 @@ public class CourseBrowserFragment extends Fragment implements
 		lessons.clear();
 		notifyListViewChanged(lessonListView);
 
-		// do a check to see if any of these sections have been pre-selected
+		// do a check to see if any of these sections have been selected
 		boolean foundSelected = false;
 		if (selectedSectionId != -1) {
 			for (int i = 0; i < sections.size(); i++) {

@@ -1,70 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login_background" >
-	
-	    <!-- This is where the content goes -->
-		<RelativeLayout
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/homework_viewer_content_panel"
-		    android:layout_width="350dp"
-		    android:layout_height="350dp"
-		    android:paddingLeft="25dp"
-		    android:paddingTop="70dp"
-		    android:paddingRight="15dp"
-		    android:layout_centerInParent="true"
-		    android:background="@drawable/postit"
-		    android:layout_marginBottom="15dp" >
+    android:layout_height="match_parent" >
 
-			<TextView
-			    android:id="@+id/exam_title"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentTop="true"
-			    android:text="Large Text"
-			    android:textStyle="bold"
-			    android:textAppearance="?android:attr/textAppearanceLarge" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp" >
 
-			<TextView
-			    android:id="@+id/exam_from_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignBottom="@+id/exam_course_button"
-			    android:layout_alignParentLeft="true"
-			    android:layout_below="@id/exam_title"
-			    android:gravity="center_vertical"
-			    android:text="from:"
-			    android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/exam_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/exam_viewer_main_colour"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:text="Title"
+            android:textColor="@color/White"
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
-			<Button
-			    android:id="@+id/exam_course_button"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@+id/exam_title"
-			    android:layout_toRightOf="@+id/exam_from_text"
-			    android:text="Button" />
+        <ImageButton
+            android:id="@+id/exam_go_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/exam_title"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/exam_title"
+            android:src="@drawable/go_arrow" />
 
-			<ScrollView
-			    	android:layout_width="match_parent"
-				    android:layout_height="wrap_content"
-				    android:layout_marginTop="15dp"
-				    android:layout_marginLeft="15dp"
-				    android:layout_marginRight="15dp"
-				    android:layout_marginBottom="40dp"
-				    android:layout_alignLeft="@+id/exam_from_text"
-				    android:layout_below="@+id/exam_from_text"
-				    >
-				<TextView
-				    android:id="@+id/exam_description_text"
-				    android:layout_width="match_parent"
-				    android:layout_height="wrap_content"
-				    android:text="Medium Text"
-				    android:textStyle="italic"
-				    android:textAppearance="?android:attr/textAppearanceMedium" />
-			</ScrollView>
+        <TextView
+            android:id="@+id/exam_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/exam_title"
+            android:text="Mid-term test will include: blah"
+            android:textSize="15dp" />
 
-		</RelativeLayout>
-</RelativeLayout>
+        <View
+            android:id="@+id/exam_description_border"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/exam_description"
+            android:background="@drawable/exam_colour_shape" />
+
+        <View
+            android:id="@+id/exam_from_box_border"
+            android:layout_width="5dp"
+            android:layout_height="0dp"
+            android:layout_alignBottom="@+id/exam_from_box"
+            android:layout_alignTop="@id/exam_from_box"
+            android:layout_below="@id/exam_description_border"
+            android:background="@drawable/exam_colour_shape" />
+
+        <TextView
+            android:id="@id/exam_from_box"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_description_border"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/exam_from_box_border"
+            android:paddingLeft="10dp"
+            android:text="Course:\nDate:"
+            android:textColor="@color/exam_viewer_main_colour"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/exam_from_box_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/exam_from_box"
+            android:layout_alignTop="@id/exam_from_box"
+            android:layout_toRightOf="@id/exam_from_box"
+            android:text="LC Biology\n12th September 2012"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+</ScrollView>

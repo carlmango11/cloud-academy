@@ -20,8 +20,6 @@ public class Course {
 			.create();
 		Course [] courseArray = gson.fromJson(json, Course[].class);
 		
-		System.out.println("ret:" + json);
-		
 		return new ArrayList<Course>(Arrays.asList(courseArray));
 	}
 	
