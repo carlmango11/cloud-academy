@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,7 +40,7 @@ public abstract class Content {
 	public abstract boolean isExercise();
 	
 	//Unsupported Toast duration
-	private static final int UNSUPPORTED_FILETYPE_TOAST_DURATION = 4;
+	private static final int ERROR_TOAST_DURATION = 4;
 	
 	/*private static final Map<String, String> ANDROID_TYPE_MAPPINGS =
 			new HashMap<String, String>();
@@ -72,6 +73,11 @@ public abstract class Content {
 		}
 		
 		return url;
+	}
+	
+	public boolean isURL() {
+		//check if its a URL or a file
+		return filename.charAt(0) == '?';
 	}
 	
 	public void download(int lesson, ProgressDialog progress, ContentDownloadCallback call) {
@@ -113,11 +119,25 @@ public abstract class Content {
     		//Show unsupported dialog
     		Toast toast = Toast.makeText(currentActivity,
     				R.string.unsupported_filetype_error,
-    				UNSUPPORTED_FILETYPE_TOAST_DURATION);
+    				ERROR_TOAST_DURATION);
     		toast.show();
     	}
     }
 
+	public void visit(FragmentActivity activity) {
+		if(filename.length() > 2) {
+			//its a URL, open it in browser
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(filename.substring(1, filename.length())));
+			activity.startActivity(browserIntent);
+		} else {
+			//Show unsupported dialog
+    		Toast toast = Toast.makeText(activity,
+    				R.string.malformed_url,
+    				ERROR_TOAST_DURATION);
+    		toast.show();
+		}
+	}
+	
 	/**
 	 * Getters and setters:
 	 * @return

@@ -1,5 +1,14 @@
 package com.carlnolan.cloudacademy.configuration;
 
+import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import android.content.res.AssetManager;
+import android.content.res.Resources;
+
 import com.carlnolan.cloudacademy.R;
 import com.carlnolan.cloudacademy.usermanagement.User;
 
@@ -47,9 +56,13 @@ public class AcademyProperties {
 		return instance;
 	}
 	
+	/**
+	 * This method can be used to read from a preferences file
+	 * For now the values are hardcoded.
+	 */
 	void readValues() {
 		//coreAddress = "http://cloudacademy.carlnolan.com/";
-		coreAddress = "http://192.168.2.11/cloudacademy";
+		coreAddress = "http://192.168.1.13/cloudacademy";
 		webServiceUrl = coreAddress + "/webservice/";
 		fileProviderUrl = coreAddress + "/fileprovider/getFile.php?";
 		userPhotoProviderUrl = coreAddress + "/fileprovider/getUserPhoto.php?";

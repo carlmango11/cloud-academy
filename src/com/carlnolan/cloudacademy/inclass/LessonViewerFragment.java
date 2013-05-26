@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -87,7 +88,7 @@ public class LessonViewerFragment extends Fragment
 		return frag;
 	}
 	
-	void updateLearningMaterialList(List<LearningMaterial> newMaterial) {
+	private void updateLearningMaterialList(List<LearningMaterial> newMaterial) {
 		learningMaterialProgress.setVisibility(View.GONE);
     	LayoutInflater inflater = getActivity().getLayoutInflater();
     	learningMaterialList.removeAllViews();
@@ -118,13 +119,13 @@ public class LessonViewerFragment extends Fragment
     	}
 	}
 	
-	void updateExerciseList(List<Exercise> newExercises) {
+	private void updateExerciseList(List<Exercise> newExercises) {
 		exercisesProgress.setVisibility(View.GONE);
     	LayoutInflater inflater = getActivity().getLayoutInflater();
     	exerciseList.removeAllViews();
     	
     	for(int i=0; i<newExercises.size(); i++) {
-    		View thisView = inflater.inflate(R.layout.exercise_list_item, null);
+    		View thisView = inflater.inflate(R.layout.exercise_list_item, exerciseList, false);
     		TextView exerciseTitle = (TextView)thisView.findViewById(R.id.exercise_list_item_name);
     		TextView exerciseDescription = (TextView)thisView.findViewById(R.id.exercise_list_item_description);
     		ImageButton downloadExercise = (ImageButton)thisView.findViewById(R.id.exercise_list_open_content);
@@ -144,6 +145,8 @@ public class LessonViewerFragment extends Fragment
     	
     	if(newExercises.size() == 0) {
     		noExercises.setVisibility(View.VISIBLE);
+    	} else {
+    		noExercises.setVisibility(View.GONE);
     	}
 	}
 
@@ -161,28 +164,26 @@ public class LessonViewerFragment extends Fragment
 		return defaultView;
 	}
 
-	/*@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		
-		try {
-			callback = (OnContentSelectedListener) activity;
-		} catch(ClassCastException e) {
-			Log.d("carl", "Could not cast class");
-			throw new ClassCastException(activity.toString()
-					+ " upcoming! must implement LessonOverviewFragment.OnContentSelectedListener");
-		}
-		
-		thisLesson = new Lesson();
-	}*/
-
+	/**
+	 * Adds the appropriate listener to the supplied View
+	 * @param thisView
+	 * @param thisContent
+	 */
     private void addContentClickListener(View thisView, final Content thisContent) {
-    	Content.ContentClickListener thisListener =
-    			new Content.ContentClickListener(
-    					thisContent,
-    					lesson.getId(),
-    					progressDialog,
-    					this);
+    	OnClickListener thisListener = null;
+		if(thisContent.isURL()) {
+			thisListener = new OnClickListener() {
+				public void onClick(View arg0) {
+					thisContent.visit(getActivity());
+				}
+			};
+		} else {
+			thisListener = new Content.ContentClickListener(
+					thisContent,
+					lesson.getId(),
+					progressDialog,
+					this);
+		}
     	
     	thisView.setOnClickListener(thisListener);
 	}

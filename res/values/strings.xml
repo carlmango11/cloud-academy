@@ -23,6 +23,7 @@
     
     <!-- ERRORS: -->
     <string name="unsupported_filetype_error">Content file type not supported</string>
+    <string name="malformed_url">Invalid URL</string>
     <string name="no_upcoming_session_found">No upcoming session found for this course. Homework was not assigned</string>
     <string name="custom_homework_input_error">Please enter homework title</string>
   

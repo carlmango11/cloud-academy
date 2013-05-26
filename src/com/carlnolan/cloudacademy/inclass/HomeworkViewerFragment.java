@@ -13,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -234,12 +235,21 @@ public class HomeworkViewerFragment extends Fragment
 		}
 		
 		if(currentHomework.getFilename().length() > 0) {
-			Content.ContentClickListener thisListener =
-	    			new Content.ContentClickListener(
-	    					currentHomework,
-	    					currentHomework.getAccompanyingLessonId(),
-	    					progressDialog,
-	    					this);
+			OnClickListener thisListener = null;
+			if(currentHomework.isURL()) {
+				thisListener = new OnClickListener() {
+					public void onClick(View arg0) {
+						currentHomework.visit(getActivity());
+					}
+				};
+			} else {
+				thisListener = new Content.ContentClickListener(
+		    					currentHomework,
+		    					currentHomework.getAccompanyingLessonId(),
+		    					progressDialog,
+		    					this);
+			}
+			
 			content.setOnClickListener(thisListener);
 			content.setVisibility(View.VISIBLE);
 		} else {

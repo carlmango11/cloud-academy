@@ -375,39 +375,55 @@ public class MainActivity extends FragmentActivity
     	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // When the given tab is unselected, remove it
-        if(tab.getText().equals(context.getString(R.string.title_syllabus_tab))) {        	
-        	if(browser != null) {
-            	fragmentTransaction.detach(browser);
-        	}
-        	if(lessonViewer != null) {
-            	fragmentTransaction.detach(lessonViewer);
-        	}
+        if(tab.getText().equals(context.getString(R.string.title_syllabus_tab))) {
+        	detachSyllabusTab(fragmentTransaction);
         } else if(tab.getText().equals(context.getString(R.string.title_planner_tab))) {
-        	if(calendar != null) {
-        		fragmentTransaction.detach(calendar);
-        	}
-        	if(schedule != null) {
-        		fragmentTransaction.detach(schedule);
-        	}
+        	detachPlannerTab(fragmentTransaction);
         } else if(tab.getText().equals(context.getString(R.string.title_workload_tab))) {
-        	if(workloadBrowser != null) {
-        		fragmentTransaction.detach(workloadBrowser);
-        	}
-        	if(workloadList != null) {
-        		fragmentTransaction.detach(workloadList);
-        	}
-        	if(homeworkViewer != null) {
-        		fragmentTransaction.detach(homeworkViewer);
-        	}
+        	detachWorkloadTab(fragmentTransaction);
         } else {
-        	if(progressFragment != null) {
-        		setLayout(HALF_HALF_CONTAINER_LAYOUT);
-        		fragmentTransaction.detach(progressFragment);
-        	}
+        	detachProgressTab(fragmentTransaction);
         }
         
         fragmentTransaction.commit();
     }
+	
+	private void detachSyllabusTab(FragmentTransaction fragmentTransaction) {   	
+    	if(browser != null) {
+        	fragmentTransaction.detach(browser);
+    	}
+    	if(lessonViewer != null) {
+        	fragmentTransaction.detach(lessonViewer);
+    	}		
+	}
+	
+	private void detachPlannerTab(FragmentTransaction fragmentTransaction) {   	
+    	if(calendar != null) {
+    		fragmentTransaction.detach(calendar);
+    	}
+    	if(schedule != null) {
+    		fragmentTransaction.detach(schedule);
+    	}
+	}
+	
+	private void detachWorkloadTab(FragmentTransaction fragmentTransaction) {
+    	if(workloadBrowser != null) {
+    		fragmentTransaction.detach(workloadBrowser);
+    	}
+    	if(workloadList != null) {
+    		fragmentTransaction.detach(workloadList);
+    	}
+    	if(homeworkViewer != null) {
+    		fragmentTransaction.detach(homeworkViewer);
+    	}
+	}
+	
+	private void detachProgressTab(FragmentTransaction fragmentTransaction) {  
+    	if(progressFragment != null) {
+    		setLayout(HALF_HALF_CONTAINER_LAYOUT);
+    		fragmentTransaction.detach(progressFragment);
+    	}
+	}
 
     public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
     }

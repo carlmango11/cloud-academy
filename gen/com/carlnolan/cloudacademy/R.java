@@ -465,89 +465,90 @@ containing a value of this type.
         public static final int session_menu=0x7f090003;
     }
     public static final class string {
-        public static final int add_exam=0x7f070015;
+        public static final int add_exam=0x7f070016;
         /**  ADD EXAM DIALOG 
          */
-        public static final int add_exam_input_error=0x7f07001a;
+        public static final int add_exam_input_error=0x7f07001b;
         public static final int app_name=0x7f070000;
-        public static final int assign_homework=0x7f070014;
+        public static final int assign_homework=0x7f070015;
         /**  INCLASS: 
          */
-        public static final int attach_lesson=0x7f070012;
-        public static final int authentication_failure=0x7f07003a;
+        public static final int attach_lesson=0x7f070013;
+        public static final int authentication_failure=0x7f07003b;
         /**  Properties: REDUNDANT ATM 
          */
-        public static final int core_address=0x7f070037;
+        public static final int core_address=0x7f070038;
         /**  COURSE BROWSER: 
          */
-        public static final int course_browser_courses_heading=0x7f07001d;
-        public static final int custom_homework_input_error=0x7f070011;
-        public static final int dialog_add_exam_description=0x7f07001c;
-        public static final int dialog_add_exam_name=0x7f07001b;
-        public static final int dialog_grade_student_error=0x7f070036;
+        public static final int course_browser_courses_heading=0x7f07001e;
+        public static final int custom_homework_input_error=0x7f070012;
+        public static final int dialog_add_exam_description=0x7f07001d;
+        public static final int dialog_add_exam_name=0x7f07001c;
+        public static final int dialog_grade_student_error=0x7f070037;
         /**  SELECT COURSE DIALOG 
          */
-        public static final int dialog_select_course_cancel=0x7f07002d;
-        public static final int dialog_select_course_title=0x7f07002e;
+        public static final int dialog_select_course_cancel=0x7f07002e;
+        public static final int dialog_select_course_title=0x7f07002f;
         /**  SELECT EXAM TO GRADE DIALOG 
          */
-        public static final int dialog_select_exam_cancel=0x7f07002f;
-        public static final int dialog_select_exam_title=0x7f070030;
+        public static final int dialog_select_exam_cancel=0x7f070030;
+        public static final int dialog_select_exam_title=0x7f070031;
         /**  HOMEWORK ASSIGN DIALOGS 
          */
-        public static final int dialog_select_exercises_none=0x7f070025;
-        public static final int file_provider_url=0x7f070039;
-        public static final int grade_student_dialog_cancel=0x7f070034;
-        public static final int grade_student_dialog_save=0x7f070035;
+        public static final int dialog_select_exercises_none=0x7f070026;
+        public static final int file_provider_url=0x7f07003a;
+        public static final int grade_student_dialog_cancel=0x7f070035;
+        public static final int grade_student_dialog_save=0x7f070036;
         /**  GRADE STUDENT DIALOG 
          */
-        public static final int grade_student_dialog_title=0x7f070033;
+        public static final int grade_student_dialog_title=0x7f070034;
         /**  NOTIFICATIONS 
          */
-        public static final int homework_assigned_notification_title=0x7f07003b;
-        public static final int homework_assigned_successfully=0x7f070019;
-        public static final int homework_completed=0x7f070020;
-        public static final int homework_confirm_completion=0x7f070023;
-        public static final int homework_confirm_noncompletion=0x7f070022;
-        public static final int homework_for_text_teacher=0x7f070021;
-        public static final int homework_from_where_title=0x7f070016;
+        public static final int homework_assigned_notification_title=0x7f07003c;
+        public static final int homework_assigned_successfully=0x7f07001a;
+        public static final int homework_completed=0x7f070021;
+        public static final int homework_confirm_completion=0x7f070024;
+        public static final int homework_confirm_noncompletion=0x7f070023;
+        public static final int homework_for_text_teacher=0x7f070022;
+        public static final int homework_from_where_title=0x7f070017;
         /**  HOMEWORK VIEWER 
          */
-        public static final int homework_not_completed=0x7f07001f;
-        public static final int homework_select_due_date=0x7f070018;
-        public static final int homework_select_exercises=0x7f070017;
+        public static final int homework_not_completed=0x7f070020;
+        public static final int homework_select_due_date=0x7f070019;
+        public static final int homework_select_exercises=0x7f070018;
         /**  LESSON_VIEWER 
          */
-        public static final int lesson_viewer_none_string=0x7f070024;
+        public static final int lesson_viewer_none_string=0x7f070025;
+        public static final int malformed_url=0x7f070010;
         public static final int menu_settings=0x7f070005;
-        public static final int no_upcoming_session_found=0x7f070010;
-        public static final int progress_back=0x7f07002c;
+        public static final int no_upcoming_session_found=0x7f070011;
+        public static final int progress_back=0x7f07002d;
         /**  PROGRESS FRAGMENT SCREEN 
          */
-        public static final int progress_radio_all=0x7f07002a;
-        public static final int progress_radio_specific=0x7f07002b;
+        public static final int progress_radio_all=0x7f07002b;
+        public static final int progress_radio_specific=0x7f07002c;
         /**  PROGRESS MENU 
          */
-        public static final int progress_record_grades=0x7f070029;
+        public static final int progress_record_grades=0x7f07002a;
         /**  RECORD GRADES 
          */
-        public static final int record_grades_finish=0x7f070031;
+        public static final int record_grades_finish=0x7f070032;
         public static final int session_overview_exams_string=0x7f07000e;
         public static final int session_overview_homework_due_string=0x7f07000d;
         public static final int session_overview_lessons_string=0x7f07000c;
         /**  SESSION OVERVIEW 
          */
         public static final int session_overview_none_string=0x7f07000b;
-        public static final int take_attendance=0x7f070013;
+        public static final int take_attendance=0x7f070014;
         public static final int title_activity_main=0x7f070006;
-        public static final int title_full_browser_activity=0x7f07001e;
+        public static final int title_full_browser_activity=0x7f07001f;
         public static final int title_in_class_viewer=0x7f070009;
         public static final int title_lesson_viewer=0x7f070008;
         /**  ACTION BAR TABS 
          */
         public static final int title_planner_tab=0x7f070001;
         public static final int title_progress_tab=0x7f070004;
-        public static final int title_record_grades_activity=0x7f070032;
+        public static final int title_record_grades_activity=0x7f070033;
         public static final int title_session_overview=0x7f070007;
         public static final int title_syllabus_tab=0x7f070003;
         public static final int title_workload_tab=0x7f070002;
@@ -555,14 +556,14 @@ containing a value of this type.
          */
         public static final int unsupported_filetype_error=0x7f07000f;
         public static final int upcoming_classes_list_header=0x7f07000a;
-        public static final int web_service_url=0x7f070038;
+        public static final int web_service_url=0x7f070039;
         /**  WORKLOAD BROWSER FRAGMENT 
          */
-        public static final int workload_browser_all_radio=0x7f070027;
-        public static final int workload_browser_day_radio=0x7f070028;
+        public static final int workload_browser_all_radio=0x7f070028;
+        public static final int workload_browser_day_radio=0x7f070029;
         /**  WORKLOAD LIST FRAGMENT 
          */
-        public static final int workload_list_full_workload=0x7f070026;
+        public static final int workload_list_full_workload=0x7f070027;
     }
     public static final class style {
         public static final int AppTheme=0x7f080000;
